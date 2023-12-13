@@ -7,8 +7,9 @@
         public string? Artist { get; set;}
         public string? CoverImageUrl {  get; set; }
         public string? AudioFileUrl { get; set; }
-        public int GenreId { get; set; }
         public int UploadedByUserId { get; set; }
 
+        public int GenreId { get; set; }
+        public Genre Genre { get; set; }
     }
 }
