@@ -1,0 +1,74 @@
+[
+  {
+    "GenreId": 1,
+    "GenreName": "Rock"
+  },
+  {
+    "GenreId": 2,
+    "GenreName": "Pop"
+  },
+  {
+    "GenreId": 3,
+    "GenreName": "Hip Hop"
+  },
+  {
+    "GenreId": 4,
+    "GenreName": "Electronic"
+  },
+  {
+    "GenreId": 5,
+    "GenreName": "Jazz"
+  },
+  {
+    "GenreId": 6,
+    "GenreName": "Classical"
+  },
+  {
+    "GenreId": 7,
+    "GenreName": "Reggae"
+  },
+  {
+    "GenreId": 8,
+    "GenreName": "Country"
+  },
+  {
+    "GenreId": 9,
+    "GenreName": "Blues"
+  },
+  {
+    "GenreId": 10,
+    "GenreName": "Metal"
+  },
+  {
+    "GenreId": 11,
+    "GenreName": "Funk"
+  },
+  {
+    "GenreId": 12,
+    "GenreName": "R&B"
+  },
+  {
+    "GenreId": 13,
+    "GenreName": "Punk"
+  },
+  {
+    "GenreId": 14,
+    "GenreName": "Disco"
+  },
+  {
+    "GenreId": 15,
+    "GenreName": "Techno"
+  },
+  {
+    "GenreId": 16,
+    "GenreName": "Folk"
+  },
+  {
+    "GenreId": 17,
+    "GenreName": "Ambient"
+  },
+  {
+    "GenreId": 18,
+    "GenreName": "Trap"
+  }
+]
