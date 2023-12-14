@@ -17,27 +17,34 @@ namespace harmonii.Server.Data
         {
             base.OnModelCreating(builder);
 
+            // Define relationships between entities using Fluent API
+            //UserIdentity and UserProfile: 1-to-1 relationship.
             builder.Entity<UserIdentity>()
                 .HasOne(e => e.UserProfile)
                 .WithOne(e => e.UserIdentity)
                 .HasForeignKey<UserProfile>(e => e.UserIdentityId);
 
+            //Genre and Songs: 1-to-Many relationship.
             builder.Entity<Genre>()
                 .HasMany(e => e.Songs)
                 .WithOne(e => e.Genre)
                 .HasForeignKey(e => e.GenreId);
 
+            //Song and UserProfile (User owns Songs): Many-to-1 relationship
+            //with no cascading delete
             builder.Entity<Song>()
                 .HasOne(s => s.UserProfile)
                 .WithMany(u => u.Songs)
                 .HasForeignKey(s => s.UserProfileId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            //UserProfile and Playlists: 1-to-Many relationship.
             builder.Entity<UserProfile>()
                 .HasMany(e => e.Playlists)
                 .WithOne(e => e.UserProfile)
                 .HasForeignKey(e => e.UserProfileId);
 
+            //Song and Playlists: Many-to-Many relationship.
             builder.Entity<Song>()
                 .HasMany(e => e.Playlists)
                 .WithMany(e => e.Songs);
@@ -50,7 +57,8 @@ namespace harmonii.Server.Data
         public DbSet<Playlist> Playlists { get; set; }
         public DbSet<Song> Songs { get; set; }
         public DbSet<Genre> Genres { get; set; }
-
+        
+        //Seed methods
         private static void SeedRoles(ModelBuilder builder)
         {
             builder.Entity<RoleIdentity>().HasData(

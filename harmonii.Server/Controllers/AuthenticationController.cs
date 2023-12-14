@@ -23,9 +23,11 @@ namespace harmonii.Server.Controllers
             _config = config;
         }
 
+        // Endpoint for user registration.
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterUser registerUser, string role)
         {
+            // Check if the user already exists
             var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
             if (userExist != null)
             {
@@ -33,13 +35,16 @@ namespace harmonii.Server.Controllers
                     new Response { Status = "Error", StatusMessage = "User Already Exist" });
             }
 
+            // Create a new UserIdentity
             UserIdentity user = new()
             {
                 Email = registerUser.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = registerUser.UserName
+                //Create UserProfile here
             };
 
+            // Attempt to create the user in the database
             var result = await _userManager.CreateAsync(user, registerUser.Password);
             if (result.Succeeded)
             {
