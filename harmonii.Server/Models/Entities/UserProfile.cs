@@ -7,6 +7,8 @@ namespace harmonii.Server.Models.Entities
         public int UserProfileId { get; set; }
         public string? UserName { get; set; }
         public string? UserImageUrl { get; set; }
+
+        public int UserIdentityId { get; set; }
         public UserIdentity UserIdentity { get; set; }
 
         public ICollection<Song> Songs { get; set; }

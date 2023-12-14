@@ -17,10 +17,10 @@ namespace harmonii.Server.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<UserProfile>()
-                .HasOne(e => e.UserIdentity)
-                .WithOne(e => e.UserProfile)
-                .HasForeignKey<UserIdentity>(e => e.UserProfileId);
+            builder.Entity<UserIdentity>()
+                .HasOne(e => e.UserProfile)
+                .WithOne(e => e.UserIdentity)
+                .HasForeignKey<UserProfile>(e => e.UserIdentityId);
 
             builder.Entity<Genre>()
                 .HasMany(e => e.Songs)
