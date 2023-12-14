@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Models\Authentication\Login\" />
     <Folder Include="Models\Identity\" />
   </ItemGroup>
