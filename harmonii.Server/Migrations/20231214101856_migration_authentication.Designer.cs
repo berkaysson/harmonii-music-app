@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using harmonii.Server.Data;
 
@@ -11,9 +12,11 @@ using harmonii.Server.Data;
 namespace harmonii.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231214101856_migration_authentication")]
+    partial class migration_authentication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -315,9 +318,6 @@ namespace harmonii.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserProfileId"));
 
-                    b.Property<int>("UserIdentityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -325,9 +325,6 @@ namespace harmonii.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserProfileId");
-
-                    b.HasIndex("UserIdentityId")
-                        .IsUnique();
 
                     b.ToTable("UserProfiles");
                 });
@@ -440,6 +437,9 @@ namespace harmonii.Server.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<int>("UserProfileId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -449,6 +449,9 @@ namespace harmonii.Server.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("UserProfileId")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -549,15 +552,15 @@ namespace harmonii.Server.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("harmonii.Server.Models.Entities.UserProfile", b =>
+            modelBuilder.Entity("harmonii.Server.Models.Identity.UserIdentity", b =>
                 {
-                    b.HasOne("harmonii.Server.Models.Identity.UserIdentity", "UserIdentity")
-                        .WithOne("UserProfile")
-                        .HasForeignKey("harmonii.Server.Models.Entities.UserProfile", "UserIdentityId")
+                    b.HasOne("harmonii.Server.Models.Entities.UserProfile", "UserProfile")
+                        .WithOne("UserIdentity")
+                        .HasForeignKey("harmonii.Server.Models.Identity.UserIdentity", "UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UserIdentity");
+                    b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("harmonii.Server.Models.Entities.Genre", b =>
@@ -570,11 +573,8 @@ namespace harmonii.Server.Migrations
                     b.Navigation("Playlists");
 
                     b.Navigation("Songs");
-                });
 
-            modelBuilder.Entity("harmonii.Server.Models.Identity.UserIdentity", b =>
-                {
-                    b.Navigation("UserProfile")
+                    b.Navigation("UserIdentity")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
