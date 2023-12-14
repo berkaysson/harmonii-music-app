@@ -1,5 +1,6 @@
 ﻿using harmonii.Server.Models;
 using harmonii.Server.Models.Authentication.SignUp;
+using harmonii.Server.Models.Entities;
 using harmonii.Server.Models.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -41,8 +42,12 @@ namespace harmonii.Server.Controllers
                 Email = registerUser.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = registerUser.UserName
-                //Create UserProfile here
             };
+
+            // Create and UserProfile for relation between UserIdentity
+            UserProfile userProfile = UserProfile
+                .CreateDefaultUserProfileTemplate(registerUser.UserName);
+            user.UserProfile = userProfile;
 
             // Attempt to create the user in the database
             var result = await _userManager.CreateAsync(user, registerUser.Password);
