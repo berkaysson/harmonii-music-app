@@ -26,7 +26,7 @@ namespace harmonii.Server.Controllers
 
         // Endpoint for user registration.
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] RegisterUser registerUser, string role)
+        public async Task<IActionResult> Register([FromBody] RegisterUser registerUser)
         {
             // Check if the user already exists
             var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
@@ -53,6 +53,7 @@ namespace harmonii.Server.Controllers
             var result = await _userManager.CreateAsync(user, registerUser.Password);
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "Standard");
                 return StatusCode(StatusCodes.Status201Created, 
                     new Response { Status = "Success", StatusMessage = "User Created" });
             }
