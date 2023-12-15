@@ -59,7 +59,7 @@ namespace harmonii.Server.Controllers
             else
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new Response { Status = "Error", StatusMessage = "User Couldn't Created" });
+                    new Response { Status = "Error", StatusMessage = "User Couldn't Created", Errors = (List<string>)result.Errors });
             }
         }
     }
