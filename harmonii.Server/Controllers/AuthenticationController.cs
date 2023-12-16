@@ -77,6 +77,7 @@ namespace harmonii.Server.Controllers
         {
             var user = await _userManager.Users.Include(u => u.UserProfile)
                 .FirstOrDefaultAsync(u => u.Email == loginUser.Email);
+            var userRoles = await _userManager.GetRolesAsync(user);
 
             if (user == null)
             {
@@ -96,7 +97,9 @@ namespace harmonii.Server.Controllers
                     user.UserName,
                     user.Email,
                     userProfile?.UserProfileId,
-                    userProfile?.UserImageUrl
+                    userProfile?.UserImageUrl,
+                    userRoles
+                    
                 };
                 var userInfoString = JsonSerializer.Serialize(userInfo);
                 return Ok(new Response { Status = "Success", StatusMessage = userInfoString });
