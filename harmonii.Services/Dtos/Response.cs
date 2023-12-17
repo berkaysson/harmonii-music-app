@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace harmonii.Server.Models
+namespace harmonii.Services.Dtos
 {
     public class Response
     {
         public string? Status { get; set; }
-        public string? StatusMessage { get; set;}
+        public string? StatusMessage { get; set; }
         public List<string>? Errors { get; set; }
 
         public static Response CreateSuccessResponse(string message = "Success")
