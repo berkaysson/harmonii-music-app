@@ -1,11 +1,8 @@
-﻿using harmonii.Server.Models;
-using harmonii.Server.Models.Identity;
+﻿using harmonii.Server.Helpers;
 using harmonii.Services.Dtos;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace harmonii.Server.Controllers
 {
@@ -14,43 +11,21 @@ namespace harmonii.Server.Controllers
     [Authorize]
     public class UserProfileController : Controller
     {
-        private readonly UserManager<UserIdentity> _userManager;
+        private readonly UserProfileHelper _userProfileHelper;
 
-        public UserProfileController(UserManager<UserIdentity> userManager)
+        public UserProfileController(UserProfileHelper userProfileHelper)
         {
-            _userManager = userManager;
+            _userProfileHelper = userProfileHelper;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated == true)
             {
                 var userName = User.Identity.Name;
-                var user = await _userManager.Users.Include(u => u.UserProfile)
-                    .FirstOrDefaultAsync(u => u.UserName == userName);
-                var userRoles = await _userManager.GetRolesAsync(user);
-
-                if (user != null)
-                {
-                    var userProfile = user.UserProfile;
-                    var userInfo = new
-                    {
-                        user.Id,
-                        user.UserName,
-                        user.Email,
-                        userProfile?.UserProfileId,
-                        userProfile?.UserImageUrl,
-                        userRoles
-
-                    };
-                    var userInfoString = JsonSerializer.Serialize(userInfo);
-                    return Ok(new Response { Status = "Success", StatusMessage = userInfoString });
-                }
-                else
-                {
-                    return BadRequest(new { Message = "User not found" });
-                }
+                var result = await _userProfileHelper.GetUserProfile(userName);
+                return result.Status == "Success" ? Ok(result) : BadRequest(new { Message = result.StatusMessage });
             }
             else
             {
@@ -61,36 +36,16 @@ namespace harmonii.Server.Controllers
         [HttpPut("update-user-image")]
         public async Task<IActionResult> UpdateUserImage(string url)
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated == true)
             {
                 var userName = User.Identity.Name;
-                var user = await _userManager.Users.Include(u => u.UserProfile)
-                    .FirstOrDefaultAsync(u => u.UserName == userName);
-
-                if (user != null)
-                {
-                    user.UserProfile.UserImageUrl = url;
-                    var result = await _userManager.UpdateAsync(user);
-
-                    if (result.Succeeded)
-                    {
-                        return Ok(new Response { Status = "Success", StatusMessage = "User image url updated." });
-                    }
-                    else
-                    {
-                        return BadRequest(new Response { Status = "Success", StatusMessage = "Failed to update user image URL" });
-                    }
-                }
-                else
-                {
-                    return BadRequest(new { Message = "User not found" });
-                }
+                var result = await _userProfileHelper.UpdateUserImage(userName, url);
+                return result.Status == "Success" ? Ok(result) : BadRequest(new { Message = result.StatusMessage });
             }
             else
             {
                 return Unauthorized();
             }
         }
-          
-}
+    }
 }

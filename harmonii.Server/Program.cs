@@ -40,7 +40,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<AuthenticationHelper>();
+builder.Services.AddScoped<AuthenticationHelper>().AddScoped<UserProfileHelper>();
 
 var app = builder.Build();
 
