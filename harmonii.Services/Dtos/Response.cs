@@ -21,6 +21,7 @@ namespace harmonii.Services.Dtos
         public static Response CreateErrorResponse(List<IdentityError> errors, string message = "Error")
         {
             var errorMessages = errors.Select(e => e.Description).ToList();
+            message = string.Join(", ", errorMessages);
             return new Response { Status = "Error", StatusMessage = message, Errors = errorMessages };
         }
     }
