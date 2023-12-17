@@ -29,5 +29,34 @@ namespace harmonii.Server.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             return Ok(new { Username = username, Roles = roles });
         }
+
+        [HttpPost("confirm-user-email/{username}")]
+        public async Task<IActionResult> ConfirmUserEmail(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound(new { Message = "User not found" });
+            }
+
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+
+                if (result.Succeeded)
+                {
+                    return Ok(new { Message = "User email confirmed successfully" });
+                }
+                else
+                {
+                    return BadRequest(new { Message = "Failed to confirm user email" });
+                }
+            }
+            else
+            {
+                return BadRequest(new { Message = "User email is already confirmed" });
+            }
+        }
     }
 }
