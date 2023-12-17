@@ -1,4 +1,5 @@
 using harmonii.Server.Data;
+using harmonii.Server.Helpers;
 using harmonii.Server.Models.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -39,6 +40,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<AuthenticationHelper>();
 
 var app = builder.Build();
 
