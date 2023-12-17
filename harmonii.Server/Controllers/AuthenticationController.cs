@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
 
 namespace harmonii.Server.Controllers
@@ -91,6 +96,7 @@ namespace harmonii.Server.Controllers
             if (result.Succeeded)
             {
                 var userProfile = user.UserProfile;
+                var token = CreateToken(user);
                 var userInfo = new
                 {
                     user.Id,
@@ -98,8 +104,8 @@ namespace harmonii.Server.Controllers
                     user.Email,
                     userProfile?.UserProfileId,
                     userProfile?.UserImageUrl,
-                    userRoles
-
+                    userRoles,
+                    token
                 };
                 var userInfoString = JsonSerializer.Serialize(userInfo);
                 return Ok(new Response { Status = "Success", StatusMessage = userInfoString });
@@ -119,6 +125,27 @@ namespace harmonii.Server.Controllers
             await _signInManager.SignOutAsync();
 
             return Ok(new { Message = "User logged out successfully" });
+        }
+
+        private string CreateToken(UserIdentity userIdentity)
+        {
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Email, userIdentity.Email),
+                new Claim(ClaimTypes.Name, userIdentity.UserName)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(_config.GetSection("JWT:Token").Value!));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                    claims:claims,
+                    expires: DateTime.Now.AddDays(1),
+                    signingCredentials:credentials
+                );
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwt;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace harmonii.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class UserProfileController : Controller
     {
         private readonly UserManager<UserIdentity> _userManager;
