@@ -30,6 +30,7 @@
     <ProjectReference Include="..\harmonii.client\harmonii.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\harmonii.Services\harmonii.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
