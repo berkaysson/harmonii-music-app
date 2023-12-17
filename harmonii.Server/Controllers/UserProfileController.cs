@@ -56,5 +56,40 @@ namespace harmonii.Server.Controllers
                 return Unauthorized();
             }
         }
-    }
+
+        [HttpPut("update-user-image")]
+        public async Task<IActionResult> UpdateUserImage(string url)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userName = User.Identity.Name;
+                var user = await _userManager.Users.Include(u => u.UserProfile)
+                    .FirstOrDefaultAsync(u => u.UserName == userName);
+
+                if (user != null)
+                {
+                    user.UserProfile.UserImageUrl = url;
+                    var result = await _userManager.UpdateAsync(user);
+
+                    if (result.Succeeded)
+                    {
+                        return Ok(new Response { Status = "Success", StatusMessage = "User image url updated." });
+                    }
+                    else
+                    {
+                        return BadRequest(new Response { Status = "Success", StatusMessage = "Failed to update user image URL" });
+                    }
+                }
+                else
+                {
+                    return BadRequest(new { Message = "User not found" });
+                }
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+          
+}
 }
