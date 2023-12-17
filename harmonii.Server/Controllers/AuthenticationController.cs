@@ -99,7 +99,7 @@ namespace harmonii.Server.Controllers
                     userProfile?.UserProfileId,
                     userProfile?.UserImageUrl,
                     userRoles
-                    
+
                 };
                 var userInfoString = JsonSerializer.Serialize(userInfo);
                 return Ok(new Response { Status = "Success", StatusMessage = userInfoString });
@@ -111,6 +111,14 @@ namespace harmonii.Server.Controllers
             }
 
             return BadRequest(new Response { Status = "Error", StatusMessage = "Email or Password is wrong." });
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            return Ok(new { Message = "User logged out successfully" });
         }
     }
 }
