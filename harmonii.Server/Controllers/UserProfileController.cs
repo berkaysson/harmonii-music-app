@@ -33,6 +33,7 @@ namespace harmonii.Server.Controllers
             }
         }
 
+        // Can be extended to uptade all user profile and identity information
         [HttpPut("update-user-image")]
         public async Task<IActionResult> UpdateUserImage(string url)
         {
@@ -47,5 +48,9 @@ namespace harmonii.Server.Controllers
                 return Unauthorized();
             }
         }
+
+        // Create endpoint for getting user's songs
+
+        // Create endpoint for getting user's playlists
     }
 }

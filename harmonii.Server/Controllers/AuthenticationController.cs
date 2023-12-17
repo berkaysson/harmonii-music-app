@@ -79,5 +79,7 @@ namespace harmonii.Server.Controllers
 
             return Ok(new { Message = "User logged out successfully" });
         }
+
+        // Endpoint for reset password
     }
 }

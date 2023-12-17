@@ -31,5 +31,9 @@ namespace harmonii.Server.Controllers
             var result = await _adminPanelHelper.ConfirmUserEmail(username);
             return result.Status == "Success" ? Ok(new { Message = result.StatusMessage }) : BadRequest(new { Message = result.StatusMessage });
         }
+
+        // Create endpoint for assignig moderator
+
+        // Create endpoint for deleting users or content
     }
 }
