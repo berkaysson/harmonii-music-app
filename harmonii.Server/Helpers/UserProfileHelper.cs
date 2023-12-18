@@ -35,6 +35,7 @@ namespace harmonii.Server.Helpers
                     userProfile?.UserImageUrl,
                     userRoles
                 };
+                // refactor response text
                 var userInfoString = JsonSerializer.Serialize(userInfo);
                 return Response.CreateSuccessResponse(userInfoString);
             }
@@ -70,7 +71,12 @@ namespace harmonii.Server.Helpers
 
         public async Task<UserIdentity> GetUserIdentityWithProfile(string userName)
         {
-            var user = await _userManager.Users.Include(u => u.UserProfile)
+            var user = await _userManager.Users
+                .Include(u => u.UserProfile)
+                    .ThenInclude(up => up.Songs)
+                    .ThenInclude(up => up.Genre)
+                .Include(u => u.UserProfile)
+                    .ThenInclude(up => up.Playlists)
                 .FirstOrDefaultAsync(u => u.UserName == userName);
             return user;
         }
