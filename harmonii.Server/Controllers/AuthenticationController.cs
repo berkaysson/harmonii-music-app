@@ -39,11 +39,11 @@ namespace harmonii.Server.Controllers
 
             if (result.Status == "Success")
             {
-                return StatusCode(StatusCodes.Status201Created, result);
+                return Ok(result);
             }
             else if (result.Status == "Error")
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, result);
+                return BadRequest(result);
             }
             else
             {
@@ -59,11 +59,11 @@ namespace harmonii.Server.Controllers
 
             if (result.Status == "Success")
             {
-                return StatusCode(StatusCodes.Status201Created, result);
+                return Ok(result);
             }
             else if (result.Status == "Error")
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, result);
+                return BadRequest(result);
             }
             else
             {
@@ -77,7 +77,7 @@ namespace harmonii.Server.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            return Ok(new { Message = "User logged out successfully" });
+            return Ok(new ApiResponse { Status="Success", StatusMessage = "User logged out successfully" });
         }
 
         // Endpoint for reset password

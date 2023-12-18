@@ -4,6 +4,8 @@ using harmonii.Server.Models.Entities;
 using harmonii.Server.Data;
 using harmonii.Services.Dtos;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
+using Azure;
 
 namespace harmonii.Server.Helpers
 {
@@ -22,18 +24,18 @@ namespace harmonii.Server.Helpers
             _userProfileHelper = userProfileHelper;
         }
 
-        public async Task<Response> AddSongHelper(SongDto song, string userName)
+        public async Task<ApiResponse> AddSongHelper(SongDto song, string userName)
         {
             var user = await _userProfileHelper.GetUserIdentityWithProfileByUserName(userName);
             if (user == null || user.UserProfile == null)
             {
-                return Response.CreateErrorResponse(new List<IdentityError>(), "User not found");
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
             }
 
             Genre genre = await _dbContext.Genres.FirstOrDefaultAsync(g => g.GenreName == song.GenreName);
             if (genre == null)
             {
-                return Response.CreateErrorResponse(new List<IdentityError>(), "Genre not found");
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Genre not found");
             }
 
             var newSong = new Song
@@ -49,12 +51,13 @@ namespace harmonii.Server.Helpers
             {
                 _dbContext.Songs.Add(newSong);
                 await _dbContext.SaveChangesAsync();
-                return Response.CreateSuccessResponse("Song added successfully");
+                return ApiResponse.CreateSuccessResponse("Song added successfully");
             }
             catch (Exception ex)
             {
-                return Response.CreateErrorResponse(new List<IdentityError>(), ex.Message);
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), ex.Message);
             }
+        }
         }
     }
 }

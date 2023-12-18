@@ -2,12 +2,10 @@
 using harmonii.Server.Models.Identity;
 using harmonii.Services.Dtos;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
 
 namespace harmonii.Server.Helpers
 {
@@ -26,13 +24,13 @@ namespace harmonii.Server.Helpers
             _signInManager = signInManager;
         }
 
-        public async Task<Response> RegisterUserHelper(RegisterUser registerUser)
+        public async Task<ApiResponse> RegisterUserHelper(RegisterUser registerUser)
         {
             // Check if the user already exists
             var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
             if (userExist != null)
             {
-                return Response.CreateErrorResponse([], "User Already Exists");
+                return ApiResponse.CreateErrorResponse([], "User Already Exists");
             }
 
             // Create a new UserIdentity
@@ -53,21 +51,21 @@ namespace harmonii.Server.Helpers
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Standard");
-                return Response.CreateSuccessResponse("User Created");
+                return ApiResponse.CreateSuccessResponse("User Created successfully", user);
             }
             else
             {
-                return Response.CreateErrorResponse(result.Errors.ToList(), "User Registration Failed");
+                return ApiResponse.CreateErrorResponse(result.Errors.ToList(), "User Registration Failed");
             }
         }
 
-        public async Task<Response> LoginUserHelper(LoginUser loginUser)
+        public async Task<ApiResponse> LoginUserHelper(LoginUser loginUser)
         {
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
-            var userRoles = await _userManager.GetRolesAsync(user);
+
             if (user == null)
             {
-                return Response.CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");
             }
 
             var result = await _signInManager.PasswordSignInAsync(user, loginUser.Password,
@@ -75,29 +73,26 @@ namespace harmonii.Server.Helpers
 
             if (result.Succeeded)
             {
-                var userProfile = user.UserProfile;
+                var userRoles = await _userManager.GetRolesAsync(user);
                 var token = CreateToken(user);
                 var userInfo = new
                 {
                     user.Id,
                     user.UserName,
                     user.Email,
-                    userProfile?.UserProfileId,
-                    userProfile?.UserImageUrl,
                     userRoles,
                     token
                 };
-                var userInfoString = JsonSerializer.Serialize(userInfo);
-                return Response.CreateSuccessResponse(userInfoString);
+                return ApiResponse.CreateSuccessResponse("User login succesfully", userInfo);
             }
 
             else if (result.IsLockedOut)
             {
-                return Response.CreateErrorResponse(new List<IdentityError>(), "User account locked out");
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User account locked out");
             }
             else
             {
-                return Response.CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");
             }
         }
 

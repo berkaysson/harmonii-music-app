@@ -18,7 +18,7 @@ namespace harmonii.Server.Helpers
             _userManager = userManager;
         }
 
-        public async Task<Response> GetUserProfileHelper(string userName)
+        public async Task<ApiResponse> GetUserProfileHelper(string userName)
         {
             var user = await GetUserIdentityWithProfileByUserName(userName);
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -36,16 +36,15 @@ namespace harmonii.Server.Helpers
                     userRoles
                 };
                 // refactor response text
-                var userInfoString = JsonSerializer.Serialize(userInfo);
-                return Response.CreateSuccessResponse(userInfoString);
+                return ApiResponse.CreateSuccessResponse("User information get successful", userInfo);
             }
             else
             {
-                return Response.CreateErrorResponse(new List<IdentityError>(), "User not found");
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
             }
         }
 
-        public async Task<Response> UpdateUserImageHelper(string userName, string url)
+        public async Task<ApiResponse> UpdateUserImageHelper(string userName, string url)
         {
             var user = await GetUserIdentityWithProfileByUserName(userName);
 
@@ -56,16 +55,16 @@ namespace harmonii.Server.Helpers
 
                 if (result.Succeeded)
                 {
-                    return Response.CreateSuccessResponse("User image URL updated.");
+                    return ApiResponse.CreateSuccessResponse("User image URL updated.", user.UserProfile.UserImageUrl);
                 }
                 else
                 {
-                    return Response.CreateErrorResponse(result.Errors.ToList(), "Failed to update user image URL");
+                    return ApiResponse.CreateErrorResponse(result.Errors.ToList(), "Failed to update user image URL");
                 }
             }
             else
             {
-                return Response.CreateErrorResponse(new List<IdentityError>(), "User not found");
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
             }
         }
 
