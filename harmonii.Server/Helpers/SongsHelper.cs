@@ -58,6 +58,24 @@ namespace harmonii.Server.Helpers
                 return ApiResponse.CreateErrorResponse(new List<IdentityError>(), ex.Message);
             }
         }
+
+        public async Task<List<Song>> GetSongsByUserProfileIdAsync(int userProfileId)
+        {
+            var songsCreatedByUser = await _dbContext.Songs
+                .Where(song => song.UserProfileId == userProfileId)
+                .Select(song => new Song
+                {
+                    SongId = song.SongId,
+                    SongName = song.SongName,
+                    Artist = song.Artist,
+                    CoverImageUrl = song.CoverImageUrl,
+                    AudioFileUrl = song.AudioFileUrl,
+                    GenreId = song.GenreId,
+                    UserProfileId = song.UserProfileId
+                })
+                .ToListAsync();
+
+            return songsCreatedByUser;
         }
     }
 }
