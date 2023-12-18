@@ -49,7 +49,19 @@ namespace harmonii.Server.Controllers
             }
         }
 
-        // Create endpoint for getting user's songs
+        [HttpGet("user-songs")]
+        public async Task<IActionResult> GetUserSongs()
+        {
+            try
+            {
+                var user = await _userProfileHelper.GetUserIdentityWithProfile(User.Identity.Name);
+                return Ok(user.UserProfile.Songs);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Failed to fetch user songs: " + ex.Message);
+            }
+        }
 
         // Create endpoint for getting user's playlists
     }
