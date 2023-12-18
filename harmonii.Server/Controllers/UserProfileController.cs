@@ -12,10 +12,12 @@ namespace harmonii.Server.Controllers
     public class UserProfileController : Controller
     {
         private readonly UserProfileHelper _userProfileHelper;
+        private readonly SongsHelper _songsHelper;
 
-        public UserProfileController(UserProfileHelper userProfileHelper)
+        public UserProfileController(UserProfileHelper userProfileHelper, SongsHelper songsHelper)
         {
             _userProfileHelper = userProfileHelper;
+            _songsHelper = songsHelper;
         }
 
         [HttpGet]
@@ -54,9 +56,10 @@ namespace harmonii.Server.Controllers
         {
             try
             {
-                var user = await _userProfileHelper
-                    .GetUserIdentityWithProfileByUserName(User.Identity.Name);
-                return Ok(user.UserProfile.Songs);
+                string userName = User.Identity.Name;
+                var user = await _userProfileHelper.GetUserIdentityWithProfileByUserName(userName);
+                var songs = await _songsHelper.GetSongsByUserProfileIdAsync(user.UserProfile.UserProfileId);
+                return Ok(ApiResponse.CreateSuccessResponse("Success", songs));
             }
             catch (Exception ex)
             {
@@ -71,7 +74,9 @@ namespace harmonii.Server.Controllers
             {
                 var user = await _userProfileHelper
                     .GetUserIdentityWithProfileByUserName(User.Identity.Name);
-                return Ok(user.UserProfile.Playlists);
+                // create a playlist helper method to create correct structure
+                // example: _songsHelper.GetSongsByUserProfileIdAsync)
+                return Ok(user.UserProfile.Playlists); //use ApiResponse
             }
             catch (Exception ex)
             {
