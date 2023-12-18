@@ -42,6 +42,13 @@ namespace harmonii.Server.Controllers
         }
 
         // Create endpoint for deleting users
+        [HttpDelete("delete-user/{username}")]
+        public async Task<ActionResult> DeleteUser(string username)
+        {
+            var result = await _adminPanelHelper.DeleteUser(username);
 
+            return result.Status == "Success" ? Ok(new { Message = result.StatusMessage }) 
+                : BadRequest(new { Message = result.StatusMessage });
+        }
     }
 }

@@ -79,5 +79,23 @@ namespace harmonii.Server.Helpers
             return Response.CreateSuccessResponse("Moderator role is assigned to user.");
         }
 
+        public async Task<Response> DeleteUser(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return Response.CreateErrorResponse(new List<IdentityError>(), "User not found");
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return Response.CreateErrorResponse(result.Errors.ToList(), "Failed to delete user");
+            }
+
+            return Response.CreateSuccessResponse("User deleted successfully");
+        }
     }
 }
