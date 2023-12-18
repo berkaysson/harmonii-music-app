@@ -15,9 +15,9 @@ namespace harmonii.Server.Helpers
             _userManager = userManager;
         }
 
-        public async Task<Response> GetUserRoles(string username)
+        public async Task<Response> GetUserRoles(int identityId)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByIdAsync(identityId.ToString());
             if (user == null)
             {
                 return Response.CreateErrorResponse(new List<IdentityError>(), "User not found");
@@ -27,9 +27,9 @@ namespace harmonii.Server.Helpers
             return Response.CreateSuccessResponse("User Roles: " + String.Join(", ", roles));
         }
 
-        public async Task<Response> ConfirmUserEmail(string username)
+        public async Task<Response> ConfirmUserEmail(int identityId)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(identityId.ToString());
             if (user == null)
             {
                 return Response.CreateErrorResponse(new List<IdentityError>(), "User not found");
@@ -55,9 +55,9 @@ namespace harmonii.Server.Helpers
             }
         }
 
-        public async Task<Response> AssignModeratorRole(string username)
+        public async Task<Response> AssignModeratorRole(int identityId)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(identityId.ToString());
 
             if (user == null)
             {
@@ -79,9 +79,9 @@ namespace harmonii.Server.Helpers
             return Response.CreateSuccessResponse("Moderator role is assigned to user.");
         }
 
-        public async Task<Response> DeleteUser(string username)
+        public async Task<Response> DeleteUser(int identityId)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(identityId.ToString());
 
             if (user == null)
             {

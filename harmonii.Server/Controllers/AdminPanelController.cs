@@ -18,34 +18,34 @@ namespace harmonii.Server.Controllers
             _adminPanelHelper = adminPanelHelper;
         }
 
-        [HttpGet("user-roles/{username}")]
-        public async Task<IActionResult> GetUserRoles(string username)
+        [HttpGet("user-roles/{identityId}")]
+        public async Task<IActionResult> GetUserRoles(int identityId)
         {
-            var result = await _adminPanelHelper.GetUserRoles(username);
+            var result = await _adminPanelHelper.GetUserRoles(identityId);
             return result.Status == "Success" ? Ok(result) : NotFound(new { Message = result.StatusMessage });
         }
 
-        [HttpPost("confirm-user-email/{username}")]
-        public async Task<IActionResult> ConfirmUserEmail(string username)
+        [HttpPost("confirm-user-email/{identityId}")]
+        public async Task<IActionResult> ConfirmUserEmail(int identityId)
         {
-            var result = await _adminPanelHelper.ConfirmUserEmail(username);
+            var result = await _adminPanelHelper.ConfirmUserEmail(identityId);
             return result.Status == "Success" ? Ok(new { Message = result.StatusMessage }) : BadRequest(new { Message = result.StatusMessage });
         }
 
         // Create endpoint for assignig moderator
-        [HttpPost("assign-moderator/{username}")]
-        public async Task<IActionResult> AssignModeratorRole(string username)
+        [HttpPost("assign-moderator/{identityId}")]
+        public async Task<IActionResult> AssignModeratorRole(int identityId)
         {
-            var result = await _adminPanelHelper.AssignModeratorRole(username);
+            var result = await _adminPanelHelper.AssignModeratorRole(identityId);
             return result.Status == "Success" ? Ok(new { Message = result.StatusMessage }) 
                 : BadRequest(new { Message = result.StatusMessage });
         }
 
         // Create endpoint for deleting users
-        [HttpDelete("delete-user/{username}")]
-        public async Task<ActionResult> DeleteUser(string username)
+        [HttpDelete("delete-user/{identityId}")]
+        public async Task<ActionResult> DeleteUser(int identityId)
         {
-            var result = await _adminPanelHelper.DeleteUser(username);
+            var result = await _adminPanelHelper.DeleteUser(identityId);
 
             return result.Status == "Success" ? Ok(new { Message = result.StatusMessage }) 
                 : BadRequest(new { Message = result.StatusMessage });
