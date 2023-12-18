@@ -23,7 +23,40 @@ namespace harmonii.Server.Controllers
         private readonly SongsHelper _songsHelper = songsHelper;
 
         // Get all songs
-        // Get song
+        [HttpGet("all-songs")]
+        public async Task<IActionResult> GetAllSongs()
+        {
+            try
+            {
+                var songs = await _dbContext.Songs.ToListAsync();
+                return Ok(songs);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Failed to fetch songs: " + ex.Message);
+            }
+        }
+        // Get song by song name
+        [HttpGet("song/{songName}")]
+        public async Task<IActionResult> GetSongByName(string songName)
+        {
+            try
+            {
+                var song = await _dbContext.Songs
+                    .FirstOrDefaultAsync(s => s.SongName == songName);
+                if (song == null)
+                {
+                    return NotFound("Song not found");
+                }
+
+                return Ok(song);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Failed to fetch song: " + ex.Message);
+            }
+        }
+
         // Add song (authorize=moderator)
         [HttpPost]
         [Authorize(Roles = "Moderator")]
@@ -47,6 +80,5 @@ namespace harmonii.Server.Controllers
             }
         }
         // Delete song (authorize=moderator)
-        // Get song by genre
     }
 }
