@@ -33,7 +33,15 @@ namespace harmonii.Server.Controllers
         }
 
         // Create endpoint for assignig moderator
+        [HttpPost("assign-moderator/{username}")]
+        public async Task<IActionResult> AssignModeratorRole(string username)
+        {
+            var result = await _adminPanelHelper.AssignModeratorRole(username);
+            return result.Status == "Success" ? Ok(new { Message = result.StatusMessage }) 
+                : BadRequest(new { Message = result.StatusMessage });
+        }
 
-        // Create endpoint for deleting users or content
+        // Create endpoint for deleting users
+
     }
 }

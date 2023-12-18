@@ -54,5 +54,30 @@ namespace harmonii.Server.Helpers
                 return Response.CreateErrorResponse(new List<IdentityError>(), "User email is already confirmed");
             }
         }
+
+        public async Task<Response> AssignModeratorRole(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return Response.CreateErrorResponse(new List<IdentityError>(), "User not found");
+            }
+
+            if (await _userManager.IsInRoleAsync(user, "Moderator"))
+            {
+                return Response.CreateErrorResponse(new List<IdentityError>(), "User is already moderator");
+            }
+
+            var result = await _userManager.AddToRoleAsync(user, "Moderator");
+
+            if (!result.Succeeded)
+            {
+                return Response.CreateErrorResponse(result.Errors.ToList(), "User not found");
+            }
+
+            return Response.CreateSuccessResponse("Moderator role is assigned to user.");
+        }
+
     }
 }
