@@ -19,12 +19,12 @@ namespace harmonii.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> GetUserProfile()
         {
             if (User.Identity?.IsAuthenticated == true)
             {
                 var userName = User.Identity.Name;
-                var result = await _userProfileHelper.GetUserProfile(userName);
+                var result = await _userProfileHelper.GetUserProfileHelper(userName);
                 return result.Status == "Success" ? Ok(result) : BadRequest(new { Message = result.StatusMessage });
             }
             else
@@ -40,7 +40,7 @@ namespace harmonii.Server.Controllers
             if (User.Identity?.IsAuthenticated == true)
             {
                 var userName = User.Identity.Name;
-                var result = await _userProfileHelper.UpdateUserImage(userName, url);
+                var result = await _userProfileHelper.UpdateUserImageHelper(userName, url);
                 return result.Status == "Success" ? Ok(result) : BadRequest(new { Message = result.StatusMessage });
             }
             else
@@ -54,7 +54,8 @@ namespace harmonii.Server.Controllers
         {
             try
             {
-                var user = await _userProfileHelper.GetUserIdentityWithProfile(User.Identity.Name);
+                var user = await _userProfileHelper
+                    .GetUserIdentityWithProfileByUserName(User.Identity.Name);
                 return Ok(user.UserProfile.Songs);
             }
             catch (Exception ex)
@@ -68,7 +69,8 @@ namespace harmonii.Server.Controllers
         {
             try
             {
-                var user = await _userProfileHelper.GetUserIdentityWithProfile(User.Identity.Name);
+                var user = await _userProfileHelper
+                    .GetUserIdentityWithProfileByUserName(User.Identity.Name);
                 return Ok(user.UserProfile.Playlists);
             }
             catch (Exception ex)

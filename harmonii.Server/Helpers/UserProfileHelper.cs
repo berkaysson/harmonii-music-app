@@ -18,9 +18,9 @@ namespace harmonii.Server.Helpers
             _userManager = userManager;
         }
 
-        public async Task<Response> GetUserProfile(string userName)
+        public async Task<Response> GetUserProfileHelper(string userName)
         {
-            var user = await GetUserIdentityWithProfile(userName);
+            var user = await GetUserIdentityWithProfileByUserName(userName);
             var userRoles = await _userManager.GetRolesAsync(user);
 
             if (user != null)
@@ -45,9 +45,9 @@ namespace harmonii.Server.Helpers
             }
         }
 
-        public async Task<Response> UpdateUserImage(string userName, string url)
+        public async Task<Response> UpdateUserImageHelper(string userName, string url)
         {
-            var user = await GetUserIdentityWithProfile(userName);
+            var user = await GetUserIdentityWithProfileByUserName(userName);
 
             if (user != null)
             {
@@ -69,7 +69,7 @@ namespace harmonii.Server.Helpers
             }
         }
 
-        public async Task<UserIdentity> GetUserIdentityWithProfile(string userName)
+        public async Task<UserIdentity> GetUserIdentityWithProfileByUserName(string userName)
         {
             var user = await _userManager.Users
                 .Include(u => u.UserProfile)

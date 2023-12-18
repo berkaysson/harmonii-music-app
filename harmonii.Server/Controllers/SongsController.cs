@@ -36,14 +36,15 @@ namespace harmonii.Server.Controllers
                 return BadRequest("Failed to fetch songs: " + ex.Message);
             }
         }
+
         // Get song by song name
-        [HttpGet("song/{songName}")]
-        public async Task<IActionResult> GetSongByName(string songName)
+        [HttpGet("song/{songId}")]
+        public async Task<IActionResult> GetSongById(int songId)
         {
             try
             {
                 var song = await _dbContext.Songs
-                    .FirstOrDefaultAsync(s => s.SongName == songName);
+                    .FirstOrDefaultAsync(s => s.SongId == songId);
                 if (song == null)
                 {
                     return NotFound("Song not found");
@@ -68,7 +69,7 @@ namespace harmonii.Server.Controllers
             }
 
             var userName = User.Identity.Name;
-            var response = await _songsHelper.AddSong(song, userName);
+            var response = await _songsHelper.AddSongHelper(song, userName);
 
             if (response.Status == "Success")
             {

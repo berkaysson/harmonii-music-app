@@ -15,7 +15,7 @@ namespace harmonii.Server.Helpers
             _userManager = userManager;
         }
 
-        public async Task<Response> GetUserRoles(int identityId)
+        public async Task<Response> GetUserRolesHelper(int identityId)
         {
             var user = await _userManager.FindByIdAsync(identityId.ToString());
             if (user == null)
@@ -27,7 +27,7 @@ namespace harmonii.Server.Helpers
             return Response.CreateSuccessResponse("User Roles: " + String.Join(", ", roles));
         }
 
-        public async Task<Response> ConfirmUserEmail(int identityId)
+        public async Task<Response> ConfirmUserEmailHelper(int identityId)
         {
             var user = await _userManager.FindByNameAsync(identityId.ToString());
             if (user == null)
@@ -55,7 +55,7 @@ namespace harmonii.Server.Helpers
             }
         }
 
-        public async Task<Response> AssignModeratorRole(int identityId)
+        public async Task<Response> AssignModeratorRoleHelper(int identityId)
         {
             var user = await _userManager.FindByNameAsync(identityId.ToString());
 
@@ -79,7 +79,7 @@ namespace harmonii.Server.Helpers
             return Response.CreateSuccessResponse("Moderator role is assigned to user.");
         }
 
-        public async Task<Response> DeleteUser(int identityId)
+        public async Task<Response> DeleteUserHelper(int identityId)
         {
             var user = await _userManager.FindByNameAsync(identityId.ToString());
 

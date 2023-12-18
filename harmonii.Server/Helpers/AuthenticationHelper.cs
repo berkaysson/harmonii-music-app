@@ -26,7 +26,7 @@ namespace harmonii.Server.Helpers
             _signInManager = signInManager;
         }
 
-        public async Task<Response> RegisterUser(RegisterUser registerUser)
+        public async Task<Response> RegisterUserHelper(RegisterUser registerUser)
         {
             // Check if the user already exists
             var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
@@ -61,7 +61,7 @@ namespace harmonii.Server.Helpers
             }
         }
 
-        public async Task<Response> LoginUser(LoginUser loginUser)
+        public async Task<Response> LoginUserHelper(LoginUser loginUser)
         {
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
             var userRoles = await _userManager.GetRolesAsync(user);

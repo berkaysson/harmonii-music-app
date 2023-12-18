@@ -35,7 +35,7 @@ namespace harmonii.Server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUser registerUser)
         {
-            var result = await _authHelper.RegisterUser(registerUser);
+            var result = await _authHelper.RegisterUserHelper(registerUser);
 
             if (result.Status == "Success")
             {
@@ -55,7 +55,7 @@ namespace harmonii.Server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUser loginUser)
         {
-            var result = await _authHelper.LoginUser(loginUser);
+            var result = await _authHelper.LoginUserHelper(loginUser);
 
             if (result.Status == "Success")
             {

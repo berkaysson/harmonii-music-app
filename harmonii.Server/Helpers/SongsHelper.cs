@@ -22,9 +22,9 @@ namespace harmonii.Server.Helpers
             _userProfileHelper = userProfileHelper;
         }
 
-        public async Task<Response> AddSong(SongDto song, string userName)
+        public async Task<Response> AddSongHelper(SongDto song, string userName)
         {
-            var user = await _userProfileHelper.GetUserIdentityWithProfile(userName);
+            var user = await _userProfileHelper.GetUserIdentityWithProfileByUserName(userName);
             if (user == null || user.UserProfile == null)
             {
                 return Response.CreateErrorResponse(new List<IdentityError>(), "User not found");
