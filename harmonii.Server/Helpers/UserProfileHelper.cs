@@ -1,4 +1,5 @@
-﻿using harmonii.Server.Models.Identity;
+﻿using harmonii.Server.Models.Entities;
+using harmonii.Server.Models.Identity;
 using harmonii.Services.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +20,7 @@ namespace harmonii.Server.Helpers
 
         public async Task<Response> GetUserProfile(string userName)
         {
-            var user = await _userManager.Users.Include(u => u.UserProfile)
-                .FirstOrDefaultAsync(u => u.UserName == userName);
+            var user = await GetUserIdentityWithProfile(userName);
             var userRoles = await _userManager.GetRolesAsync(user);
 
             if (user != null)
@@ -46,8 +46,7 @@ namespace harmonii.Server.Helpers
 
         public async Task<Response> UpdateUserImage(string userName, string url)
         {
-            var user = await _userManager.Users.Include(u => u.UserProfile)
-                .FirstOrDefaultAsync(u => u.UserName == userName);
+            var user = await GetUserIdentityWithProfile(userName);
 
             if (user != null)
             {
@@ -67,6 +66,13 @@ namespace harmonii.Server.Helpers
             {
                 return Response.CreateErrorResponse(new List<IdentityError>(), "User not found");
             }
+        }
+
+        public async Task<UserIdentity> GetUserIdentityWithProfile(string userName)
+        {
+            var user = await _userManager.Users.Include(u => u.UserProfile)
+                .FirstOrDefaultAsync(u => u.UserName == userName);
+            return user;
         }
     }
 }
