@@ -75,9 +75,17 @@ namespace harmonii.Server.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            try
+            {
+                await _signInManager.SignOutAsync();
 
-            return Ok(new ApiResponse { Status="Success", StatusMessage = "User logged out successfully" });
+                return Ok(ApiResponse.CreateSuccessResponse("User logged out successfully"));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
+            }
+
         }
 
         // Endpoint for reset password

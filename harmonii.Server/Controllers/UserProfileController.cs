@@ -27,7 +27,7 @@ namespace harmonii.Server.Controllers
             {
                 var userName = User.Identity.Name;
                 var result = await _userProfileHelper.GetUserProfileHelper(userName);
-                return result.Status == "Success" ? Ok(result) : BadRequest(new { Message = result.StatusMessage });
+                return result.Status == "Success" ? Ok(result) : BadRequest(result);
             }
             else
             {
@@ -43,7 +43,7 @@ namespace harmonii.Server.Controllers
             {
                 var userName = User.Identity.Name;
                 var result = await _userProfileHelper.UpdateUserImageHelper(userName, url);
-                return result.Status == "Success" ? Ok(result) : BadRequest(new { Message = result.StatusMessage });
+                return result.Status == "Success" ? Ok(result) : BadRequest(result);
             }
             else
             {
@@ -63,25 +63,25 @@ namespace harmonii.Server.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Failed to fetch user songs: " + ex.Message);
+                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
             }
         }
 
-        [HttpGet("user-playlists")]
-        public async Task<IActionResult> GetUserPlaylists()
-        {
-            try
-            {
-                var user = await _userProfileHelper
-                    .GetUserIdentityWithProfileByUserName(User.Identity.Name);
-                // create a playlist helper method to create correct structure
-                // example: _songsHelper.GetSongsByUserProfileIdAsync)
-                return Ok(user.UserProfile.Playlists); //use ApiResponse
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Failed to fetch user playlists: " + ex.Message);
-            }
-        }
+        //[HttpGet("user-playlists")]
+        //public async Task<IActionResult> GetUserPlaylists()
+        //{
+        //    try
+        //    {
+        //        var user = await _userProfileHelper
+        //            .GetUserIdentityWithProfileByUserName(User.Identity.Name);
+        //        // create a playlist helper method to create correct structure
+        //        // example: _songsHelper.GetSongsByUserProfileIdAsync)
+        //        return Ok(user.UserProfile.Playlists); //use ApiResponse
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
+        //    }
+        //}
     }
 }

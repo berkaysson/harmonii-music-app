@@ -22,14 +22,14 @@ namespace harmonii.Server.Controllers
         public async Task<IActionResult> GetUserRoles(int identityId)
         {
             var result = await _adminPanelHelper.GetUserRolesHelper(identityId);
-            return result.Status == "Success" ? Ok(result) : NotFound(new { Message = result.StatusMessage });
+            return result.Status == "Success" ? Ok(result) : BadRequest(result);
         }
 
         [HttpPost("confirm-user-email/{identityId}")]
         public async Task<IActionResult> ConfirmUserEmail(int identityId)
         {
             var result = await _adminPanelHelper.ConfirmUserEmailHelper(identityId);
-            return result.Status == "Success" ? Ok(new { Message = result.StatusMessage }) : BadRequest(new { Message = result.StatusMessage });
+            return result.Status == "Success" ? Ok(result) : BadRequest(result);
         }
 
         // Create endpoint for assignig moderator
@@ -37,8 +37,8 @@ namespace harmonii.Server.Controllers
         public async Task<IActionResult> AssignModeratorRole(int identityId)
         {
             var result = await _adminPanelHelper.AssignModeratorRoleHelper(identityId);
-            return result.Status == "Success" ? Ok(new { Message = result.StatusMessage }) 
-                : BadRequest(new { Message = result.StatusMessage });
+            return result.Status == "Success" ? Ok(result) 
+                : BadRequest(result);
         }
 
         // Create endpoint for deleting users
@@ -47,8 +47,8 @@ namespace harmonii.Server.Controllers
         {
             var result = await _adminPanelHelper.DeleteUserHelper(identityId);
 
-            return result.Status == "Success" ? Ok(new { Message = result.StatusMessage }) 
-                : BadRequest(new { Message = result.StatusMessage });
+            return result.Status == "Success" ? Ok(result) 
+                : BadRequest(result);
         }
     }
 }

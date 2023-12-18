@@ -29,11 +29,12 @@ namespace harmonii.Server.Controllers
             try
             {
                 var songs = await _dbContext.Songs.ToListAsync();
-                return Ok(songs);
+                return Ok(ApiResponse.
+                    CreateSuccessResponse("All songs retrieved successfully", songs);
             }
             catch (Exception ex)
             {
-                return BadRequest("Failed to fetch songs: " + ex.Message);
+                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
             }
         }
 
@@ -47,14 +48,14 @@ namespace harmonii.Server.Controllers
                     .FirstOrDefaultAsync(s => s.SongId == songId);
                 if (song == null)
                 {
-                    return NotFound("Song not found");
+                    return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
                 }
 
-                return Ok(song);
+                return Ok(ApiResponse.CreateSuccessResponse("Song is retrieved successfully", song));
             }
             catch (Exception ex)
             {
-                return BadRequest("Failed to fetch song: " + ex.Message);
+                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
             }
         }
 
@@ -65,19 +66,19 @@ namespace harmonii.Server.Controllers
         {
             if (!ModelState.IsValid || song == null)
             {
-                return BadRequest("Invalid song data");
+                return BadRequest(ApiResponse.CreateErrorResponse([], "Invalid song data"));
             }
 
             var userName = User.Identity.Name;
-            var response = await _songsHelper.AddSongHelper(song, userName);
+            var result = await _songsHelper.AddSongHelper(song, userName);
 
-            if (response.Status == "Success")
+            if (result.Status == "Success")
             {
-                return Ok(response.StatusMessage);
+                return Ok(result);
             }
             else
             {
-                return BadRequest(response.StatusMessage);
+                return BadRequest(result);
             }
         }
         // Delete song (authorize=moderator)

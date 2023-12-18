@@ -35,7 +35,7 @@ namespace harmonii.Server.Helpers
                     userProfile?.UserImageUrl,
                     userRoles
                 };
-                // refactor response text
+
                 return ApiResponse.CreateSuccessResponse("User information get successful", userInfo);
             }
             else
