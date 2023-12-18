@@ -42,7 +42,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<AuthenticationHelper>()
     .AddScoped<UserProfileHelper>()
-    .AddScoped<AdminPanelHelper>();
+    .AddScoped<AdminPanelHelper>()
+    .AddScoped<SongsHelper>();
 
 var app = builder.Build();
 
