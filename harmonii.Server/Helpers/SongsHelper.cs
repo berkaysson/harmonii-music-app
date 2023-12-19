@@ -1,11 +1,9 @@
-﻿using harmonii.Server.Models.Identity;
-using Microsoft.AspNetCore.Identity;
+﻿using harmonii.Server.Data;
 using harmonii.Server.Models.Entities;
-using harmonii.Server.Data;
+using harmonii.Server.Models.Identity;
 using harmonii.Services.Dtos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
-using Azure;
 
 namespace harmonii.Server.Helpers
 {

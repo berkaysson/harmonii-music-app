@@ -1,10 +1,8 @@
-﻿using Azure;
-using harmonii.Server.Data;
+﻿using harmonii.Server.Data;
 using harmonii.Server.Models.Entities;
 using harmonii.Services.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace harmonii.Server.Helpers
 {
@@ -135,7 +133,7 @@ namespace harmonii.Server.Helpers
                 return ApiResponse.CreateSuccessResponse("Song removed from the playlist");
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return ApiResponse.CreateErrorResponse(new List<IdentityError>(), ex.Message);
             }
@@ -146,25 +144,25 @@ namespace harmonii.Server.Helpers
             var playlistDetails = await _dbContext.Playlists
                 .Where(playlist => playlist.PlaylistId == playlistId)
                 .Select(playlist => new PlaylistDetailsDto
+                {
+                    PlaylistId = playlist.PlaylistId,
+                    PlaylistName = playlist.PlaylistName,
+                    PlaylistDescription = playlist.PlaylistDescription,
+                    UserProfileId = playlist.UserProfileId,
+                    UserName = playlist.UserProfile.UserName,
+                    Songs = playlist.Songs.Select(song => new SongDetailsDto
                     {
-                        PlaylistId = playlist.PlaylistId,
-                        PlaylistName = playlist.PlaylistName,
-                        PlaylistDescription = playlist.PlaylistDescription,
-                        UserProfileId = playlist.UserProfileId,
-                        UserName = playlist.UserProfile.UserName,
-                        Songs = playlist.Songs.Select(song => new SongDetailsDto
-                        {
-                            SongId = song.SongId,
-                            SongName = song.SongName,
-                            ArtistName = song.Artist,
-                            CoverImageUrl = song.CoverImageUrl,
-                            AudioFileUrl = song.AudioFileUrl,
-                            GenreId = song.GenreId,
-                            GenreName = song.Genre.GenreName,
-                            UserProfileId = song.UserProfileId,
-                            UserName = song.UserProfile.UserName
-                        }).ToList()
-                    })
+                        SongId = song.SongId,
+                        SongName = song.SongName,
+                        ArtistName = song.Artist,
+                        CoverImageUrl = song.CoverImageUrl,
+                        AudioFileUrl = song.AudioFileUrl,
+                        GenreId = song.GenreId,
+                        GenreName = song.Genre.GenreName,
+                        UserProfileId = song.UserProfileId,
+                        UserName = song.UserProfile.UserName
+                    }).ToList()
+                })
                     .FirstOrDefaultAsync();
 
             return playlistDetails;

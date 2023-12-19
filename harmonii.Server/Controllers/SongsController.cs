@@ -1,21 +1,19 @@
-﻿using harmonii.Server.Models.Entities;
+﻿using harmonii.Server.Data;
+using harmonii.Server.Helpers;
 using harmonii.Server.Models.Identity;
 using harmonii.Services.Dtos;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNet.Identity.EntityFramework;
-using harmonii.Server.Data;
-using harmonii.Server.Helpers;
 
 namespace harmonii.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/songs")]
     [ApiController]
     [Authorize]
-    public class SongsController(UserManager<UserIdentity> userManager, 
-        ApplicationDbContext dbContext, 
+    public class SongsController(UserManager<UserIdentity> userManager,
+        ApplicationDbContext dbContext,
         SongsHelper songsHelper) : Controller
     {
         private readonly UserManager<UserIdentity> _userManager = userManager;
@@ -23,7 +21,7 @@ namespace harmonii.Server.Controllers
         private readonly SongsHelper _songsHelper = songsHelper;
 
         // Get all songs
-        [HttpGet("all-songs")]
+        [HttpGet]
         public async Task<IActionResult> GetAllSongs()
         {
             try
@@ -40,7 +38,7 @@ namespace harmonii.Server.Controllers
         }
 
         // Get song by song name
-        [HttpGet("song/{songId}")]
+        [HttpGet("{songId}")]
         public async Task<IActionResult> GetSongById(int songId)
         {
             try
@@ -97,7 +95,7 @@ namespace harmonii.Server.Controllers
             }
         }
         // Delete song (authorize=moderator)
-        [HttpDelete]
+        [HttpDelete("{songId}")]
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> DeleteSong(int songId)
         {

@@ -1,8 +1,6 @@
 ﻿using harmonii.Server.Models.Identity;
 using harmonii.Services.Dtos;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace harmonii.Server.Helpers
 {

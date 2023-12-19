@@ -1,11 +1,7 @@
-﻿using harmonii.Server.Models.Entities;
-using harmonii.Server.Models.Identity;
+﻿using harmonii.Server.Models.Identity;
 using harmonii.Services.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace harmonii.Server.Helpers
 {

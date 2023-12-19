@@ -4,8 +4,8 @@
     {
         public int SongId { get; set; }
         public string? SongName { get; set; }
-        public string? Artist { get; set;}
-        public string? CoverImageUrl {  get; set; }
+        public string? Artist { get; set; }
+        public string? CoverImageUrl { get; set; }
         public string? AudioFileUrl { get; set; }
 
         // Relationship with UserProfile, many to one

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace harmonii.Server.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/playlists")]
     [Authorize]
     public class PlaylistsController : Controller
     {
@@ -17,7 +17,7 @@ namespace harmonii.Server.Controllers
             _playlistHelper = playlistHelper;
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> CreatePlaylist([FromBody] PlaylistDto playlistDto)
         {
             try
@@ -39,10 +39,10 @@ namespace harmonii.Server.Controllers
                 return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
             }
         }
-        // Update Playlist endpoint (name)
-        // Delete playlist endpoint
+        // Update Playlist endpoint (name) [HttpPut("{playlistId}")]
+        // Delete playlist endpoint [HttpDelete("{playlistId}")]
         // Add song to playlist endpoint
-        [HttpPost("{playlistId}/add-song")]
+        [HttpPost("{playlistId}/songs/{songId}")]
         public async Task<IActionResult> AddSongToPlaylist(int playlistId, int songId)
         {
             try
@@ -66,7 +66,7 @@ namespace harmonii.Server.Controllers
             }
         }
         // Remove song to playlist endpoint
-        [HttpDelete("remove-song-from-playlist")]
+        [HttpDelete("{playlistId}/songs/{songId}")]
         public async Task<IActionResult> RemoveSongFromPlaylist(int playlistId, int songId)
         {
             var userName = User.Identity?.Name;
@@ -104,6 +104,6 @@ namespace harmonii.Server.Controllers
             }
         }
 
-        // Get all playlist name, details and id
+        // Get all playlist name, details and id [HttpGet("all")]
     }
 }

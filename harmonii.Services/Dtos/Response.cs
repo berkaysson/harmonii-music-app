@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace harmonii.Services.Dtos
 {
@@ -22,7 +17,7 @@ namespace harmonii.Services.Dtos
         public static ApiResponse CreateErrorResponse(List<IdentityError> errors, string message = "Error")
         {
             var errorMessages = errors.Select(e => e.Description).ToList();
-            message = errors.Count >0 ? $"{message} || " + string.Join(", ", errorMessages) : message;
+            message = errors.Count > 0 ? $"{message} || " + string.Join(", ", errorMessages) : message;
             return new ApiResponse { Status = "Error", StatusMessage = message, Errors = errorMessages };
         }
     }

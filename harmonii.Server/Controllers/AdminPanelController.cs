@@ -1,12 +1,10 @@
 ﻿using harmonii.Server.Helpers;
-using harmonii.Services.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace harmonii.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/admin")]
     [ApiController]
     [Authorize(Roles = "Admin")]
     public class AdminPanelController : Controller
@@ -37,7 +35,7 @@ namespace harmonii.Server.Controllers
         public async Task<IActionResult> AssignModeratorRole(int identityId)
         {
             var result = await _adminPanelHelper.AssignModeratorRoleHelper(identityId);
-            return result.Status == "Success" ? Ok(result) 
+            return result.Status == "Success" ? Ok(result)
                 : BadRequest(result);
         }
 
@@ -47,10 +45,10 @@ namespace harmonii.Server.Controllers
         {
             var result = await _adminPanelHelper.DeleteUserHelper(identityId);
 
-            return result.Status == "Success" ? Ok(result) 
+            return result.Status == "Success" ? Ok(result)
                 : BadRequest(result);
         }
 
-        // Get all unconfirmed users
+        // Get all unconfirmed users [HttpGet("unconfirmed-users")]
     }
 }

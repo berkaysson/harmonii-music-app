@@ -1,13 +1,11 @@
 ﻿using harmonii.Server.Helpers;
-using harmonii.Server.Models.Entities;
 using harmonii.Services.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace harmonii.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user-profile")]
     [ApiController]
     [Authorize]
     public class UserProfileController : Controller
@@ -16,7 +14,7 @@ namespace harmonii.Server.Controllers
         private readonly SongsHelper _songsHelper;
         private readonly PlaylistHelper _playlistHelper;
 
-        public UserProfileController(UserProfileHelper userProfileHelper, 
+        public UserProfileController(UserProfileHelper userProfileHelper,
             SongsHelper songsHelper,
             PlaylistHelper playlistHelper)
         {
@@ -25,7 +23,7 @@ namespace harmonii.Server.Controllers
             _playlistHelper = playlistHelper;
         }
 
-        [HttpGet]
+        [HttpGet("profile")]
         public async Task<IActionResult> GetUserProfile()
         {
             if (User.Identity?.IsAuthenticated == true)
@@ -56,7 +54,7 @@ namespace harmonii.Server.Controllers
             }
         }
 
-        [HttpGet("user-songs")]
+        [HttpGet("songs")]
         public async Task<IActionResult> GetUserSongs()
         {
             try
@@ -72,7 +70,7 @@ namespace harmonii.Server.Controllers
             }
         }
 
-        [HttpGet("user-playlists")]
+        [HttpGet("playlists")]
         public async Task<IActionResult> GetUserPlaylists()
         {
             try

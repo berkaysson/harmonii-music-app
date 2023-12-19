@@ -1,7 +1,6 @@
 using harmonii.Server.Data;
 using harmonii.Server.Helpers;
 using harmonii.Server.Models.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -39,7 +38,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.ReferenceHandler = 
+    options.JsonSerializerOptions.ReferenceHandler =
         System.Text.Json.Serialization.ReferenceHandler.Preserve;
 });
 builder.Services.AddEndpointsApiExplorer();
