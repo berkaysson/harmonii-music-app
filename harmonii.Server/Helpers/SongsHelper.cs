@@ -59,19 +59,21 @@ namespace harmonii.Server.Helpers
             }
         }
 
-        public async Task<List<Song>> GetSongsByUserProfileIdAsync(int userProfileId)
+        public async Task<List<SongDetailsDto>> GetSongsByUserProfileIdAsync(int userProfileId)
         {
             var songsCreatedByUser = await _dbContext.Songs
                 .Where(song => song.UserProfileId == userProfileId)
-                .Select(song => new Song
+                .Select(song => new SongDetailsDto
                 {
                     SongId = song.SongId,
                     SongName = song.SongName,
-                    Artist = song.Artist,
+                    ArtistName = song.Artist,
                     CoverImageUrl = song.CoverImageUrl,
                     AudioFileUrl = song.AudioFileUrl,
                     GenreId = song.GenreId,
-                    UserProfileId = song.UserProfileId
+                    GenreName = song.Genre.GenreName,
+                    UserProfileId = song.UserProfileId,
+                    UserName = song.UserProfile.UserName
                 })
                 .ToListAsync();
 

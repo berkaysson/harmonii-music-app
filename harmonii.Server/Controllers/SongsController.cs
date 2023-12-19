@@ -45,13 +45,27 @@ namespace harmonii.Server.Controllers
             try
             {
                 var song = await _dbContext.Songs
+                    .Include(s => s.Genre).Include(s => s.UserProfile)
                     .FirstOrDefaultAsync(s => s.SongId == songId);
                 if (song == null)
                 {
                     return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
                 }
 
-                return Ok(ApiResponse.CreateSuccessResponse("Song is retrieved successfully", song));
+                var songDetails = new SongDetailsDto
+                {
+                    SongId = songId,
+                    SongName = song.SongName,
+                    ArtistName = song.Artist,
+                    CoverImageUrl = song.CoverImageUrl,
+                    AudioFileUrl = song.AudioFileUrl,
+                    GenreId = song.GenreId,
+                    GenreName = song.Genre.GenreName,
+                    UserProfileId = song.UserProfileId,
+                    UserName = song.UserProfile.UserName
+                };
+
+                return Ok(ApiResponse.CreateSuccessResponse("Song is retrieved successfully", songDetails));
             }
             catch (Exception ex)
             {
