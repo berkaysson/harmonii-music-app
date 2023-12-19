@@ -109,7 +109,7 @@ namespace harmonii.Server.Controllers
 
             var result = await _userManager
                 .ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
-
+            // add logout after change password
             if (result.Succeeded)
             {
                 return Ok(ApiResponse.CreateSuccessResponse("Password changed successfully"));

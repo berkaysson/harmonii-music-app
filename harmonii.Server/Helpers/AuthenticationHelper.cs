@@ -51,6 +51,7 @@ namespace harmonii.Server.Helpers
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Standard");
+                // refactor response data
                 return ApiResponse.CreateSuccessResponse("User Created successfully", user);
             }
             else
@@ -62,7 +63,7 @@ namespace harmonii.Server.Helpers
         public async Task<ApiResponse> LoginUserHelper(LoginUser loginUser)
         {
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
-
+            // check for unconfirmed email
             if (user == null)
             {
                 return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");

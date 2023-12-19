@@ -50,5 +50,7 @@ namespace harmonii.Server.Controllers
             return result.Status == "Success" ? Ok(result) 
                 : BadRequest(result);
         }
+
+        // Get all unconfirmed users
     }
 }

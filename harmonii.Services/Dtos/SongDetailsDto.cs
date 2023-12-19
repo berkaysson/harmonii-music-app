@@ -21,6 +21,7 @@ namespace harmonii.Services.Dtos
         public string CoverImageUrl { get; set; }
         public string AudioFileUrl { get; set; }
 
+        // create two distinct field to store genre and user information 
         [Required(ErrorMessage = "Genre ID is required")]
         public int GenreId { get; set; }
 

@@ -28,6 +28,7 @@ namespace harmonii.Server.Controllers
         {
             try
             {
+                // implement SongDetailsDto
                 var songs = await _dbContext.Songs.ToListAsync();
                 return Ok(ApiResponse.
                     CreateSuccessResponse("All songs retrieved successfully", songs));
