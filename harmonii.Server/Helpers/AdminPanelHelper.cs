@@ -29,7 +29,7 @@ namespace harmonii.Server.Helpers
 
         public async Task<ApiResponse> ConfirmUserEmailHelper(int identityId)
         {
-            var user = await _userManager.FindByNameAsync(identityId.ToString());
+            var user = await _userManager.FindByIdAsync(identityId.ToString());
             if (user == null)
             {
                 return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
@@ -57,7 +57,7 @@ namespace harmonii.Server.Helpers
 
         public async Task<ApiResponse> AssignModeratorRoleHelper(int identityId)
         {
-            var user = await _userManager.FindByNameAsync(identityId.ToString());
+            var user = await _userManager.FindByIdAsync(identityId.ToString());
 
             if (user == null)
             {
@@ -81,7 +81,7 @@ namespace harmonii.Server.Helpers
 
         public async Task<ApiResponse> DeleteUserHelper(int identityId)
         {
-            var user = await _userManager.FindByNameAsync(identityId.ToString());
+            var user = await _userManager.FindByIdAsync(identityId.ToString());
 
             if (user == null)
             {
