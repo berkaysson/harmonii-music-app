@@ -64,6 +64,21 @@ namespace harmonii.Server.Controllers
             }
         }
         // Remove song to playlist endpoint
+        [HttpDelete("remove-song-from-playlist")]
+        public async Task<IActionResult> RemoveSongFromPlaylist(int playlistId, int songId)
+        {
+            var result = await _playlistHelper.RemoveSongFromPlaylistHelper(playlistId, songId);
+
+            if (result.Status == "Success")
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
         // Get playlist details, songs and name
         [HttpGet("playlist-details/{playlistId}")]
         public async Task<IActionResult> GetPlaylistDetails(int playlistId)

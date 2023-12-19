@@ -66,6 +66,7 @@ namespace harmonii.Server.Helpers
             return playlistCreatedByUser;
         }
 
+        // add a check if the current user equal to creator of playlist
         public async Task<ApiResponse> AddSongToPlaylistHelper(int playlistId, int songId)
         {
             try
@@ -91,6 +92,37 @@ namespace harmonii.Server.Helpers
                 return ApiResponse.CreateSuccessResponse("Song added to playlist successfully");
             }
             catch (Exception ex)
+            {
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), ex.Message);
+            }
+        }
+
+        // add a check if the current user equal to creator of playlist
+        public async Task<ApiResponse> RemoveSongFromPlaylistHelper(int playlistId, int songId)
+        {
+            var playlist = await _dbContext.Playlists
+                .Include(p => p.Songs).FirstOrDefaultAsync(p => p.PlaylistId == playlistId);
+
+            if (playlist == null)
+            {
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Playlist not found");
+            }
+
+            var song = playlist.Songs.FirstOrDefault(s => s.SongId == songId);
+            if (song == null)
+            {
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Song not found");
+            }
+            try
+            {
+                playlist.Songs.Remove(song);
+
+                await _dbContext.SaveChangesAsync();
+
+                return ApiResponse.CreateSuccessResponse("Song removed from the playlist");
+            }
+
+            catch(Exception ex)
             {
                 return ApiResponse.CreateErrorResponse(new List<IdentityError>(), ex.Message);
             }
