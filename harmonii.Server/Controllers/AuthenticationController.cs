@@ -1,8 +1,10 @@
-﻿using harmonii.Server.Helpers;
+﻿using Azure;
+using harmonii.Server.Helpers;
 using harmonii.Server.Models;
 using harmonii.Server.Models.Entities;
 using harmonii.Server.Models.Identity;
 using harmonii.Services.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,13 +24,16 @@ namespace harmonii.Server.Controllers
     {
         private readonly SignInManager<UserIdentity> _signInManager;
         private readonly AuthenticationHelper _authHelper;
+        private readonly UserManager<UserIdentity> _userManager;
 
         public AuthenticationController(
             SignInManager<UserIdentity> signInManager,
-            AuthenticationHelper authHelper)
+            AuthenticationHelper authHelper,
+            UserManager<UserIdentity> userManager)
         {
             _signInManager = signInManager;
             _authHelper = authHelper;
+            _userManager = userManager;
         }
 
         // Endpoint for user registration.
@@ -72,6 +77,7 @@ namespace harmonii.Server.Controllers
         }
 
         // Endpoint for user log out.
+        [Authorize]
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
@@ -89,5 +95,30 @@ namespace harmonii.Server.Controllers
         }
 
         // Endpoint for reset password
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePassword changePassword)
+        {
+            var userName = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                return BadRequest(ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "User not found"));
+            }
+
+            var result = await _userManager
+                .ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return Ok(ApiResponse.CreateSuccessResponse("Password changed successfully"));
+            }
+            else
+            {
+                return BadRequest(ApiResponse
+                    .CreateErrorResponse(result.Errors.ToList(), "Failed to change password"));
+            }
+        }
     }
 }
