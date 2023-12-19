@@ -67,17 +67,23 @@ namespace harmonii.Server.Helpers
         }
 
         // add a check if the current user equal to creator of playlist
-        public async Task<ApiResponse> AddSongToPlaylistHelper(int playlistId, int songId)
+        public async Task<ApiResponse> AddSongToPlaylistHelper(int playlistId, int songId, string userName)
         {
             try
             {
                 var playlist = await _dbContext.Playlists.Include(p => p.Songs)
+                    .Include(p => p.UserProfile)
                     .FirstOrDefaultAsync(p => p.PlaylistId == playlistId);
                 var song = await _dbContext.Songs.FindAsync(songId);
 
                 if (playlist == null || song == null)
                 {
                     return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Playlist or Song not found");
+                }
+
+                if (playlist.UserProfile.UserName != userName)
+                {
+                    return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Playlist does not belong to the current user");
                 }
 
                 if (playlist.Songs.Any(s => s.SongId == songId))
@@ -98,14 +104,21 @@ namespace harmonii.Server.Helpers
         }
 
         // add a check if the current user equal to creator of playlist
-        public async Task<ApiResponse> RemoveSongFromPlaylistHelper(int playlistId, int songId)
+        public async Task<ApiResponse> RemoveSongFromPlaylistHelper(int playlistId, int songId, string userName)
         {
             var playlist = await _dbContext.Playlists
-                .Include(p => p.Songs).FirstOrDefaultAsync(p => p.PlaylistId == playlistId);
+                .Include(p => p.Songs).Include(p => p.UserProfile)
+                .FirstOrDefaultAsync(p => p.PlaylistId == playlistId);
 
             if (playlist == null)
             {
                 return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Playlist not found");
+            }
+
+
+            if (playlist.UserProfile.UserName != userName)
+            {
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Playlist does not belong to the current user");
             }
 
             var song = playlist.Songs.FirstOrDefault(s => s.SongId == songId);

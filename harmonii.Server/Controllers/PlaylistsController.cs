@@ -47,7 +47,9 @@ namespace harmonii.Server.Controllers
         {
             try
             {
-                var response = await _playlistHelper.AddSongToPlaylistHelper(playlistId, songId);
+                var userName = User.Identity?.Name;
+                var response = await _playlistHelper
+                    .AddSongToPlaylistHelper(playlistId, songId, userName);
 
                 if (response.Status == "Success")
                 {
@@ -67,7 +69,9 @@ namespace harmonii.Server.Controllers
         [HttpDelete("remove-song-from-playlist")]
         public async Task<IActionResult> RemoveSongFromPlaylist(int playlistId, int songId)
         {
-            var result = await _playlistHelper.RemoveSongFromPlaylistHelper(playlistId, songId);
+            var userName = User.Identity?.Name;
+            var result = await _playlistHelper
+                .RemoveSongFromPlaylistHelper(playlistId, songId, userName);
 
             if (result.Status == "Success")
             {
