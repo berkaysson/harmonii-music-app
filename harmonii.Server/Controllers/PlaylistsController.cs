@@ -36,12 +36,33 @@ namespace harmonii.Server.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Failed to create playlist: " + ex.Message);
+                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
             }
         }
         // Update Playlist endpoint (name)
         // Delete playlist endpoint
         // Add song to playlist endpoint
+        [HttpPost("{playlistId}/add-song")]
+        public async Task<IActionResult> AddSongToPlaylist(int playlistId, int songId)
+        {
+            try
+            {
+                var response = await _playlistHelper.AddSongToPlaylistHelper(playlistId, songId);
+
+                if (response.Status == "Success")
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
+            }
+        }
         // Remove song to playlist endpoint
         // Get playlist details, songs and name
         // Get all playlist name, details and id

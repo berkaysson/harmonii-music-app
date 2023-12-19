@@ -1,4 +1,5 @@
-﻿using harmonii.Server.Data;
+﻿using Azure;
+using harmonii.Server.Data;
 using harmonii.Server.Models.Entities;
 using harmonii.Services.Dtos;
 using Microsoft.AspNetCore.Identity;
@@ -63,6 +64,36 @@ namespace harmonii.Server.Helpers
                 .ToListAsync();
 
             return playlistCreatedByUser;
+        }
+
+        public async Task<ApiResponse> AddSongToPlaylistHelper(int playlistId, int songId)
+        {
+            try
+            {
+                var playlist = await _dbContext.Playlists.Include(p => p.Songs)
+                    .FirstOrDefaultAsync(p => p.PlaylistId == playlistId);
+                var song = await _dbContext.Songs.FindAsync(songId);
+
+                if (playlist == null || song == null)
+                {
+                    return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Playlist or Song not found");
+                }
+
+                if (playlist.Songs.Any(s => s.SongId == songId))
+                {
+                    return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Song already exists in the playlist");
+                }
+
+                playlist.Songs.Add(song);
+
+                await _dbContext.SaveChangesAsync();
+
+                return ApiResponse.CreateSuccessResponse("Song added to playlist successfully");
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), ex.Message);
+            }
         }
     }
 }
