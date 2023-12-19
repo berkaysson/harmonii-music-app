@@ -96,5 +96,28 @@ namespace harmonii.Server.Controllers
             }
         }
         // Delete song (authorize=moderator)
+        [HttpDelete]
+        [Authorize(Roles = "Moderator")]
+        public async Task<IActionResult> DeleteSong(int songId)
+        {
+            try
+            {
+                var song = await _dbContext.Songs.FindAsync(songId);
+
+                if (song == null)
+                {
+                    return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
+                }
+
+                _dbContext.Songs.Remove(song);
+                await _dbContext.SaveChangesAsync();
+
+                return Ok(ApiResponse.CreateSuccessResponse("Song deleted successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
+            }
+        }
     }
 }
