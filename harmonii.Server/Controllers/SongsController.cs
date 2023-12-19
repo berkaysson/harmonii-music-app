@@ -30,7 +30,7 @@ namespace harmonii.Server.Controllers
             {
                 var songs = await _dbContext.Songs.ToListAsync();
                 return Ok(ApiResponse.
-                    CreateSuccessResponse("All songs retrieved successfully", songs);
+                    CreateSuccessResponse("All songs retrieved successfully", songs));
             }
             catch (Exception ex)
             {
