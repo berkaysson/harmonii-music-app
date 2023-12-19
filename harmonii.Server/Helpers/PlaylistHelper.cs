@@ -95,5 +95,34 @@ namespace harmonii.Server.Helpers
                 return ApiResponse.CreateErrorResponse(new List<IdentityError>(), ex.Message);
             }
         }
+
+        public async Task<PlaylistDetailsDto> GetPlaylistDetailsHelper(int playlistId)
+        {
+            var playlistDetails = await _dbContext.Playlists
+                .Where(playlist => playlist.PlaylistId == playlistId)
+                .Select(playlist => new PlaylistDetailsDto
+                    {
+                        PlaylistId = playlist.PlaylistId,
+                        PlaylistName = playlist.PlaylistName,
+                        PlaylistDescription = playlist.PlaylistDescription,
+                        UserProfileId = playlist.UserProfileId,
+                        UserName = playlist.UserProfile.UserName,
+                        Songs = playlist.Songs.Select(song => new SongDetailsDto
+                        {
+                            SongId = song.SongId,
+                            SongName = song.SongName,
+                            ArtistName = song.Artist,
+                            CoverImageUrl = song.CoverImageUrl,
+                            AudioFileUrl = song.AudioFileUrl,
+                            GenreId = song.GenreId,
+                            GenreName = song.Genre.GenreName,
+                            UserProfileId = song.UserProfileId,
+                            UserName = song.UserProfile.UserName
+                        }).ToList()
+                    })
+                    .FirstOrDefaultAsync();
+
+            return playlistDetails;
+        }
     }
 }
