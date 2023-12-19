@@ -1,15 +1,44 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using harmonii.Server.Helpers;
+using harmonii.Services.Dtos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace harmonii.Server.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class PlaylistsController : Controller
     {
-        public IActionResult Index()
+        private readonly PlaylistHelper _playlistHelper;
+
+        public PlaylistsController(PlaylistHelper playlistHelper)
         {
-            return View();
+            _playlistHelper = playlistHelper;
         }
 
-        // Create playlist endpoint
+        [HttpPost("create")]
+        public async Task<IActionResult> CreatePlaylist([FromBody] PlaylistDto playlistDto)
+        {
+            try
+            {
+                var userName = User.Identity.Name;
+                var response = await _playlistHelper.CreatePlaylistHelper(playlistDto, userName);
+
+                if (response.Status == "Success")
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Failed to create playlist: " + ex.Message);
+            }
+        }
         // Update Playlist endpoint (name)
         // Delete playlist endpoint
         // Add song to playlist endpoint

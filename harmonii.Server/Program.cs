@@ -47,7 +47,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<AuthenticationHelper>()
     .AddScoped<UserProfileHelper>()
     .AddScoped<AdminPanelHelper>()
-    .AddScoped<SongsHelper>();
+    .AddScoped<SongsHelper>()
+    .AddScoped<PlaylistHelper>();
 
 var app = builder.Build();
 
