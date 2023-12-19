@@ -38,6 +38,13 @@ namespace harmonii.Server.Helpers
                 return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Genre not found");
             }
 
+            bool songExists = await SongExists(song.SongName, song.Artist);
+
+            if (songExists)
+            {
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "This song is already exists");
+            }
+
             var newSong = new Song
             {
                 SongName = song.SongName,
@@ -78,6 +85,16 @@ namespace harmonii.Server.Helpers
                 .ToListAsync();
 
             return songsCreatedByUser;
+        }
+
+        public async Task<bool> SongExists(string songName, string artist)
+        {
+            var normalizedSongName = songName.ToUpper();
+            var normalizedArtist = artist.ToUpper();
+
+            return await _dbContext.Songs.AnyAsync(s =>
+                s.SongName.ToUpper() == normalizedSongName &&
+                s.Artist.ToUpper() == normalizedArtist);
         }
     }
 }
