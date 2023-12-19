@@ -47,5 +47,22 @@ namespace harmonii.Server.Helpers
                 return ApiResponse.CreateErrorResponse([], "Failed to create playlist");
             }
         }
+
+        public async Task<List<Playlist>> GetPlaylistsByUserProfileIdAsync(int userProfileId)
+        {
+            var playlistCreatedByUser = await _dbContext.Playlists
+                .Where(playlist => playlist.UserProfileId == userProfileId)
+                .Select(playlist => new Playlist
+                {
+                    PlaylistId = playlist.PlaylistId,
+                    PlaylistName = playlist.PlaylistName,
+                    PlaylistDescription = playlist.PlaylistDescription,
+                    UserProfileId = playlist.UserProfileId,
+                    Songs = playlist.Songs
+                })
+                .ToListAsync();
+
+            return playlistCreatedByUser;
+        }
     }
 }
