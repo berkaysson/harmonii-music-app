@@ -26,10 +26,23 @@ namespace harmonii.Server.Controllers
         {
             try
             {
-                // implement SongDetailsDto
-                var songs = await _dbContext.Songs.ToListAsync();
+                var songs = await _dbContext.Songs
+                    .Include(s => s.Genre).Include(s => s.UserProfile)
+                    .ToListAsync();
+                var songDetailsList = songs.Select(song => new SongDetailsDto
+                {
+                    SongId = song.SongId,
+                    SongName = song.SongName,
+                    ArtistName = song.Artist,
+                    CoverImageUrl = song.CoverImageUrl,
+                    AudioFileUrl = song.AudioFileUrl,
+                    GenreId = song.GenreId,
+                    GenreName = song.Genre.GenreName,
+                    UserProfileId = song.UserProfileId,
+                    UserName = song.UserProfile.UserName
+                }).ToList();
                 return Ok(ApiResponse.
-                    CreateSuccessResponse("All songs retrieved successfully", songs));
+                    CreateSuccessResponse("All songs retrieved successfully", songDetailsList));
             }
             catch (Exception ex)
             {
