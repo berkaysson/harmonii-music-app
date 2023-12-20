@@ -13,7 +13,6 @@ namespace harmonii.Server.Helpers
         public PlaylistHelper(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-
         }
 
         public async Task<ApiResponse> CreatePlaylistHelper(PlaylistDto playlistDto, string userName)
@@ -178,6 +177,54 @@ namespace harmonii.Server.Helpers
                     .FirstOrDefaultAsync();
 
             return playlistDetails;
+        }
+
+        public async Task<ApiResponse> UpdatePlaylistInfoHelper(int playlistId, string name, string description, string userName)
+        {
+            var playlist = await _dbContext.Playlists.FindAsync(playlistId);
+            if (playlist == null)
+            {
+                return ApiResponse.CreateErrorResponse([], "Playlist Not Found");
+            }
+            var playlistUserProfile = await _dbContext.UserProfiles.FindAsync(playlist.UserProfileId);
+            if(playlistUserProfile == null)
+            {
+                return ApiResponse.CreateErrorResponse([], "User not found");
+            }
+            if (playlistUserProfile.UserName != userName)
+            {
+                return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), 
+                    "Unauthorized: You're not the creator of this playlist");
+            }
+            playlist.PlaylistDescription = description;
+            playlist.PlaylistName = name;
+            await _dbContext.SaveChangesAsync();
+            return ApiResponse
+                .CreateSuccessResponse("Playlist info updated successfully");
+        }
+
+        public async Task<ApiResponse> DeletePlaylistHelper(int playlistId, string userName)
+        {
+            var playlist = await _dbContext.Playlists.FindAsync(playlistId);
+            if (playlist == null)
+            {
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Playlist Not Found");
+            }
+            var playlistUserProfile = await _dbContext.UserProfiles.FindAsync(playlist.UserProfileId);
+            if (playlistUserProfile == null)
+            {
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
+            }
+            if (playlistUserProfile.UserName != userName)
+            {
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), 
+                    "Unauthorized: You're not the creator of this playlist");
+            }
+            _dbContext.Playlists.Remove(playlist);
+            await _dbContext.SaveChangesAsync();
+            return ApiResponse
+                .CreateSuccessResponse("Playlist deleted successfully");
         }
     }
 }

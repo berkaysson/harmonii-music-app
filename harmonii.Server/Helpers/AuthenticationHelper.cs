@@ -101,6 +101,31 @@ namespace harmonii.Server.Helpers
             }
         }
 
+        public async Task<ApiResponse> ChangePasswordHelper(ChangePassword changePassword)
+        {
+            var user = await _userManager.FindByNameAsync(changePassword.UserName);
+            if (user == null)
+            {
+                return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "User not found");
+            }
+
+            var result = await _userManager
+                .ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.SignOutAsync();
+                return ApiResponse.CreateSuccessResponse("Password changed successfully");
+            }
+            else
+            {
+                return ApiResponse
+                    .CreateErrorResponse(result.Errors.ToList(), "Failed to change password");
+            }
+        }
+
+        //@todo remove create token mechanism
         private string CreateToken(UserIdentity userIdentity)
         {
             List<Claim> claims = new List<Claim>()

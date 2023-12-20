@@ -68,18 +68,7 @@ namespace harmonii.Server.Helpers
         {
             var songsCreatedByUser = await _dbContext.Songs
                 .Where(song => song.UserProfileId == userProfileId)
-                .Select(song => new SongDetailsDto
-                {
-                    SongId = song.SongId,
-                    SongName = song.SongName,
-                    ArtistName = song.Artist,
-                    CoverImageUrl = song.CoverImageUrl,
-                    AudioFileUrl = song.AudioFileUrl,
-                    GenreId = song.GenreId,
-                    GenreName = song.Genre.GenreName,
-                    UserProfileId = song.UserProfileId,
-                    UserName = song.UserProfile.UserName
-                })
+                .Select(song => CreateSongDetailsDtoFromSong(song))
                 .ToListAsync();
 
             return songsCreatedByUser;
@@ -94,5 +83,18 @@ namespace harmonii.Server.Helpers
                 s.SongName.ToUpper() == normalizedSongName &&
                 s.Artist.ToUpper() == normalizedArtist);
         }
+
+        public SongDetailsDto CreateSongDetailsDtoFromSong(Song song) => new()
+        {
+            SongId = song.SongId,
+            SongName = song.SongName,
+            ArtistName = song.Artist,
+            CoverImageUrl = song.CoverImageUrl,
+            AudioFileUrl = song.AudioFileUrl,
+            GenreId = song.GenreId,
+            GenreName = song.Genre.GenreName,
+            UserProfileId = song.UserProfileId,
+            UserName = song.UserProfile.UserName
+        };
     }
 }
