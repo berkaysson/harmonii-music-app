@@ -53,5 +53,14 @@ namespace harmonii.Server.Controllers
             return result.Status == "Success" ? Ok(result)
                 : BadRequest(result);
         }
+
+        // Get all users
+        [HttpGet("all-users")]
+        public IActionResult GetAllUsers()
+        {
+            var result = _adminPanelHelper.GetAllUsersHelper();
+            return result.Status == "Success" ? Ok(result)
+                : BadRequest(result);
+        }
     }
 }

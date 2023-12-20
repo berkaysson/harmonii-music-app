@@ -77,5 +77,14 @@ namespace harmonii.Server.Helpers
                 :
                 ApiResponse.CreateErrorResponse([], "No unconfirmed users found");
         }
+
+        public ApiResponse GetAllUsersHelper()
+        {
+            var allUsers = _userManager.Users.ToList();
+            return allUsers.Count != 0 ?
+                ApiResponse.CreateSuccessResponse("Success", allUsers)
+                :
+                ApiResponse.CreateErrorResponse([], "No user found");
+        }
     }
 }
