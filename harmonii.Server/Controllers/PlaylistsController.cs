@@ -1,6 +1,8 @@
-﻿using harmonii.Server.Helpers;
+﻿using harmonii.Server.Data;
+using harmonii.Server.Helpers;
 using harmonii.Services.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace harmonii.Server.Controllers
@@ -11,10 +13,12 @@ namespace harmonii.Server.Controllers
     public class PlaylistsController : Controller
     {
         private readonly PlaylistHelper _playlistHelper;
+        private readonly ApplicationDbContext _dbContext;
 
-        public PlaylistsController(PlaylistHelper playlistHelper)
+        public PlaylistsController(PlaylistHelper playlistHelper, ApplicationDbContext dbContext)
         {
             _playlistHelper = playlistHelper;
+            _dbContext = dbContext;
         }
 
         [HttpPost]
@@ -39,7 +43,36 @@ namespace harmonii.Server.Controllers
                 return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
             }
         }
-        // Update Playlist endpoint (name) [HttpPut("{playlistId}")]
+        // Update Playlist endpoint (name)
+        [HttpPut("{playlistId}")]
+        public async Task<IActionResult> UpdatePlaylistInfo(int playlistId, string name, string description)
+        {
+            try
+            {
+                var playlist = await _dbContext.Playlists.FindAsync(playlistId);
+                if (playlist == null)
+                {
+                    return NotFound(ApiResponse.CreateErrorResponse([], "Playlist Not Found"));
+                }
+
+                var currentUserName = User.Identity.Name;
+                if (playlist.UserProfile.UserName != currentUserName)
+                {
+                    return Unauthorized(ApiResponse
+                        .CreateErrorResponse(new List<IdentityError>(), "Unauthorized: You're not the creator of this playlist"));
+                }
+
+                playlist.PlaylistDescription = description;
+                playlist.PlaylistName = name;
+                await _dbContext.SaveChangesAsync();
+                return Ok(ApiResponse.CreateSuccessResponse("Playlist info updated successfully", playlist));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
+            }
+        }
+
         // Delete playlist endpoint [HttpDelete("{playlistId}")]
         // Add song to playlist endpoint
         [HttpPost("{playlistId}/songs/{songId}")]
