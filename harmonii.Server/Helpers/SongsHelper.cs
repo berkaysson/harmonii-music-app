@@ -53,6 +53,20 @@ namespace harmonii.Server.Helpers
             return songDetailsList;
         }
 
+        public async Task<ApiResponse> UpdateSongGenreHelper(int songId, string newGenreName)
+        {
+            var song = await _dbContext.Songs.FindAsync(songId);
+            if (song == null) return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "Song not found");
+            var genre = await _dbContext.Genres
+                .FirstOrDefaultAsync(g => g.GenreName == newGenreName);
+            if (genre == null) return ApiResponse
+                .CreateErrorResponse([], "Genre not found");
+            song.Genre = genre;
+            await _dbContext.SaveChangesAsync();
+            return ApiResponse.CreateSuccessResponse("Song genre updated successfully");
+        }
+
         public async Task<bool> SongExists(string songName, string artist)
         {
             if(songName == null || artist == null) return false;
