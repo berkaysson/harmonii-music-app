@@ -62,10 +62,15 @@ namespace harmonii.Server.Helpers
         public async Task<ApiResponse> LoginUserHelper(LoginUser loginUser)
         {
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
-            // check for unconfirmed email, test if unconfirmed users can login @todo
+
             if (user == null)
             {
                 return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");
+            }
+
+            if (!user.EmailConfirmed)
+            {
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Email is not confirmed");
             }
 
             var result = await _signInManager.PasswordSignInAsync(user, loginUser.Password,
