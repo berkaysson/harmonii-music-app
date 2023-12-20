@@ -77,5 +77,17 @@ namespace harmonii.Server.Controllers
             await _dbContext.SaveChangesAsync();
             return Ok(ApiResponse.CreateSuccessResponse("Song deleted successfully"));
         }
+
+        // Update song genre
+        [HttpPut("{songId}")]
+        [Authorize(Roles = "Moderator")]
+        public async Task<IActionResult> UpdateSongGenre(int songId, string newGenreName)
+        {
+            if(!ModelState.IsValid || newGenreName == null) return BadRequest(
+                ApiResponse.CreateErrorResponse([], "Invalid data"));
+            var result = await _songsHelper.UpdateSongGenreHelper(songId, newGenreName);
+            return result.Status == "Success" ? Ok(result)
+                : BadRequest(result);
+        }
     }
 }
