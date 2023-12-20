@@ -24,112 +24,58 @@ namespace harmonii.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllSongs()
         {
-            try
-            {
-                var songs = await _dbContext.Songs
-                    .Include(s => s.Genre).Include(s => s.UserProfile)
-                    .ToListAsync();
-                var songDetailsList = songs.Select(song => new SongDetailsDto
-                {
-                    SongId = song.SongId,
-                    SongName = song.SongName,
-                    ArtistName = song.Artist,
-                    CoverImageUrl = song.CoverImageUrl,
-                    AudioFileUrl = song.AudioFileUrl,
-                    GenreId = song.GenreId,
-                    GenreName = song.Genre.GenreName,
-                    UserProfileId = song.UserProfileId,
-                    UserName = song.UserProfile.UserName
-                }).ToList();
-                return Ok(ApiResponse.
-                    CreateSuccessResponse("All songs retrieved successfully", songDetailsList));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
-            }
+            var songs = await _dbContext.Songs
+                .Include(s => s.Genre).Include(s => s.UserProfile)
+                .ToListAsync();
+            var songDetailsList = songs.Select(song =>
+            _songsHelper.CreateSongDetailsDtoFromSong(song))
+                .ToList();
+            return Ok(ApiResponse.
+                CreateSuccessResponse("All songs retrieved successfully", songDetailsList));
         }
 
         // Get song by song name
         [HttpGet("{songId}")]
         public async Task<IActionResult> GetSongById(int songId)
         {
-            try
-            {
-                var song = await _dbContext.Songs
-                    .Include(s => s.Genre).Include(s => s.UserProfile)
-                    .FirstOrDefaultAsync(s => s.SongId == songId);
-                if (song == null)
-                {
-                    return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
-                }
-
-                var songDetails = new SongDetailsDto
-                {
-                    SongId = songId,
-                    SongName = song.SongName,
-                    ArtistName = song.Artist,
-                    CoverImageUrl = song.CoverImageUrl,
-                    AudioFileUrl = song.AudioFileUrl,
-                    GenreId = song.GenreId,
-                    GenreName = song.Genre.GenreName,
-                    UserProfileId = song.UserProfileId,
-                    UserName = song.UserProfile.UserName
-                };
-
-                return Ok(ApiResponse.CreateSuccessResponse("Song is retrieved successfully", songDetails));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
-            }
+            var song = await _dbContext.Songs
+                .Include(s => s.Genre).Include(s => s.UserProfile)
+                .FirstOrDefaultAsync(s => s.SongId == songId);
+            if (song == null)
+                return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
+            var songDetails = _songsHelper.CreateSongDetailsDtoFromSong(song);
+            return Ok(ApiResponse
+                .CreateSuccessResponse("Song is retrieved successfully", songDetails));
         }
 
-        // Add song (authorize=moderator)
+        // Add song
         [HttpPost]
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> AddSong([FromBody] SongDto song)
         {
-            if (!ModelState.IsValid || song == null)
-            {
-                return BadRequest(ApiResponse.CreateErrorResponse([], "Invalid song data"));
-            }
-
-            var userName = User.Identity.Name;
+            if (!ModelState.IsValid || song == null) return BadRequest(
+                ApiResponse.CreateErrorResponse([], "Invalid song data"));
+            var userName = User.Identity?.Name;
+            if (userName == null) return BadRequest(ApiResponse
+                .CreateErrorResponse(new List<IdentityError>(), "User not found"));
             var result = await _songsHelper.AddSongHelper(song, userName);
-
-            if (result.Status == "Success")
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result);
-            }
+            return result.Status == "Success" ? Ok(result)
+                : BadRequest(result);
         }
-        // Delete song (authorize=moderator)
+
+        // Delete song
         [HttpDelete("{songId}")]
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> DeleteSong(int songId)
         {
-            try
+            var song = await _dbContext.Songs.FindAsync(songId);
+            if (song == null)
             {
-                var song = await _dbContext.Songs.FindAsync(songId);
-
-                if (song == null)
-                {
-                    return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
-                }
-
-                _dbContext.Songs.Remove(song);
-                await _dbContext.SaveChangesAsync();
-
-                return Ok(ApiResponse.CreateSuccessResponse("Song deleted successfully"));
+                return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
-            }
+            _dbContext.Songs.Remove(song);
+            await _dbContext.SaveChangesAsync();
+            return Ok(ApiResponse.CreateSuccessResponse("Song deleted successfully"));
         }
     }
 }

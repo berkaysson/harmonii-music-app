@@ -187,14 +187,14 @@ namespace harmonii.Server.Helpers
                 return ApiResponse.CreateErrorResponse([], "Playlist Not Found");
             }
             var playlistUserProfile = await _dbContext.UserProfiles.FindAsync(playlist.UserProfileId);
-            if(playlistUserProfile == null)
+            if (playlistUserProfile == null)
             {
                 return ApiResponse.CreateErrorResponse([], "User not found");
             }
             if (playlistUserProfile.UserName != userName)
             {
                 return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), 
+                    .CreateErrorResponse(new List<IdentityError>(),
                     "Unauthorized: You're not the creator of this playlist");
             }
             playlist.PlaylistDescription = description;
@@ -218,7 +218,7 @@ namespace harmonii.Server.Helpers
             }
             if (playlistUserProfile.UserName != userName)
             {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), 
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(),
                     "Unauthorized: You're not the creator of this playlist");
             }
             _dbContext.Playlists.Remove(playlist);

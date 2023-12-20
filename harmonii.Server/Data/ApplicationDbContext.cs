@@ -6,12 +6,10 @@ using System.Text.Json;
 
 namespace harmonii.Server.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<UserIdentity, RoleIdentity, int>
+    public class ApplicationDbContext(
+        DbContextOptions<ApplicationDbContext> options) :
+        IdentityDbContext<UserIdentity, RoleIdentity, int>(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -71,7 +69,8 @@ namespace harmonii.Server.Data
         {
             var genresJson = File.ReadAllText("./Data/genres.json");
             var genres = JsonSerializer.Deserialize<List<Genre>>(genresJson);
-            builder.Entity<Genre>().HasData(genres);
+            if (genres != null && genres.Count > 0)
+                builder.Entity<Genre>().HasData(genres);
         }
     }
 }

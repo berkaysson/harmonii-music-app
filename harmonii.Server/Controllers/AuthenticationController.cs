@@ -9,40 +9,22 @@ namespace harmonii.Server.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController(
+        SignInManager<UserIdentity> signInManager,
+        AuthenticationHelper authHelper,
+        UserManager<UserIdentity> userManager) : ControllerBase
     {
-        private readonly SignInManager<UserIdentity> _signInManager;
-        private readonly AuthenticationHelper _authHelper;
-        private readonly UserManager<UserIdentity> _userManager;
-
-        public AuthenticationController(
-            SignInManager<UserIdentity> signInManager,
-            AuthenticationHelper authHelper,
-            UserManager<UserIdentity> userManager)
-        {
-            _signInManager = signInManager;
-            _authHelper = authHelper;
-            _userManager = userManager;
-        }
+        private readonly SignInManager<UserIdentity> _signInManager = signInManager;
+        private readonly AuthenticationHelper _authHelper = authHelper;
+        private readonly UserManager<UserIdentity> _userManager = userManager;
 
         // Endpoint for user registration.
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUser registerUser)
         {
             var result = await _authHelper.RegisterUserHelper(registerUser);
-
-            if (result.Status == "Success")
-            {
-                return Ok(result);
-            }
-            else if (result.Status == "Error")
-            {
-                return BadRequest(result);
-            }
-            else
-            {
-                return BadRequest("Unexpected result");
-            }
+            return result.Status == "Success" ? Ok(result)
+                : BadRequest(result);
         }
 
         // Endpoint for user login.
@@ -50,19 +32,8 @@ namespace harmonii.Server.Controllers
         public async Task<IActionResult> Login([FromBody] LoginUser loginUser)
         {
             var result = await _authHelper.LoginUserHelper(loginUser);
-
-            if (result.Status == "Success")
-            {
-                return Ok(result);
-            }
-            else if (result.Status == "Error")
-            {
-                return BadRequest(result);
-            }
-            else
-            {
-                return BadRequest("Unexpected result");
-            }
+            return result.Status == "Success" ? Ok(result)
+                : BadRequest(result);
         }
 
         // Endpoint for user log out.
@@ -73,14 +44,12 @@ namespace harmonii.Server.Controllers
             try
             {
                 await _signInManager.SignOutAsync();
-
                 return Ok(ApiResponse.CreateSuccessResponse("User logged out successfully"));
             }
             catch (Exception ex)
             {
                 return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
             }
-
         }
 
         // Endpoint for reset password
@@ -88,27 +57,9 @@ namespace harmonii.Server.Controllers
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword(ChangePassword changePassword)
         {
-            var userName = User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
-            {
-                return BadRequest(ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User not found"));
-            }
-
-            var result = await _userManager
-                .ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
-            
-            if (result.Succeeded)
-            {
-                await _signInManager.SignOutAsync();
-                return Ok(ApiResponse.CreateSuccessResponse("Password changed successfully"));
-            }
-            else
-            {
-                return BadRequest(ApiResponse
-                    .CreateErrorResponse(result.Errors.ToList(), "Failed to change password"));
-            }
+            var result = await _authHelper.ChangePasswordHelper(changePassword);
+            return result.Status == "Success" ? Ok(result)
+                : BadRequest(result);
         }
     }
 }
