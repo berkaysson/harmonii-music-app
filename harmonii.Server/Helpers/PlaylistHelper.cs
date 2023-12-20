@@ -47,21 +47,33 @@ namespace harmonii.Server.Helpers
             }
         }
 
-        public async Task<List<Playlist>> GetPlaylistsByUserProfileIdAsync(int userProfileId)
+        public async Task<List<PlaylistDetailsDto>> GetPlaylistsByUserProfileIdAsync(int userProfileId)
         {
-            var playlistCreatedByUser = await _dbContext.Playlists
-                .Where(playlist => playlist.UserProfileId == userProfileId)
-                .Select(playlist => new Playlist
+            var playlistsCreatedByUser = await _dbContext.Playlists
+            .Where(playlist => playlist.UserProfileId == userProfileId)
+            .Select(playlist => new PlaylistDetailsDto
+            {
+                PlaylistId = playlist.PlaylistId,
+                PlaylistName = playlist.PlaylistName,
+                PlaylistDescription = playlist.PlaylistDescription,
+                UserProfileId = playlist.UserProfileId,
+                UserName = playlist.UserProfile.UserName,
+                Songs = playlist.Songs.Select(song => new SongDetailsDto
                 {
-                    PlaylistId = playlist.PlaylistId,
-                    PlaylistName = playlist.PlaylistName,
-                    PlaylistDescription = playlist.PlaylistDescription,
-                    UserProfileId = playlist.UserProfileId,
-                    Songs = playlist.Songs
-                })
-                .ToListAsync();
+                    SongId = song.SongId,
+                    SongName = song.SongName,
+                    ArtistName = song.Artist,
+                    CoverImageUrl = song.CoverImageUrl,
+                    AudioFileUrl = song.AudioFileUrl,
+                    GenreId = song.GenreId,
+                    GenreName = song.Genre.GenreName,
+                    UserProfileId = song.UserProfileId,
+                    UserName = song.UserProfile.UserName
+                }).ToList()
+            })
+            .ToListAsync();
 
-            return playlistCreatedByUser;
+            return playlistsCreatedByUser;
         }
 
         // add a check if the current user equal to creator of playlist
