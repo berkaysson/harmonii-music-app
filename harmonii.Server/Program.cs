@@ -47,7 +47,8 @@ builder.Services.AddScoped<AuthenticationHelper>()
     .AddScoped<UserProfileHelper>()
     .AddScoped<AdminPanelHelper>()
     .AddScoped<SongsHelper>()
-    .AddScoped<PlaylistHelper>();
+    .AddScoped<PlaylistHelper>()
+    .AddScoped<GenreHelper>();
 
 var app = builder.Build();
 
