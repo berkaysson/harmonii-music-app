@@ -57,7 +57,8 @@ namespace harmonii.Server.Controllers
                 }
 
                 var currentUserName = User.Identity.Name;
-                if (playlist.UserProfile.UserName != currentUserName)
+                var playlistUserProfile = await _dbContext.UserProfiles.FindAsync(playlist.UserProfileId);
+                if (playlistUserProfile.UserName != currentUserName)
                 {
                     return Unauthorized(ApiResponse
                         .CreateErrorResponse(new List<IdentityError>(), "Unauthorized: You're not the creator of this playlist"));
@@ -66,7 +67,7 @@ namespace harmonii.Server.Controllers
                 playlist.PlaylistDescription = description;
                 playlist.PlaylistName = name;
                 await _dbContext.SaveChangesAsync();
-                return Ok(ApiResponse.CreateSuccessResponse("Playlist info updated successfully", playlist));
+                return Ok(ApiResponse.CreateSuccessResponse("Playlist info updated successfully"));
             }
             catch (Exception ex)
             {
@@ -87,7 +88,8 @@ namespace harmonii.Server.Controllers
                 }
 
                 var currentUserName = User.Identity.Name;
-                if (playlist.UserProfile.UserName != currentUserName)
+                var playlistUserProfile = await _dbContext.UserProfiles.FindAsync(playlist.UserProfileId);
+                if (playlistUserProfile.UserName != currentUserName)
                 {
                     return Unauthorized(ApiResponse
                         .CreateErrorResponse(new List<IdentityError>(), "Unauthorized: You're not the creator of this playlist"));
