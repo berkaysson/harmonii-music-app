@@ -7,20 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace harmonii.Server.Helpers
 {
-    public class SongsHelper
-    {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly UserManager<UserIdentity> _userManager;
-        private readonly UserProfileHelper _userProfileHelper;
-
-        public SongsHelper(UserManager<UserIdentity> userManager
+    public class SongsHelper(UserManager<UserIdentity> userManager
             , ApplicationDbContext dbContext
             , UserProfileHelper userProfileHelper)
-        {
-            _userManager = userManager;
-            _dbContext = dbContext;
-            _userProfileHelper = userProfileHelper;
-        }
+    {
+        private readonly ApplicationDbContext _dbContext = dbContext;
+        private readonly UserManager<UserIdentity> _userManager = userManager;
+        private readonly UserProfileHelper _userProfileHelper = userProfileHelper;
 
         public async Task<ApiResponse> AddSongHelper(SongDto song, string userName)
         {

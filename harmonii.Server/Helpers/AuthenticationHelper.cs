@@ -9,29 +9,20 @@ using System.Text;
 
 namespace harmonii.Server.Helpers
 {
-    public class AuthenticationHelper
+    public class AuthenticationHelper(UserManager<UserIdentity> userManager,
+        IConfiguration config,
+        SignInManager<UserIdentity> signInManager)
     {
-        private readonly UserManager<UserIdentity> _userManager;
-        private readonly IConfiguration _config;
-        private readonly SignInManager<UserIdentity> _signInManager;
-
-        public AuthenticationHelper(UserManager<UserIdentity> userManager,
-            IConfiguration config,
-            SignInManager<UserIdentity> signInManager)
-        {
-            _userManager = userManager;
-            _config = config;
-            _signInManager = signInManager;
-        }
+        private readonly UserManager<UserIdentity> _userManager = userManager;
+        private readonly IConfiguration _config = config;
+        private readonly SignInManager<UserIdentity> _signInManager = signInManager;
 
         public async Task<ApiResponse> RegisterUserHelper(RegisterUser registerUser)
         {
             // Check if the user already exists
             var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
-            if (userExist != null)
-            {
-                return ApiResponse.CreateErrorResponse([], "User Already Exists");
-            }
+            if (userExist != null) return ApiResponse
+                    .CreateErrorResponse([], "User Already Exists");
 
             // Create a new UserIdentity
             UserIdentity user = new()
@@ -63,19 +54,12 @@ namespace harmonii.Server.Helpers
         {
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
 
-            if (user == null)
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");
-            }
-
-            if (!user.EmailConfirmed)
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Email is not confirmed");
-            }
-
+            if (user == null) return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");
+            if (!user.EmailConfirmed) return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "Email is not confirmed");
             var result = await _signInManager.PasswordSignInAsync(user, loginUser.Password,
                 isPersistent: false, lockoutOnFailure: false);
-
             if (result.Succeeded)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
@@ -88,31 +72,28 @@ namespace harmonii.Server.Helpers
                     userRoles,
                     token
                 };
-                return ApiResponse.CreateSuccessResponse("User login succesfully", userInfo);
+                return ApiResponse
+                    .CreateSuccessResponse("User login succesfully", userInfo);
             }
-
             else if (result.IsLockedOut)
             {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User account locked out");
+                return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "User account locked out");
             }
             else
             {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");
+                return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");
             }
         }
 
         public async Task<ApiResponse> ChangePasswordHelper(ChangePassword changePassword)
         {
             var user = await _userManager.FindByNameAsync(changePassword.UserName);
-            if (user == null)
-            {
-                return ApiResponse
+            if (user == null) return ApiResponse
                     .CreateErrorResponse(new List<IdentityError>(), "User not found");
-            }
-
             var result = await _userManager
                 .ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
-
             if (result.Succeeded)
             {
                 await _signInManager.SignOutAsync();
@@ -128,11 +109,11 @@ namespace harmonii.Server.Helpers
         //@todo remove create token mechanism
         private string CreateToken(UserIdentity userIdentity)
         {
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Email, userIdentity.Email),
-                new Claim(ClaimTypes.Name, userIdentity.UserName)
-            };
+            List<Claim> claims =
+            [
+                new(ClaimTypes.Email, userIdentity.Email),
+                new(ClaimTypes.Name, userIdentity.UserName)
+            ];
 
             var key = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(_config.GetSection("JWT:Token").Value!));

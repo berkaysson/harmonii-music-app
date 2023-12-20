@@ -4,14 +4,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace harmonii.Server.Helpers
 {
-    public class AdminPanelHelper
+    public class AdminPanelHelper(UserManager<UserIdentity> userManager)
     {
-        private readonly UserManager<UserIdentity> _userManager;
-
-        public AdminPanelHelper(UserManager<UserIdentity> userManager)
-        {
-            _userManager = userManager;
-        }
+        private readonly UserManager<UserIdentity> _userManager = userManager;
 
         public async Task<ApiResponse> GetUserRolesHelper(int identityId)
         {
@@ -20,7 +15,6 @@ namespace harmonii.Server.Helpers
             {
                 return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
             }
-
             var roles = await _userManager.GetRolesAsync(user);
             return ApiResponse.CreateSuccessResponse("User Roles retreved successfully", roles);
         }
@@ -28,86 +22,60 @@ namespace harmonii.Server.Helpers
         public async Task<ApiResponse> ConfirmUserEmailHelper(int identityId)
         {
             var user = await _userManager.FindByIdAsync(identityId.ToString());
-            if (user == null)
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
-            }
-
+            if (user == null) return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "User not found");
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var result = await _userManager.ConfirmEmailAsync(user, token);
-
-                if (result.Succeeded)
-                {
-                    return ApiResponse.CreateSuccessResponse("User email confirmed successfully");
-                }
-                else
-                {
-                    return ApiResponse.CreateErrorResponse(result.Errors.ToList(), "Failed to confirm user email");
-                }
+                return result.Succeeded ? 
+                    ApiResponse
+                    .CreateSuccessResponse("User email confirmed successfully") 
+                    :
+                    ApiResponse
+                    .CreateErrorResponse(result.Errors.ToList(), "Failed to confirm user email");
             }
             else
             {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User email is already confirmed");
+                return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "User email is already confirmed");
             }
         }
 
         public async Task<ApiResponse> AssignModeratorRoleHelper(int identityId)
         {
             var user = await _userManager.FindByIdAsync(identityId.ToString());
-
-            if (user == null)
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
-            }
-
-            if (await _userManager.IsInRoleAsync(user, "Moderator"))
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User is already moderator");
-            }
-
+            if (user == null) return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "User not found");
+            if (await _userManager.IsInRoleAsync(user, "Moderator")) return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "User is already moderator");
             var result = await _userManager.AddToRoleAsync(user, "Moderator");
-
-            if (!result.Succeeded)
-            {
-                return ApiResponse.CreateErrorResponse(result.Errors.ToList(), "User not found");
-            }
-
-            return ApiResponse.CreateSuccessResponse("Moderator role is assigned to user.");
+            return result.Succeeded ? 
+                ApiResponse.CreateSuccessResponse("Moderator role is assigned to user.")
+                :
+                ApiResponse.CreateErrorResponse(result.Errors.ToList(), "User not found");
         }
 
         public async Task<ApiResponse> DeleteUserHelper(int identityId)
         {
             var user = await _userManager.FindByIdAsync(identityId.ToString());
-
-            if (user == null)
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
-            }
-
+            if (user == null) return ApiResponse
+                    .CreateErrorResponse(new List<IdentityError>(), "User not found");
             var result = await _userManager.DeleteAsync(user);
-
-            if (!result.Succeeded)
-            {
-                return ApiResponse.CreateErrorResponse(result.Errors.ToList(), "Failed to delete user");
-            }
-
-            return ApiResponse.CreateSuccessResponse("User deleted successfully");
+            return result.Succeeded ? 
+                ApiResponse.CreateSuccessResponse("User deleted successfully")
+                :
+                ApiResponse
+                .CreateErrorResponse(result.Errors.ToList(), "Failed to delete user");
         }
 
         public ApiResponse GetUnconfirmedUsersHelper()
         {
             var unconfirmedUsers = _userManager.Users.Where(u => !u.EmailConfirmed).ToList();
-
-            if (unconfirmedUsers.Any())
-            {
-                return ApiResponse.CreateSuccessResponse("Success", unconfirmedUsers);
-            }
-            else
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "No unconfirmed users found");
-            }
+            return unconfirmedUsers.Count != 0 ?
+                ApiResponse.CreateSuccessResponse("Success", unconfirmedUsers)
+                :
+                ApiResponse.CreateErrorResponse([], "No unconfirmed users found");
         }
     }
 }
