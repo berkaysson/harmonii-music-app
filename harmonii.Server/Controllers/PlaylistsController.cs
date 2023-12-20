@@ -21,7 +21,7 @@ namespace harmonii.Server.Controllers
 
             var userName = User.Identity?.Name;
             if (userName == null) return BadRequest(ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User not found"));
+                    .CreateErrorResponse([], "User not found"));
             var result = await _playlistHelper.CreatePlaylistHelper(playlistDto, userName);
             return result.Status == "Success" ? Ok(result)
                 : BadRequest(result);
@@ -32,7 +32,7 @@ namespace harmonii.Server.Controllers
         {
             var userName = User.Identity?.Name;
             if (userName == null) return BadRequest(ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User not found"));
+                    .CreateErrorResponse([], "User not found"));
             var result = await _playlistHelper
                 .UpdatePlaylistInfoHelper(playlistId, name, description, userName);
             return result.Status == "Success" ? Ok(result)
@@ -44,7 +44,7 @@ namespace harmonii.Server.Controllers
         {
             var userName = User.Identity?.Name;
             if (userName == null) return BadRequest(ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User not found"));
+                    .CreateErrorResponse([], "User not found"));
             var result = await _playlistHelper
                 .DeletePlaylistHelper(playlistId, userName);
             return result.Status == "Success" ? Ok(result)
@@ -56,7 +56,7 @@ namespace harmonii.Server.Controllers
         {
             var userName = User.Identity?.Name;
             if (userName == null) return BadRequest(ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User not found"));
+                    .CreateErrorResponse([], "User not found"));
             var result = await _playlistHelper
                 .AddSongToPlaylistHelper(playlistId, songId, userName);
             return result.Status == "Success" ? Ok(result)
@@ -68,7 +68,7 @@ namespace harmonii.Server.Controllers
         {
             var userName = User.Identity?.Name;
             if (userName == null) return BadRequest(ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User not found"));
+                    .CreateErrorResponse([], "User not found"));
             var result = await _playlistHelper
                 .RemoveSongFromPlaylistHelper(playlistId, songId, userName);
             return result.Status == "Success" ? Ok(result)

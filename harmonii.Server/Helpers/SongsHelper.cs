@@ -18,23 +18,15 @@ namespace harmonii.Server.Helpers
         public async Task<ApiResponse> AddSongHelper(SongDto song, string userName)
         {
             var user = await _userProfileHelper.GetUserIdentityWithProfileByUserName(userName);
-            if (user == null || user.UserProfile == null)
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
-            }
+            if (user == null || user.UserProfile == null) return ApiResponse
+                    .CreateErrorResponse([], "User not found");
 
-            Genre genre = await _dbContext.Genres.FirstOrDefaultAsync(g => g.GenreName == song.GenreName);
-            if (genre == null)
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Genre not found");
-            }
-
-            bool songExists = await SongExists(song.SongName, song.Artist);
-
-            if (songExists)
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "This song is already exists");
-            }
+            Genre genre = await _dbContext.Genres
+                .FirstOrDefaultAsync(g => g.GenreName == song.GenreName);
+            if (genre == null) return ApiResponse
+                    .CreateErrorResponse([], "Genre not found");
+            if (await SongExists(song.SongName, song.Artist)) return ApiResponse
+                    .CreateErrorResponse([], "This song is already exists");
 
             var newSong = new Song
             {
@@ -45,16 +37,9 @@ namespace harmonii.Server.Helpers
                 Genre = genre,
                 UserProfile = user.UserProfile
             };
-            try
-            {
-                _dbContext.Songs.Add(newSong);
-                await _dbContext.SaveChangesAsync();
-                return ApiResponse.CreateSuccessResponse("Song added successfully");
-            }
-            catch (Exception ex)
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), ex.Message);
-            }
+            _dbContext.Songs.Add(newSong);
+            await _dbContext.SaveChangesAsync();
+            return ApiResponse.CreateSuccessResponse("Song added successfully");
         }
 
         public async Task<List<SongDetailsDto>> GetSongsByUserProfileIdAsync(int userProfileId)
@@ -69,9 +54,9 @@ namespace harmonii.Server.Helpers
 
         public async Task<bool> SongExists(string songName, string artist)
         {
+            if(songName == null || artist == null) return false;
             var normalizedSongName = songName.ToUpper();
             var normalizedArtist = artist.ToUpper();
-
             return await _dbContext.Songs.AnyAsync(s =>
                 s.SongName.ToUpper() == normalizedSongName &&
                 s.Artist.ToUpper() == normalizedArtist);

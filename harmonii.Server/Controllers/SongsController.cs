@@ -57,7 +57,7 @@ namespace harmonii.Server.Controllers
                 ApiResponse.CreateErrorResponse([], "Invalid song data"));
             var userName = User.Identity?.Name;
             if (userName == null) return BadRequest(ApiResponse
-                .CreateErrorResponse(new List<IdentityError>(), "User not found"));
+                .CreateErrorResponse([], "User not found"));
             var result = await _songsHelper.AddSongHelper(song, userName);
             return result.Status == "Success" ? Ok(result)
                 : BadRequest(result);

@@ -5,20 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace harmonii.Server.Helpers
 {
-    public class UserProfileHelper
+    public class UserProfileHelper(UserManager<UserIdentity> userManager)
     {
-        private readonly UserManager<UserIdentity> _userManager;
-
-        public UserProfileHelper(UserManager<UserIdentity> userManager)
-        {
-            _userManager = userManager;
-        }
+        private readonly UserManager<UserIdentity> _userManager = userManager;
 
         public async Task<ApiResponse> GetUserProfileHelper(string userName)
         {
             var user = await GetUserIdentityWithProfileByUserName(userName);
             var userRoles = await _userManager.GetRolesAsync(user);
-
             if (user != null)
             {
                 var userProfile = user.UserProfile;
@@ -31,37 +25,26 @@ namespace harmonii.Server.Helpers
                     userProfile?.UserImageUrl,
                     userRoles
                 };
-
                 return ApiResponse.CreateSuccessResponse("User information get successful", userInfo);
             }
-            else
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
-            }
+            return ApiResponse.CreateErrorResponse([], "User not found");
         }
 
         public async Task<ApiResponse> UpdateUserImageHelper(string userName, string url)
         {
             var user = await GetUserIdentityWithProfileByUserName(userName);
-
             if (user != null)
             {
                 user.UserProfile.UserImageUrl = url;
                 var result = await _userManager.UpdateAsync(user);
-
-                if (result.Succeeded)
-                {
-                    return ApiResponse.CreateSuccessResponse("User image URL updated.", user.UserProfile.UserImageUrl);
-                }
-                else
-                {
-                    return ApiResponse.CreateErrorResponse(result.Errors.ToList(), "Failed to update user image URL");
-                }
+                return result.Succeeded ? 
+                    ApiResponse
+                    .CreateSuccessResponse("User image URL updated.", user.UserProfile.UserImageUrl)
+                    :
+                    ApiResponse
+                    .CreateErrorResponse(result.Errors.ToList(), "Failed to update user image URL");
             }
-            else
-            {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
-            }
+            return ApiResponse.CreateErrorResponse([], "User not found");
         }
 
         public async Task<UserIdentity> GetUserIdentityWithProfileByUserName(string userName)

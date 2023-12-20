@@ -13,7 +13,7 @@ namespace harmonii.Server.Helpers
             var user = await _userManager.FindByIdAsync(identityId.ToString());
             if (user == null)
             {
-                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "User not found");
+                return ApiResponse.CreateErrorResponse([], "User not found");
             }
             var roles = await _userManager.GetRolesAsync(user);
             return ApiResponse.CreateSuccessResponse("User Roles retreved successfully", roles);
@@ -23,7 +23,7 @@ namespace harmonii.Server.Helpers
         {
             var user = await _userManager.FindByIdAsync(identityId.ToString());
             if (user == null) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User not found");
+                    .CreateErrorResponse([], "User not found");
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -38,7 +38,7 @@ namespace harmonii.Server.Helpers
             else
             {
                 return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User email is already confirmed");
+                    .CreateErrorResponse([], "User email is already confirmed");
             }
         }
 
@@ -46,9 +46,9 @@ namespace harmonii.Server.Helpers
         {
             var user = await _userManager.FindByIdAsync(identityId.ToString());
             if (user == null) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User not found");
+                    .CreateErrorResponse([], "User not found");
             if (await _userManager.IsInRoleAsync(user, "Moderator")) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User is already moderator");
+                    .CreateErrorResponse([], "User is already moderator");
             var result = await _userManager.AddToRoleAsync(user, "Moderator");
             return result.Succeeded ? 
                 ApiResponse.CreateSuccessResponse("Moderator role is assigned to user.")
@@ -60,7 +60,7 @@ namespace harmonii.Server.Helpers
         {
             var user = await _userManager.FindByIdAsync(identityId.ToString());
             if (user == null) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User not found");
+                    .CreateErrorResponse([], "User not found");
             var result = await _userManager.DeleteAsync(user);
             return result.Succeeded ? 
                 ApiResponse.CreateSuccessResponse("User deleted successfully")

@@ -17,7 +17,7 @@ namespace harmonii.Server.Helpers
                 .Include(u => u.UserProfile)
                 .FirstOrDefaultAsync(u => u.UserName == userName);
             if (user == null || user.UserProfile == null) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User not found");
+                    .CreateErrorResponse([], "User not found");
             var newPlaylist = new Playlist
             {
                 PlaylistName = playlistDto.PlaylistName,
@@ -45,12 +45,12 @@ namespace harmonii.Server.Helpers
                 .FirstOrDefaultAsync(p => p.PlaylistId == playlistId);
             var song = await _dbContext.Songs.FindAsync(songId);
             if (playlist == null || song == null) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "Playlist or Song not found");
+                    .CreateErrorResponse([], "Playlist or Song not found");
             if (playlist.UserProfile.UserName != userName) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), 
+                    .CreateErrorResponse([], 
                     "Playlist does not belong to the current user");
             if (playlist.Songs.Any(s => s.SongId == songId)) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), 
+                    .CreateErrorResponse([], 
                     "Song already exists in the playlist");
             playlist.Songs.Add(song);
             await _dbContext.SaveChangesAsync();
@@ -64,13 +64,13 @@ namespace harmonii.Server.Helpers
                 .Include(p => p.Songs).Include(p => p.UserProfile)
                 .FirstOrDefaultAsync(p => p.PlaylistId == playlistId);
             if (playlist == null) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "Playlist not found");
+                    .CreateErrorResponse([], "Playlist not found");
             if (playlist.UserProfile.UserName != userName) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(),
+                    .CreateErrorResponse([],
                     "Playlist does not belong to the current user");
             var song = playlist.Songs.FirstOrDefault(s => s.SongId == songId);
             if (song == null) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), 
+                    .CreateErrorResponse([], 
                     "Song not found");
             playlist.Songs.Remove(song);
             await _dbContext.SaveChangesAsync();
@@ -96,7 +96,7 @@ namespace harmonii.Server.Helpers
             if (playlistUserProfile == null) return ApiResponse
                     .CreateErrorResponse([], "User not found");
             if (playlistUserProfile.UserName != userName) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(),
+                    .CreateErrorResponse([],
                     "Unauthorized: You're not the creator of this playlist");
             playlist.PlaylistDescription = description;
             playlist.PlaylistName = name;
@@ -109,14 +109,14 @@ namespace harmonii.Server.Helpers
         {
             var playlist = await _dbContext.Playlists.FindAsync(playlistId);
             if (playlist == null) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), 
+                    .CreateErrorResponse([], 
                     "Playlist Not Found");
             var playlistUserProfile = await _dbContext.UserProfiles.FindAsync(playlist.UserProfileId);
             if (playlistUserProfile == null) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), 
+                    .CreateErrorResponse([], 
                     "User not found");
             if (playlistUserProfile.UserName != userName) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(),
+                    .CreateErrorResponse([],
                     "Unauthorized: You're not the creator of this playlist");
             _dbContext.Playlists.Remove(playlist);
             await _dbContext.SaveChangesAsync();

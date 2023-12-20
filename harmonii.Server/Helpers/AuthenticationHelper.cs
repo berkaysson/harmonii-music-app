@@ -55,9 +55,9 @@ namespace harmonii.Server.Helpers
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
 
             if (user == null) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");
+                    .CreateErrorResponse([], "Invalid credentials");
             if (!user.EmailConfirmed) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "Email is not confirmed");
+                    .CreateErrorResponse([], "Email is not confirmed");
             var result = await _signInManager.PasswordSignInAsync(user, loginUser.Password,
                 isPersistent: false, lockoutOnFailure: false);
             if (result.Succeeded)
@@ -78,12 +78,12 @@ namespace harmonii.Server.Helpers
             else if (result.IsLockedOut)
             {
                 return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User account locked out");
+                    .CreateErrorResponse([], "User account locked out");
             }
             else
             {
                 return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "Invalid credentials");
+                    .CreateErrorResponse([], "Invalid credentials");
             }
         }
 
@@ -91,7 +91,7 @@ namespace harmonii.Server.Helpers
         {
             var user = await _userManager.FindByNameAsync(changePassword.UserName);
             if (user == null) return ApiResponse
-                    .CreateErrorResponse(new List<IdentityError>(), "User not found");
+                    .CreateErrorResponse([], "User not found");
             var result = await _userManager
                 .ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
             if (result.Succeeded)
