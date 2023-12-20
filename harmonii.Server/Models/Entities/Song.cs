@@ -10,13 +10,13 @@
 
         // Relationship with UserProfile, many to one
         public int UserProfileId { get; set; }
-        public UserProfile UserProfile { get; set; }
+        public UserProfile UserProfile { get; set; } = new UserProfile();
 
         // Relationship with Genre, many to one
         public int GenreId { get; set; }
-        public Genre Genre { get; set; }
+        public Genre Genre { get; set; } = new Genre();
 
         // Relationship with playlist, many to many
-        public ICollection<Playlist> Playlists { get; set; }
+        public ICollection<Playlist> Playlists { get; set; } = new List<Playlist>();
     }
 }

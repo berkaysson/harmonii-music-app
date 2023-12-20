@@ -7,11 +7,11 @@
 
         // Relationship with UserProfile, many to one
         public int UserProfileId { get; set; }
-        public UserProfile UserProfile { get; set; }
+        public UserProfile UserProfile { get; set; } = new UserProfile();
 
         public string? PlaylistDescription { get; set; }
 
         // Relationship with Songs, many to many
-        public ICollection<Song> Songs { get; set; }
+        public ICollection<Song> Songs { get; set; } = new List<Song>();
     }
 }

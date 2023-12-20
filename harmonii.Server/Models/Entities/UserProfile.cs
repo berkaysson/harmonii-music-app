@@ -9,10 +9,10 @@ namespace harmonii.Server.Models.Entities
         public string? UserImageUrl { get; set; }
 
         public int UserIdentityId { get; set; }
-        public UserIdentity UserIdentity { get; set; }
+        public UserIdentity UserIdentity { get; set; } = new UserIdentity();
 
-        public ICollection<Song> Songs { get; set; }
-        public ICollection<Playlist> Playlists { get; set; }
+        public ICollection<Song> Songs { get; set; } = new List<Song>();
+        public ICollection<Playlist> Playlists { get; set; } = new List<Playlist>();
 
         // Custom method to create a default UserProfile template
         public static UserProfile CreateDefaultUserProfileTemplate(string userName)
