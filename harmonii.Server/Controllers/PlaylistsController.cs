@@ -169,6 +169,27 @@ namespace harmonii.Server.Controllers
             }
         }
 
-        // Get all playlist name, details and id [HttpGet("all")]
+        // Get all playlist [HttpGet("all")]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllPlaylists()
+        {
+            try
+            {
+                var playlists = _dbContext.Playlists.Select(playlist => new
+                {
+                    playlist.PlaylistId,
+                    playlist.PlaylistName,
+                    playlist.PlaylistDescription,
+                    playlist.UserProfileId,
+                    playlist.UserProfile.UserName,
+                }).ToList();
+
+                return Ok(ApiResponse.CreateSuccessResponse("Retrieved all playlists successfully", playlists));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
+            }
+        }
     }
 }
