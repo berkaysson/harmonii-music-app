@@ -95,5 +95,19 @@ namespace harmonii.Server.Helpers
 
             return ApiResponse.CreateSuccessResponse("User deleted successfully");
         }
+
+        public ApiResponse GetUnconfirmedUsersHelper()
+        {
+            var unconfirmedUsers = _userManager.Users.Where(u => !u.EmailConfirmed).ToList();
+
+            if (unconfirmedUsers.Any())
+            {
+                return ApiResponse.CreateSuccessResponse("Success", unconfirmedUsers);
+            }
+            else
+            {
+                return ApiResponse.CreateErrorResponse(new List<IdentityError>(), "No unconfirmed users found");
+            }
+        }
     }
 }

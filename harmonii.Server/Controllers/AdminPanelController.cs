@@ -1,4 +1,7 @@
 ﻿using harmonii.Server.Helpers;
+using harmonii.Server.Models.Identity;
+using harmonii.Services.Dtos;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +44,7 @@ namespace harmonii.Server.Controllers
 
         // Create endpoint for deleting users
         [HttpDelete("delete-user/{identityId}")]
-        public async Task<ActionResult> DeleteUser(int identityId)
+        public async Task<IActionResult> DeleteUser(int identityId)
         {
             var result = await _adminPanelHelper.DeleteUserHelper(identityId);
 
@@ -49,6 +52,19 @@ namespace harmonii.Server.Controllers
                 : BadRequest(result);
         }
 
-        // Get all unconfirmed users [HttpGet("unconfirmed-users")]
+        // Get all unconfirmed users
+        [HttpGet("unconfirmed-users")]
+        public async Task<IActionResult> GetUnconfirmedUsers()
+        {
+            try
+            {
+                var result = _adminPanelHelper.GetUnconfirmedUsersHelper();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.CreateErrorResponse([], ex.Message));
+            }
+        }
     }
 }
