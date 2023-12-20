@@ -46,10 +46,11 @@ namespace harmonii.Server.Helpers
         {
             var songsCreatedByUser = await _dbContext.Songs
                 .Where(song => song.UserProfileId == userProfileId)
-                .Select(song => CreateSongDetailsDtoFromSong(song))
                 .ToListAsync();
-
-            return songsCreatedByUser;
+            var songDetailsList = songsCreatedByUser
+                .Select(song => CreateSongDetailsDtoFromSong(song))
+                .ToList();
+            return songDetailsList;
         }
 
         public async Task<bool> SongExists(string songName, string artist)

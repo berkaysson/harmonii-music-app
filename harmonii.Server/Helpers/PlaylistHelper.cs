@@ -32,10 +32,12 @@ namespace harmonii.Server.Helpers
         public async Task<List<PlaylistDetailsDto>> GetPlaylistsByUserProfileIdAsync(int userProfileId)
         {
             var playlistsCreatedByUser = await _dbContext.Playlists
-            .Where(playlist => playlist.UserProfileId == userProfileId)
-            .Select(playlist => CreatePlaylistDetailsDtoFromPlaylist(playlist))
-            .ToListAsync();
-            return playlistsCreatedByUser;
+                .Where(playlist => playlist.UserProfileId == userProfileId)
+                .ToListAsync();
+            var playlistDetails = playlistsCreatedByUser
+                .Select(CreatePlaylistDetailsDtoFromPlaylist)
+                .ToList();
+            return playlistDetails;
         }
 
         public async Task<ApiResponse> AddSongToPlaylistHelper(int playlistId, int songId, string userName)
@@ -80,10 +82,14 @@ namespace harmonii.Server.Helpers
 
         public async Task<PlaylistDetailsDto> GetPlaylistDetailsHelper(int playlistId)
         {
-            var playlistDetails = await _dbContext.Playlists
-                .Where(playlist => playlist.PlaylistId == playlistId)
-                .Select(playlist => CreatePlaylistDetailsDtoFromPlaylist(playlist))
-                .FirstOrDefaultAsync();
+            var playlist = await _dbContext.Playlists
+                .Include(p => p.Songs)
+                .ThenInclude(s => s.Genre)
+                .Include(p => p.Songs)
+                .ThenInclude(s => s.Genre)
+                .Include(p => p.UserProfile)
+                .FirstAsync(p => p.PlaylistId == playlistId);
+            var playlistDetails = CreatePlaylistDetailsDtoFromPlaylist(playlist);
             return playlistDetails;
         }
 
@@ -131,8 +137,8 @@ namespace harmonii.Server.Helpers
             PlaylistDescription = playlist.PlaylistDescription,
             UserProfileId = playlist.UserProfileId,
             UserName = playlist.UserProfile.UserName,
-            Songs = playlist.Songs.Select(song => _songsHelper
-            .CreateSongDetailsDtoFromSong(song))
+            Songs = playlist.Songs.Select(_songsHelper
+            .CreateSongDetailsDtoFromSong)
             .ToList()
         };
     }
