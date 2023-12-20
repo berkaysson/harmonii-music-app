@@ -4,6 +4,7 @@ using harmonii.Services.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Entity;
 
 namespace harmonii.Server.Controllers
 {
@@ -73,7 +74,36 @@ namespace harmonii.Server.Controllers
             }
         }
 
-        // Delete playlist endpoint [HttpDelete("{playlistId}")]
+        // Delete playlist endpoint
+        [HttpDelete("{playlistId}")]
+        public async Task<IActionResult> DeletePlaylist(int playlistId)
+        {
+            try
+            {
+                var playlist = await _dbContext.Playlists.FindAsync(playlistId);
+                if (playlist == null)
+                {
+                    return NotFound(ApiResponse.CreateErrorResponse(new List<IdentityError>(), "Playlist Not Found"));
+                }
+
+                var currentUserName = User.Identity.Name;
+                if (playlist.UserProfile.UserName != currentUserName)
+                {
+                    return Unauthorized(ApiResponse
+                        .CreateErrorResponse(new List<IdentityError>(), "Unauthorized: You're not the creator of this playlist"));
+                }
+
+                _dbContext.Playlists.Remove(playlist);
+                await _dbContext.SaveChangesAsync();
+
+                return Ok(ApiResponse.CreateSuccessResponse("Playlist deleted successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.CreateErrorResponse(new List<IdentityError>(), ex.Message));
+            }
+        }
+
         // Add song to playlist endpoint
         [HttpPost("{playlistId}/songs/{songId}")]
         public async Task<IActionResult> AddSongToPlaylist(int playlistId, int songId)
