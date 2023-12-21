@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace harmonii.Services.Dtos
+namespace harmonii.Services.Dtos.Authentication
 {
     public class ChangePassword
     {

@@ -1,6 +1,6 @@
 ﻿using harmonii.Server.Helpers;
 using harmonii.Server.Models.Identity;
-using harmonii.Services.Dtos;
+using harmonii.Services.Dtos.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

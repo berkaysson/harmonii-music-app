@@ -1,5 +1,5 @@
 ﻿using harmonii.Server.Models.Identity;
-using harmonii.Services.Dtos;
+using harmonii.Services.Dtos.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

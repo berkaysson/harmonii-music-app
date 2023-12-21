@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using harmonii.Services.Dtos.Songs;
 
-namespace harmonii.Services.Dtos
+namespace harmonii.Services.Dtos.Playlists
 {
     public class PlaylistDetailsDto
     {

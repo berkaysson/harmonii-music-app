@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using harmonii.Services.Dtos.Songs;
 
-namespace harmonii.Services.Dtos
+namespace harmonii.Services.Dtos.Genre
 {
     public class GenreDetailsDto
     {
@@ -13,7 +14,7 @@ namespace harmonii.Services.Dtos
         public int GenreId { get; set; }
 
         [Required(ErrorMessage = "Genre name is required")]
-        public string GenreName { get; set;}
+        public string GenreName { get; set; }
         public List<SongDetailsDto> Songs { get; set; }
     }
 }

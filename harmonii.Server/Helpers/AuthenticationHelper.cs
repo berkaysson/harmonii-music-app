@@ -1,6 +1,6 @@
 ﻿using harmonii.Server.Models.Entities;
 using harmonii.Server.Models.Identity;
-using harmonii.Services.Dtos;
+using harmonii.Services.Dtos.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

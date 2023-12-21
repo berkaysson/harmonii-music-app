@@ -1,6 +1,7 @@
 ﻿using harmonii.Server.Data;
 using harmonii.Server.Helpers;
-using harmonii.Services.Dtos;
+using harmonii.Services.Dtos.Authentication;
+using harmonii.Services.Dtos.Playlists;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

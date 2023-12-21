@@ -1,7 +1,8 @@
 ﻿
 using harmonii.Server.Data;
 using harmonii.Server.Models.Entities;
-using harmonii.Services.Dtos;
+using harmonii.Services.Dtos.Authentication;
+using harmonii.Services.Dtos.Genre;
 using Microsoft.EntityFrameworkCore;
 
 namespace harmonii.Server.Helpers

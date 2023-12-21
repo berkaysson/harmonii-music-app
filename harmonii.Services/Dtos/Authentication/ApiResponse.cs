@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace harmonii.Services.Dtos
+namespace harmonii.Services.Dtos.Authentication
 {
     public class ApiResponse
     {

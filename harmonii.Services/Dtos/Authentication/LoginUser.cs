@@ -1,4 +1,4 @@
-﻿namespace harmonii.Services.Dtos
+﻿namespace harmonii.Services.Dtos.Authentication
 {
     public class LoginUser
     {
