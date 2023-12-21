@@ -50,6 +50,15 @@ builder.Services.AddScoped<AuthenticationHelper>()
     .AddScoped<PlaylistHelper>()
     .AddScoped<GenreHelper>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("cors-policy", builder =>
+    {
+        builder.WithOrigins("*")
+        .AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -62,6 +71,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("cors-policy");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
