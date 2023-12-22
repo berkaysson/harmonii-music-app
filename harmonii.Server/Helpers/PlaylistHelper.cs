@@ -87,7 +87,7 @@ namespace harmonii.Server.Helpers
                 .Include(p => p.Songs)
                 .ThenInclude(s => s.Genre)
                 .Include(p => p.Songs)
-                .ThenInclude(s => s.Genre)
+                .ThenInclude(s => s.UserProfile)
                 .Include(p => p.UserProfile)
                 .FirstAsync(p => p.PlaylistId == playlistId);
             var playlistDetails = CreatePlaylistDetailsDtoFromPlaylist(playlist);
