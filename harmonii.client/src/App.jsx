@@ -1,4 +1,4 @@
-import AppLayout from "./layouts/AppLayout";
+import AppLayout from "./layouts/AppLayout.jsx";
 
 const App = () => {
 
@@ -6,6 +6,7 @@ const App = () => {
   return (
     // provide a UserContextProvider as parent of browser router
     <div>
+      hello
       <AppLayout />
     </div>
   );
