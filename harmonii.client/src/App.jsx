@@ -1,12 +1,9 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+const App = () => {
 
-function App() {
-
-    return (
-        <div>
-        </div>
-    );
-}
+  return (
+    <div>
+    </div>
+  );
+};
 
 export default App;
