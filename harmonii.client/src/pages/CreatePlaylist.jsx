@@ -1,4 +1,4 @@
-const CreatePalylist = () => {
+const CreatePlaylist = () => {
 
   return (
     <div>
@@ -7,4 +7,4 @@ const CreatePalylist = () => {
   );
 };
 
-export default CreatePalylist;
+export default CreatePlaylist;
