@@ -1,19 +1,11 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import checkTokenValid from '../services/auth/checkTokenValid';
-import { useEffect, useState } from 'react';
+import { useUserContext } from '../services/hooks/useUser';
 
 // eslint-disable-next-line react/prop-types
 const ProtectedRoute = () => {
-  const [isTokenValid, setIsTokenValid] = useState(false);
+  const {userValid} = useUserContext();
 
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    const isValid = checkTokenValid(token);
-
-    setIsTokenValid(isValid);
-  }, []);
-
-  return ( isTokenValid ? <Outlet />
+  return ( userValid ? <Outlet />
   : <Navigate to="/login" />
   );
 };
