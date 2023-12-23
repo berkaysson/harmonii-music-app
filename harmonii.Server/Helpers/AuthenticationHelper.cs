@@ -1,7 +1,9 @@
-﻿using harmonii.Server.Models.Entities;
+﻿using harmonii.Server.Data;
+using harmonii.Server.Models.Entities;
 using harmonii.Server.Models.Identity;
 using harmonii.Services.Dtos.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -106,26 +108,37 @@ namespace harmonii.Server.Helpers
             }
         }
 
-        //@todo remove create token mechanism
-        private string CreateToken(UserIdentity userIdentity)
+        private async Task<string> CreateToken(UserIdentity userIdentity)
         {
             List<Claim> claims =
             [
-                new(ClaimTypes.Email, userIdentity.Email),
-                new(ClaimTypes.Name, userIdentity.UserName)
+                new(ClaimTypes.Name, userIdentity.UserName),                
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             ];
+            
+            var roles = await _userManager.GetRolesAsync(userIdentity);
+            foreach (var role in roles) {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(_config.GetSection("JWT:Token").Value!));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(GetToken(claims));
+
+            return jwt;
+        }
+
+        private JwtSecurityToken GetToken(List<Claim> authClaims)
+        {
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Token"]));
 
             var token = new JwtSecurityToken(
-                    claims: claims,
-                    expires: DateTime.Now.AddDays(1),
-                    signingCredentials: credentials
+                issuer: _config["JWT:ValidIssuer"],
+                audience: _config["JWT:ValidAudience"],
+                expires: DateTime.Now.AddDays(3),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwt;
+
+            return token;
         }
     }
 }
