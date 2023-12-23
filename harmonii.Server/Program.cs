@@ -1,6 +1,7 @@
 using harmonii.Server.Data;
 using harmonii.Server.Helpers;
 using harmonii.Server.Models.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -19,15 +20,26 @@ builder.Services.AddIdentity<UserIdentity, RoleIdentity>()
     .AddDefaultTokenProviders();
 
 // Configure JWT Bearer authentication scheme
-builder.Services.AddAuthentication().AddJwtBearer(options =>
+// Adding Authentication
+builder.Services.AddAuthentication(options =>
 {
-    options.TokenValidationParameters = new TokenValidationParameters
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+
+// Adding Jwt Bearer
+.AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
     {
-        ValidateIssuerSigningKey = true,
-        ValidateAudience = false,
-        ValidateIssuer = false,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                configuration.GetSection("JWT:Token").Value!))
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = configuration["JWT:ValidAudience"],
+        ValidIssuer = configuration["JWT:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Token"]))
     };
 });
 
@@ -54,7 +66,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("cors-policy", builder =>
     {
-        builder.WithOrigins("*")
+        builder.AllowAnyOrigin()
         .AllowAnyMethod().AllowAnyHeader();
     });
 });
