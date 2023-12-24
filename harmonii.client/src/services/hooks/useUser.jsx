@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext } from "react";
-import checkTokenValid from "../auth/checkTokenValid";
+import checkTokenNotValid from "../auth/checkTokenNotValid";
 
 const UserContext = createContext();
 
@@ -18,14 +18,14 @@ export const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser && checkTokenValid(storedUser.token)) {
+    if (storedUser && !checkTokenNotValid(storedUser.token)) {
       setUser(storedUser);
       setUserValid(true);
     }
   }, []);
 
   useEffect(() => {
-    if (user && checkTokenValid(user.token)) {
+    if (user && !checkTokenNotValid(user.token)) {
       localStorage.setItem("user", JSON.stringify(user));
       setUserValid(true);
     } else {
