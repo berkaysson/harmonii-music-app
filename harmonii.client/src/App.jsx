@@ -1,12 +1,15 @@
+import { BrowserRouter } from "react-router-dom";
 import AppLayout from "./layouts/AppLayout.jsx";
+import { UserContextProvider } from "./services/hooks/useUser.jsx";
 
 const App = () => {
-
-
   return (
     <div>
-      hello
-      <AppLayout />
+      <UserContextProvider>
+        <BrowserRouter>
+          <AppLayout />
+        </BrowserRouter>
+      </UserContextProvider>
     </div>
   );
 };
