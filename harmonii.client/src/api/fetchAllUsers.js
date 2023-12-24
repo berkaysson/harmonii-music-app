@@ -1,4 +1,4 @@
-import instance from "../services/api/api";
+import instance from "../services/api/instance";
 
 export const fetchAllUsers = async () => {
   try {
