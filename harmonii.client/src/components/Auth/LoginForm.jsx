@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useUserContext } from "../../services/hooks/useUser";
-import instance from '../../services/api/api';
 import { displayResponse } from "../../services/displayResponse";
+import { loginApi } from "../../api/loginApi";
 
 const LoginForm = () => {
   const {login} = useUserContext();
@@ -11,9 +11,7 @@ const LoginForm = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try{
-      const response = await instance.post("/auth/login", {
-        email, password
-      });
+      const response = await loginApi(email, password);
       login(response.data.data);
       displayResponse(response);
     }
