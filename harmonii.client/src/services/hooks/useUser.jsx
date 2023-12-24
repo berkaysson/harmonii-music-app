@@ -1,5 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import checkTokenNotValid from "../auth/checkTokenNotValid";
+import instance from "../api/api";
+import { displayResponse } from "../displayResponse";
 
 const UserContext = createContext();
 
@@ -12,8 +14,13 @@ export const UserContextProvider = ({ children }) => {
     setUser(userData);
   };
 
-  const logout = () => {
-    setUser(null);
+  const logout = async () => {
+    try{
+      const response = await instance.post("/auth/logout");
+      setUser(null);
+      displayResponse(response);
+    }
+    catch(error) {console.error(error);}
   };
 
   useEffect(() => {
