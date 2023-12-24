@@ -72,7 +72,7 @@ namespace harmonii.Server.Helpers
                     user.UserName,
                     user.Email,
                     userRoles,
-                    token
+                    token = token
                 };
                 return ApiResponse
                     .CreateSuccessResponse("User login succesfully", userInfo);
@@ -108,7 +108,7 @@ namespace harmonii.Server.Helpers
             }
         }
 
-        private async Task<string> CreateToken(UserIdentity userIdentity)
+        private async Task<object> CreateToken(UserIdentity userIdentity)
         {
             List<Claim> claims =
             [
@@ -121,9 +121,14 @@ namespace harmonii.Server.Helpers
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(GetToken(claims));
+            var token = GetToken(claims);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return jwt;
+            return new
+            {
+                jwt,
+                expiration = token.ValidTo
+            };
         }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
