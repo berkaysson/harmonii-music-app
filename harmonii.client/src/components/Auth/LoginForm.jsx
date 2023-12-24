@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useUserContext } from "../../services/hooks/useUser";
 import instance from '../../services/api/api';
+import { displayResponse } from "../../services/displayResponse";
 
 const LoginForm = () => {
   const {login} = useUserContext();
@@ -14,7 +15,7 @@ const LoginForm = () => {
         email, password
       });
       login(response.data.data);
-      console.log(response.data);
+      displayResponse(response);
     }
     catch(error){
       console.error(error);
