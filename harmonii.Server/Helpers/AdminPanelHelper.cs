@@ -73,7 +73,7 @@ namespace harmonii.Server.Helpers
         {
             var unconfirmedUsers = _userManager.Users.Where(u => !u.EmailConfirmed).ToList();
             return unconfirmedUsers.Count != 0 ?
-                ApiResponse.CreateSuccessResponse("Success", unconfirmedUsers)
+                ApiResponse.CreateSuccessResponse("All unconfirmed users retrived successfully", unconfirmedUsers)
                 :
                 ApiResponse.CreateErrorResponse([], "No unconfirmed users found");
         }
@@ -82,7 +82,7 @@ namespace harmonii.Server.Helpers
         {
             var allUsers = _userManager.Users.ToList();
             return allUsers.Count != 0 ?
-                ApiResponse.CreateSuccessResponse("Success", allUsers)
+                ApiResponse.CreateSuccessResponse("All users retrived successfully", allUsers)
                 :
                 ApiResponse.CreateErrorResponse([], "No user found");
         }
