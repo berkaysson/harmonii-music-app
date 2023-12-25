@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useUserContext } from "../../services/hooks/useUser";
 import { displayResponse } from "../../services/displayResponse";
 import { loginApi } from "../../api/loginApi";
+import { useNavigate } from "react-router";
 
 const LoginForm = () => {
   const {login} = useUserContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -14,6 +16,7 @@ const LoginForm = () => {
       const response = await loginApi(email, password);
       login(response.data.data);
       displayResponse(response);
+      navigate("/");
     }
     catch(error){
       console.error(error);
