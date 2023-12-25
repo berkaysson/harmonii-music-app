@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { useUserContext } from "../../services/hooks/useUser";
+import LogoutButton from "../Auth/LogoutButton";
 
 const Navigation = () => {
+  const {userValid} = useUserContext();
+
   return (
     <nav>
       <ul>
@@ -18,6 +22,9 @@ const Navigation = () => {
         </li>
         <li>
           <Link to="/create-playlist">Create Playlist</Link>
+        </li>
+        <li>
+          {userValid ? <LogoutButton/> : ""}
         </li>
       </ul>
     </nav>
