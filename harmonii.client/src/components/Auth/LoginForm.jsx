@@ -20,8 +20,8 @@ const LoginForm = () => {
       if(response.data.status === "Success"){
         login(response.data.data);
         displayResponse(response);
-        navigate("/");
       }
+      navigate("/");
     }
   }
 
