@@ -8,12 +8,15 @@ const UserListComponent = () => {
 
   const handleGetUsers = async () => {
     setIsLoading(true);
-    try {
-      const response = await fetchAllUsers();
-      setUsers(response.data.data.$values);
-      displayResponse(response);
-    } catch (error) {
-      console.error('Error fetching users:', error);
+    const response = await fetchAllUsers();
+    if(response.name === "AxiosError"){
+      console.log(response.response.status);
+    }
+    else{
+      if(response.data.status === "Success"){
+        setUsers(response.data.data.$values);
+        displayResponse(response);
+      }
     }
     setIsLoading(false);
   };

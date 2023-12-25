@@ -8,6 +8,6 @@ export const loginApi = async (email, password) => {
     return response;
   }
   catch(error){
-    console.error(error);
+    return error;
   }
 }

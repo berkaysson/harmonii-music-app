@@ -12,14 +12,16 @@ const LoginForm = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    try{
-      const response = await loginApi(email, password);
-      login(response.data.data);
-      displayResponse(response);
-      navigate("/");
+    const response = await loginApi(email, password);
+    if(response.name === "AxiosError"){
+      console.log(response.response.status);
     }
-    catch(error){
-      console.error(error);
+    else{
+      if(response.data.status === "Success"){
+        login(response.data.data);
+        displayResponse(response);
+        navigate("/");
+      }
     }
   }
 

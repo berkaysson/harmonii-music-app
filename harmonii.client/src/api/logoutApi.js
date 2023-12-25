@@ -6,6 +6,6 @@ export const logoutApi = async () => {
     return response;
   }
   catch(error){
-    console.error(error);
+    return error;
   }
 }

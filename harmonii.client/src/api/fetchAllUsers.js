@@ -5,6 +5,6 @@ export const fetchAllUsers = async () => {
     const response = await instance.get("/admin/all-users");
     return response;
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };

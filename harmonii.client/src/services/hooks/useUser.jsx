@@ -15,12 +15,16 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    try{
-      const response = await logoutApi();
-      setUser(null);
-      displayResponse(response);
+    const response = await logoutApi();
+    if(response.name === "AxiosError"){
+      console.log(response.response.status);
     }
-    catch(error) {console.error(error);}
+    else{
+      if(response.data.status === "Success"){
+        setUser(null);
+        displayResponse(response);
+      }
+    }
   };
 
   useEffect(() => {
