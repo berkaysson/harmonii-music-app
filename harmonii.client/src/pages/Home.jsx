@@ -1,3 +1,4 @@
+import PlaylistsList from "../components/Playlist/PlaylistsList";
 import SongsList from "../components/Song/SongsList";
 
 const Home = () => {
@@ -6,6 +7,7 @@ const Home = () => {
     <div>
       Home
       <SongsList />
+      <PlaylistsList />
     </div>
   );
 };
