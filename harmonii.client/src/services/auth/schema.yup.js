@@ -37,3 +37,16 @@ export const songSchema = yup.object().shape({
   AudioFileUrl: yup.string().url("Audio file URL is not valid").required(),
   GenreName: yup.string().required("Genre name is required"),
 });
+
+export const changePasswordSchema = yup.object().shape({
+  OldPassword: yup.string().required('Old password is required'),
+  NewPassword: yup
+    .string()
+    .required('Password is required')
+    .min(6, 'Password must be at least 6 characters')
+    .max(32, 'Password must not exceed 32 characters'),
+  ConfirmPassword: yup
+    .string()
+    .required('Please confirm your password')
+    .oneOf([yup.ref('NewPassword'), null], 'Passwords must match'),
+});

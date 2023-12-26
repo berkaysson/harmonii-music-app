@@ -1,6 +1,7 @@
 import { useState } from "react";
 import UploadProfileImage from "../components/Profile/UploadProfileImage";
 import UserProfileInfo from "../components/Profile/UserProfileInfo";
+import ChangePasswordForm from "../components/Profile/ChangePasswordForm";
 
 const Profile = () => {
   const [refresh, setRefresh] = useState(false);
@@ -13,6 +14,7 @@ const Profile = () => {
     <div>
       <UserProfileInfo key={refresh} />
       <UploadProfileImage fetchData={fetchData} />
+      <ChangePasswordForm />
     </div>
   );
 };
