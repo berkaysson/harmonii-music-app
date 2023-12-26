@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useUserContext } from "../services/hooks/useUser";
 import { useNavigate } from "react-router";
 import UserListComponent from "../components/Home/UserListsComponent";
-import AddSongForm from "../components/Song/AddSongForm";
+import ModeratorPanel from "../components/Admin&Moderator/ModeratorPanel";
 
 const AdminPanel = () => {
   const {userRole} = useUserContext();
@@ -24,8 +24,7 @@ const AdminPanel = () => {
       </div> : ""
     }
     <div>
-      Moderator Panel
-      <AddSongForm />
+      <ModeratorPanel />
     </div>
   </div>
 }
