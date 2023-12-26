@@ -23,7 +23,7 @@ namespace harmonii.Server.Controllers
             if (userName == null)
                 return NotFound(ApiResponse.CreateErrorResponse([], "User  not found"));
             var result = await _userProfileHelper.GetUserProfileHelper(userName);
-            return result.Status == "User profile retrieved successfully" ? Ok(result)
+            return result.Status == "Success" ? Ok(result)
                 : BadRequest(result);
         }
 
@@ -34,7 +34,7 @@ namespace harmonii.Server.Controllers
             if (userName == null)
                 return NotFound(ApiResponse.CreateErrorResponse([], "User  not found"));
             var result = await _userProfileHelper.UpdateUserImageHelper(userName, url);
-            return result.Status == "User image updated successfully" ? Ok(result)
+            return result.Status == "Success" ? Ok(result)
                 : BadRequest(result);
         }
 
