@@ -1,17 +1,23 @@
-import { useState } from "react";
 import { useUserContext } from "../../services/hooks/useUser";
 import { displayResponse } from "../../services/displayResponse";
 import { loginApi } from "../../api/loginApi";
 import { useNavigate } from "react-router";
+import FormikForm from "../Shared/FormikForm";
+import { loginSchema } from "../../services/auth/schema.yup";
 
 const LoginForm = () => {
   const {login} = useUserContext();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const initialValues = {
+    email: '',
+    password: '',
+  };
+
+  const validationSchema = loginSchema;
+
+  const handleLogin = async (values) => {
+    const { email, password } = values;
     const response = await loginApi(email, password);
     if(response.name === "AxiosError"){
       console.log(response.response.status);
@@ -25,28 +31,19 @@ const LoginForm = () => {
     }
   }
 
+  const fields = [
+    { id: 'email', label: 'Email', type: 'email' },
+    { id: 'password', label: 'Password', type: 'password' },
+  ];
+
   return(
-    <form onSubmit={handleLogin}>
-      <label>
-        Email:
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </label>
-      <button type="submit">
-        Login
-      </button>
-    </form>
+    <FormikForm 
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleLogin}
+      fields={fields}
+      buttonText={"Login"}
+    />
   );
 };
 
