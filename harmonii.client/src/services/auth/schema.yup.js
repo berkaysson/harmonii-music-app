@@ -16,3 +16,11 @@ export const registerSchema = yup.object().shape({
     .matches(passwordRules, { message: "Please create a stronger password" })
     .required("Required"),
 });
+
+export const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Please enter a valid email')
+    .required('Email is required'),
+  password: yup.string().required('Password is required'),
+});
