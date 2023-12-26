@@ -9,6 +9,7 @@ const UserContext = createContext();
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userValid, setUserValid] = useState(false);
+  const [userRole, setUserRole] = useState("");
 
   const login = (userData) => {
     setUser(userData);
@@ -39,6 +40,15 @@ export const UserContextProvider = ({ children }) => {
     if (user && !checkTokenNotValid(user.token)) {
       localStorage.setItem("user", JSON.stringify(user));
       setUserValid(true);
+      if(user.userRoles.$values.includes("Standard")){
+        setUserRole("Standard");
+      }
+      if(user.userRoles.$values.includes("Moderator")){
+        setUserRole("Moderator");
+      }
+      if(user.userRoles.$values.includes("Admin")){
+        setUserRole("Admin");
+      }
     } else {
       localStorage.removeItem("user");
       setUserValid(false);
@@ -46,7 +56,7 @@ export const UserContextProvider = ({ children }) => {
   }, [user]);
 
   return (
-    <UserContext.Provider value={{ user, login, logout, userValid }}>
+    <UserContext.Provider value={{ user, login, logout, userValid, userRole }}>
       {children}
     </UserContext.Provider>
   );
