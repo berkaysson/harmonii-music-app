@@ -24,6 +24,9 @@ const Navigation = () => {
           <Link to="/create-playlist">Create Playlist</Link>
         </li>
         <li>
+          <Link to="/admin-panel">Admin Panel</Link>
+        </li>
+        <li>
           {userValid ? <LogoutButton/> : ""}
         </li>
       </ul>

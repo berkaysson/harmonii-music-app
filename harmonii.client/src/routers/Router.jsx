@@ -6,6 +6,7 @@ import Profile from "../pages/Profile";
 import CreatePlaylist from "../pages/CreatePlaylist";
 import NotFound from "../pages/404";
 import ProtectedRoute from "./ProtectedRoute";
+import AdminPanel from "../pages/AdminPanel";
 
 const RouterComponent = () => {
   const location = useLocation();
@@ -23,6 +24,9 @@ const RouterComponent = () => {
       </Route>
       <Route path="/create-playlist" element={<ProtectedRoute />}>
         <Route path="/create-playlist" element={<CreatePlaylist />} />
+      </Route>
+      <Route path="/admin-panel" element={<ProtectedRoute />}>
+        <Route path="/admin-panel" element={<AdminPanel />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
