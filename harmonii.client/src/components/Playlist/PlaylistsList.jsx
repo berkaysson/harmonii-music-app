@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchAllPlaylists } from "../../api/fetchAllPlaylists";
+import { Link } from "react-router-dom";
 
 const PlaylistsList = () => {
   const [playlistsList, setPlaylistsList] = useState([]);
@@ -25,7 +26,12 @@ const PlaylistsList = () => {
     All playlists table
     <ul>
       {
-        playlistsList.map((playlist) => <li key={playlist.playlistId}>{playlist.playlistName}</li>)
+        playlistsList.map((playlist) => <li key={playlist.playlistId}>
+          {playlist.playlistName}
+            <Link to={`/playlist/${playlist.playlistId}`}>
+              Go
+            </Link>
+          </li>)
       }
     </ul>
   </div>
