@@ -27,7 +27,7 @@ namespace harmonii.Server.Controllers
                 : BadRequest(result);
         }
 
-        [HttpPut("update-user-image")]
+        [HttpPut("update-user-image/{url}")]
         public async Task<IActionResult> UpdateUserImage(string url)
         {
             var userName = User.Identity?.Name;
