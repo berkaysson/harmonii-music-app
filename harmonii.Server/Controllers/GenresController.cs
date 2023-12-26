@@ -49,7 +49,7 @@ namespace harmonii.Server.Controllers
         }
 
         // Delete genre
-        [HttpDelete]
+        [HttpDelete("{genreId}")]
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> DeleteGenre(int genreId)
         {
