@@ -55,9 +55,10 @@ namespace harmonii.Server.Controllers
         // Endpoint for reset password
         [Authorize]
         [HttpPost("change-password")]
-        public async Task<IActionResult> ChangePassword(ChangePassword changePassword)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePassword changePassword)
         {
-            var result = await _authHelper.ChangePasswordHelper(changePassword);
+            var userName = User.Identity?.Name;
+            var result = await _authHelper.ChangePasswordHelper(changePassword, userName);
             return result.Status == "Success" ? Ok(result)
                 : BadRequest(result);
         }

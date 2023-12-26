@@ -89,9 +89,9 @@ namespace harmonii.Server.Helpers
             }
         }
 
-        public async Task<ApiResponse> ChangePasswordHelper(ChangePassword changePassword)
+        public async Task<ApiResponse> ChangePasswordHelper(ChangePassword changePassword, string userName)
         {
-            var user = await _userManager.FindByNameAsync(changePassword.UserName);
+            var user = await _userManager.FindByNameAsync(userName);
             if (user == null) return ApiResponse
                     .CreateErrorResponse([], "User not found");
             var result = await _userManager

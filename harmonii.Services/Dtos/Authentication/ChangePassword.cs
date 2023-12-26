@@ -4,8 +4,6 @@ namespace harmonii.Services.Dtos.Authentication
 {
     public class ChangePassword
     {
-        [Required(ErrorMessage = "User name is required")]
-        public string UserName { get; set; }
 
         [Required(ErrorMessage = "Old password is required")]
         public string OldPassword { get; set; }
