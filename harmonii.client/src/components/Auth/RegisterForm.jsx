@@ -29,6 +29,7 @@ const RegisterForm = () => {
     { id: 'userName', label: 'User Name', type: 'text' },
     { id: 'email', label: 'Email', type: 'email' },
     { id: 'password', label: 'Password', type: 'password' },
+    { id: 'confirmPassword', label: 'Confirm Password', type: 'password' },
   ];
 
   return (
@@ -37,6 +38,7 @@ const RegisterForm = () => {
         userName: "",
         email: "",
         password: "",
+        confirmPassword: ""
       }}
       validationSchema={registerSchema}
       onSubmit={handleFormSubmit}
