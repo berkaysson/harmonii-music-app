@@ -1,3 +1,5 @@
+import DeleteGenreButton from "./DeleteGenreButton";
+
 // eslint-disable-next-line react/prop-types
 const ModeratorGenreList = ({ genresList, fetchData }) => {
   return (
@@ -9,7 +11,10 @@ const ModeratorGenreList = ({ genresList, fetchData }) => {
             {genre.genreName}
             <span>
               {
-                //delete genre button
+                <DeleteGenreButton
+                  genreId={genre.genreId}
+                  onDelete={fetchData}
+                />
               }
             </span>
           </li>
