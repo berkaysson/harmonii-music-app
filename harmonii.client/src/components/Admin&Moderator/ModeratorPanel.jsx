@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import AddSongForm from "../Song/AddSongForm";
 import { fetchAllSongs } from "../../api/fetchAllSongs";
 import ModeratorSongsList from "../Song/ModeratorSongsList";
+import ModeratorGenreList from "../Genre/ModeratorGenreList";
+import { fetchAllGenres } from "../../api/fetchAllGenres";
 
 const ModeratorPanel = () => {
   const [songsList, setSongsList] = useState([]);
+  const [genresList, setGenresList] = useState([]);
 
-  const fetchData = async () => {
+  const fetchSongs = async () => {
     const response = await fetchAllSongs();
     if (response.name === "AxiosError") {
       console.log(response.response.status);
@@ -14,16 +17,27 @@ const ModeratorPanel = () => {
       setSongsList(() => response.data.data.$values)
     }
   };
+
+  const fetchGenres = async () => {
+    const response = await fetchAllGenres();
+    if (response.name === "AxiosError") {
+      console.log(response.response.status);
+    } else {
+      setGenresList(() => response.data.data.$values)
+    }
+  };
   
   useEffect(()=> {
-    fetchData();
+    fetchSongs();
+    fetchGenres();
   }, []);
 
   return (
     <div>
       Moderator Panel
-      <AddSongForm fetchData={fetchData} />
-      <ModeratorSongsList fetchData={fetchData} songsList={songsList} />
+      <AddSongForm fetchData={fetchSongs} />
+      <ModeratorSongsList fetchData={fetchSongs} songsList={songsList} />
+      <ModeratorGenreList fetchData={fetchGenres} genresList={genresList} />
     </div>
   );
 };
