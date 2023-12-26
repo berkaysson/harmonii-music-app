@@ -6,15 +6,11 @@ const SongsList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetchAllSongs();
-        if (response.name === "AxiosError") {
-          console.log(response.response.status);
-        } else {
-          setSongsList(() => response.data.data.$values)
-        }
-      } catch (error) {
-        console.error("An error occurred:", error.message);
+      const response = await fetchAllSongs();
+      if (response.name === "AxiosError") {
+        console.log(response.response.status);
+      } else {
+        setSongsList(() => response.data.data.$values)
       }
     };
 
