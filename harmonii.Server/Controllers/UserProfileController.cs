@@ -21,9 +21,9 @@ namespace harmonii.Server.Controllers
         {
             var userName = User.Identity?.Name;
             if (userName == null)
-                return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
+                return NotFound(ApiResponse.CreateErrorResponse([], "User  not found"));
             var result = await _userProfileHelper.GetUserProfileHelper(userName);
-            return result.Status == "Success" ? Ok(result)
+            return result.Status == "User profile retrieved successfully" ? Ok(result)
                 : BadRequest(result);
         }
 
@@ -32,9 +32,9 @@ namespace harmonii.Server.Controllers
         {
             var userName = User.Identity?.Name;
             if (userName == null)
-                return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
+                return NotFound(ApiResponse.CreateErrorResponse([], "User  not found"));
             var result = await _userProfileHelper.UpdateUserImageHelper(userName, url);
-            return result.Status == "Success" ? Ok(result)
+            return result.Status == "User image updated successfully" ? Ok(result)
                 : BadRequest(result);
         }
 
@@ -43,12 +43,12 @@ namespace harmonii.Server.Controllers
         {
             var userName = User.Identity?.Name;
             if (userName == null)
-                return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
+                return NotFound(ApiResponse.CreateErrorResponse([], "User  not found"));
             var user = await _userProfileHelper
                 .GetUserIdentityWithProfileByUserName(userName);
             var songs = await _songsHelper
                 .GetSongsByUserProfileIdAsync(user.UserProfile.UserProfileId);
-            return Ok(ApiResponse.CreateSuccessResponse("Success", songs));
+            return Ok(ApiResponse.CreateSuccessResponse("Songs retrieved successfully", songs));
         }
 
         [HttpGet("playlists")]
@@ -56,12 +56,12 @@ namespace harmonii.Server.Controllers
         {
             var userName = User.Identity?.Name;
             if (userName == null)
-                return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
+                return NotFound(ApiResponse.CreateErrorResponse([], "User  not found"));
             var user = await _userProfileHelper
                 .GetUserIdentityWithProfileByUserName(userName);
             var playlists = await _playlistHelper
                 .GetPlaylistsByUserProfileIdAsync(user.UserProfile.UserProfileId);
-            return Ok(ApiResponse.CreateSuccessResponse("Success", playlists));
+            return Ok(ApiResponse.CreateSuccessResponse("Playlists retrieved successfully", playlists));
         }
     }
 }
