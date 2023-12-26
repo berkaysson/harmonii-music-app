@@ -3,6 +3,7 @@ import { displayResponse } from "../../services/displayResponse";
 import { fetchAllUsers } from "../../api/fetchAllUsers";
 import { confirmUserApi } from "../../api/confirmUserApi";
 import { assignModeratorApi } from "../../api/assignModeratorApi";
+import { deleteUserApi } from "../../api/deleteUserApi";
 
 const UserListComponent = () => {
   const [users, setUsers] = useState([]);
@@ -46,6 +47,18 @@ const UserListComponent = () => {
     }
   };
 
+  const handleDeleteUserButton = async (identityId) => {
+    const response = await deleteUserApi(identityId);
+    if (response.name === "AxiosError") {
+      console.log(response.response.status);
+    } else {
+      if (response.data.status === "Success") {
+        await handleGetUsers();
+        displayResponse(response);
+      }
+    }
+  };
+
   return (
     <div>
       <button onClick={handleGetUsers} disabled={isLoading}>
@@ -71,6 +84,9 @@ const UserListComponent = () => {
                   </button>
                 </span>
               )}
+              <button onClick={() => handleDeleteUserButton(user.id)}>
+                Delete User
+              </button>
             </li>
           ))}
         </ul>
