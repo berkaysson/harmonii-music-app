@@ -39,7 +39,7 @@ namespace harmonii.Server.Controllers
         }
 
         // Create genre
-        [HttpPost()]
+        [HttpPost("{genreName}")]
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> CreateGenre(string genreName)
         {
