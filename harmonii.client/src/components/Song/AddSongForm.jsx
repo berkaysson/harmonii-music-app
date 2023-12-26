@@ -3,7 +3,8 @@ import { songSchema } from "../../services/auth/schema.yup";
 import { displayResponse } from "../../services/displayResponse";
 import FormikForm from "../Shared/FormikForm";
 
-const AddSongForm = () => {
+// eslint-disable-next-line react/prop-types
+const AddSongForm = ({fetchData}) => {
   const initialValues = {
     SongName: '',
     Artist: '',
@@ -19,6 +20,7 @@ const AddSongForm = () => {
     } else {
       if (response.data.status === "Success") {
         displayResponse(response);
+        fetchData();
       }
     }
   };
