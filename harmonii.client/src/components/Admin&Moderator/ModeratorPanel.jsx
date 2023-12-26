@@ -24,19 +24,21 @@ const ModeratorPanel = () => {
     if (response.name === "AxiosError") {
       console.log(response.response.status);
     } else {
-      setGenresList(() => response.data.data.$values)
+      setGenresList(() => response.data.data.$values);
+      await fetchSongs();
     }
   };
   
   useEffect(()=> {
     fetchSongs();
     fetchGenres();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div>
       Moderator Panel
-      <AddSongForm fetchData={fetchSongs} />
+      <AddSongForm fetchData={fetchSongs} genresList={genresList} />
       <ModeratorSongsList fetchData={fetchSongs} songsList={songsList} />
       <AddGenreForm fetchData={fetchGenres} />
       <ModeratorGenreList fetchData={fetchGenres} genresList={genresList} />
