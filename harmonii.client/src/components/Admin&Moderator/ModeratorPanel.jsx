@@ -4,6 +4,7 @@ import { fetchAllSongs } from "../../api/fetchAllSongs";
 import ModeratorSongsList from "../Song/ModeratorSongsList";
 import ModeratorGenreList from "../Genre/ModeratorGenreList";
 import { fetchAllGenres } from "../../api/fetchAllGenres";
+import AddGenreForm from "../Genre/AddGenreForm";
 
 const ModeratorPanel = () => {
   const [songsList, setSongsList] = useState([]);
@@ -37,6 +38,7 @@ const ModeratorPanel = () => {
       Moderator Panel
       <AddSongForm fetchData={fetchSongs} />
       <ModeratorSongsList fetchData={fetchSongs} songsList={songsList} />
+      <AddGenreForm fetchData={fetchGenres} />
       <ModeratorGenreList fetchData={fetchGenres} genresList={genresList} />
     </div>
   );
