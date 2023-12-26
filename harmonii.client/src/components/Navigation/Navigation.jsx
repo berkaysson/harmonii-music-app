@@ -18,7 +18,7 @@ const Navigation = () => {
           <Link to="/register">Register</Link>
         </li>
         <li>
-          <Link to="/settings">Settings</Link>
+          <Link to="/profile">Profile</Link>
         </li>
         <li>
           <Link to="/create-playlist">Create Playlist</Link>
