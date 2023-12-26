@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useUserContext } from "../services/hooks/useUser";
 import { useNavigate } from "react-router";
 import UserListComponent from "../components/Home/UserListsComponent";
+import AddSongForm from "../components/Song/AddSongForm";
 
 const AdminPanel = () => {
   const {userRole} = useUserContext();
@@ -11,17 +12,21 @@ const AdminPanel = () => {
     if(userRole == "Standard"){
       navigate("/");
     }
-    console.log(userRole);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <div>
     {
       userRole === "Admin" ? 
       <div id="admin-auth">
+        Admin Panel
         <UserListComponent />
       </div> : ""
     }
-  
+    <div>
+      Moderator Panel
+      <AddSongForm />
+    </div>
   </div>
 }
 
