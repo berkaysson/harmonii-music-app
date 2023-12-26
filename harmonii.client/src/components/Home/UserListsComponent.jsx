@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { displayResponse } from "../../services/displayResponse";
 import { fetchAllUsers } from "../../api/fetchAllUsers";
+import { confirmUserApi } from "../../api/confirmUserApi";
 
 const UserListComponent = () => {
   const [users, setUsers] = useState([]);
@@ -21,6 +22,19 @@ const UserListComponent = () => {
     setIsLoading(false);
   };
 
+  const handleConfirmButton = async (identityId) => {
+    const response = await confirmUserApi(identityId);
+    if(response.name === "AxiosError"){
+      console.log(response.response.status);
+    }
+    else{
+      if(response.data.status === "Success"){
+        await handleGetUsers();
+        displayResponse(response);
+      }
+    }
+  }
+
   return (
     <div>
       <button onClick={handleGetUsers} disabled={isLoading}>
@@ -31,7 +45,10 @@ const UserListComponent = () => {
         <ul>
           {users.map((user) => (
             <li key={user.id}>{user.userName} 
-            {user.emailConfirmed ? "" : "(not confirmed)"}</li>
+            {user.emailConfirmed ? "" : 
+            <span>Not confirmed
+              <button onClick={()=>handleConfirmButton(user.id)}>Confirm</button>
+              </span>}</li>
           ))}
         </ul>
       </div>
