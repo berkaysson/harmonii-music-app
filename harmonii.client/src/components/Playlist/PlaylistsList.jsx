@@ -1,32 +1,20 @@
-import { useEffect, useState } from "react";
-import { fetchAllPlaylists } from "../../api/fetchAllPlaylists";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { usePlaylistContext } from "../../services/hooks/usePlaylist";
 
 const PlaylistsList = () => {
-  const [playlistsList, setPlaylistsList] = useState([]);
+  const { fetchPlaylists, playlists } = usePlaylistContext();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchAllPlaylists();
-        if (response.name === "AxiosError") {
-          console.log(response.response.status);
-        } else {
-          setPlaylistsList(() => response.data.data.$values)
-        }
-      } catch (error) {
-        console.error("An error occurred:", error.message);
-      }
-    };
-
-    fetchData();
-  }, []);
+  useEffect(()=>{
+    fetchPlaylists();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   return <div>
     All playlists table
     <ul>
       {
-        playlistsList.map((playlist) => <li key={playlist.playlistId}>
+        playlists.map((playlist) => <li key={playlist.playlistId}>
           {playlist.playlistName}
             <Link to={`/playlist/${playlist.playlistId}`}>
               Go
