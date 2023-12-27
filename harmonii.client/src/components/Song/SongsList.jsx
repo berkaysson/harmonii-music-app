@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchAllSongs } from "../../api/fetchAllSongs";
+import SongListItem from "./SongListItem";
 
 const SongsList = () => {
   const [songsList, setSongsList] = useState([]);
@@ -13,7 +14,7 @@ const SongsList = () => {
         setSongsList(() => response.data.data.$values)
       }
     };
-
+    
     fetchData();
   }, []);
 
@@ -21,7 +22,7 @@ const SongsList = () => {
     All songs table
     <ul>
       {
-        songsList.map((song) => <li key={song.songId}>{song.songName}</li>)
+        songsList.map((song) => <SongListItem key={song.songId} song={song} />)
       }
     </ul>
   </div>
