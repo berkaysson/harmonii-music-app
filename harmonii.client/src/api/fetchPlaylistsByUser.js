@@ -1,6 +1,6 @@
 import instance from "../services/api/instance";
 
-export const fetchPlaylistByUser = async () => {
+export const fetchPlaylistsByUser = async () => {
   try {
     const response = await instance
       .get(`/user-profile/playlists`);
