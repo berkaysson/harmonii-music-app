@@ -1,4 +1,5 @@
 import PlaylistsList from "../components/Playlist/PlaylistsList";
+import UserPlaylistsList from "../components/Playlist/UserPlaylistsList";
 import SongsList from "../components/Song/SongsList";
 
 const Home = () => {
@@ -8,6 +9,7 @@ const Home = () => {
       Home
       <SongsList />
       <PlaylistsList />
+      <UserPlaylistsList />
     </div>
   );
 };
