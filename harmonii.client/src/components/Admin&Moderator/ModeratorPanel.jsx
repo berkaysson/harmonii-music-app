@@ -39,7 +39,7 @@ const ModeratorPanel = () => {
     <div>
       Moderator Panel
       <AddSongForm fetchData={fetchSongs} genresList={genresList} />
-      <ModeratorSongsList fetchData={fetchSongs} songsList={songsList} />
+      <ModeratorSongsList fetchData={fetchSongs} songsList={songsList} genresList={genresList} />
       <AddGenreForm fetchData={fetchGenres} />
       <ModeratorGenreList fetchData={fetchGenres} genresList={genresList} />
     </div>
