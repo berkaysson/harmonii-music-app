@@ -80,7 +80,7 @@ namespace harmonii.Server.Controllers
         }
 
         // Update song genre
-        [HttpPut("{songId}")]
+        [HttpPut("{songId}/{newGenreName}")]
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> UpdateSongGenre(int songId, string newGenreName)
         {
