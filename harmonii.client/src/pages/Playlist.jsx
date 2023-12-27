@@ -28,7 +28,7 @@ const Playlist = () => {
 
   return (
     <div>
-      <PlaylistDetails playlistData={playlistData} />
+      <PlaylistDetails fetchData={fetchData} playlistData={playlistData} />
     </div>
   );
 }
