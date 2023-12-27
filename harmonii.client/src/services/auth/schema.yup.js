@@ -50,3 +50,8 @@ export const changePasswordSchema = yup.object().shape({
     .required('Please confirm your password')
     .oneOf([yup.ref('NewPassword'), null], 'Passwords must match'),
 });
+
+export const playlistSchema = yup.object().shape({
+  PlaylistName: yup.string().required('Playlist name is required'),
+  PlaylistDescription: yup.string(),
+});
