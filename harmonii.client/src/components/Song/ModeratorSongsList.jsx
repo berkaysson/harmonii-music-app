@@ -8,9 +8,7 @@ const ModeratorSongsList = ({ songsList, fetchData, genresList }) => {
       All songs table
       <ul>
         {songsList.map((song) => (
-          <li key={song.songId}>
-            <ModeratorSongsListItem genresList={genresList} song={song} fetchData={fetchData} />
-          </li>
+            <ModeratorSongsListItem key={song.songId} genresList={genresList} song={song} fetchData={fetchData} />
         ))}
       </ul>
     </div>
