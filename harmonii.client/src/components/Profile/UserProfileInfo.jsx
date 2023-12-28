@@ -34,7 +34,6 @@ const UserProfileInfo = () => {
         <li>Username: {userInfo.userName}</li>
         <li>Email: {userInfo.email}</li>
         <li>User Profile ID: {userInfo.userProfileId}</li>
-        <li>User Image URL: {userInfo.userImageUrl}</li>
         <li>User Roles: {userInfo.userRoles.$values.join(', ')}</li>
       </ul>
     </div>
