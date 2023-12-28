@@ -34,7 +34,6 @@ export const songSchema = yup.object().shape({
   SongName: yup.string().required("Song name is required"),
   Artist: yup.string().required("Artist name is required"),
   CoverImageUrl: yup.string().url("Cover image URL is not valid").required(),
-  AudioFileUrl: yup.string().url("Audio file URL is not valid").required(),
   GenreName: yup.string().required("Genre name is required"),
 });
 
