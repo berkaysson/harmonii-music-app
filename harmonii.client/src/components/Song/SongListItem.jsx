@@ -30,6 +30,11 @@ const SongListItem = ({ song }) => {
 
   return (
     <li id={song.songId}>
+      <span>
+        <audio controls>
+          <source src={song.audioFileUrl} />
+        </audio>
+      </span>
       <span>{song.songName}</span>-<span>{song.artistName}</span>-
       <span>{song.genreName}</span>-<span>{song.userName}</span>
       <span>
