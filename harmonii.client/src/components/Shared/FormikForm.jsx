@@ -8,6 +8,7 @@ const FormikForm = ({
   onSubmit,
   fields,
   buttonText,
+  children
 }) => {
   const {
     values,
@@ -17,7 +18,7 @@ const FormikForm = ({
     handleBlur,
     handleChange,
     handleSubmit,
-    setFieldValue
+    setFieldValue,
   } = useFormik({
     initialValues,
     validationSchema,
@@ -66,6 +67,7 @@ const FormikForm = ({
           )}
         </div>
       ))}
+      {children}
       <button disabled={isSubmitting} type="submit">
         {buttonText}
       </button>
