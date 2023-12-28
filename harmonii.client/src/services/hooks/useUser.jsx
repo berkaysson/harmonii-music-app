@@ -17,15 +17,10 @@ export const UserContextProvider = ({ children }) => {
 
   const logout = async () => {
     const response = await logoutApi();
-    if(response.name === "AxiosError"){
-      console.log(response.response.status);
+    if (!(response.name === "AxiosError")) {
+      setUser(null);
     }
-    else{
-      if(response.data.status === "Success"){
-        setUser(null);
-        displayResponse(response);
-      }
-    }
+    displayResponse(response);
   };
 
   useEffect(() => {
@@ -62,6 +57,7 @@ export const UserContextProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useUserContext = () => {
   const context = React.useContext(UserContext);
   if (context === undefined) {

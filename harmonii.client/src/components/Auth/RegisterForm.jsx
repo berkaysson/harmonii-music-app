@@ -15,14 +15,10 @@ const RegisterForm = () => {
     };
 
     const response = await registerApi(registerData);
-    if (response.name === "AxiosError") {
-      console.log(response);
-    } else {
-      if (response.data.status === "Success") {
-        displayResponse(response);
-      }
+    if (!(response.name === "AxiosError")) {
       navigate("/login");
     }
+    displayResponse(response);
   };
 
   const fields = [

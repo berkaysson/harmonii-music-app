@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createSongApi } from "../../api/createSongApi";
 import { songSchema } from "../../services/auth/schema.yup";
 import { displayResponse } from "../../services/displayResponse";
@@ -6,7 +7,6 @@ import { useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../services/firebase/firebase";
 
-// eslint-disable-next-line react/prop-types
 const AddSongForm = ({ fetchData, genresList }) => {
   const [audioFile, setAudioFile] = useState(null);
   const [progressPercent, setProgressPercent] = useState(0);
@@ -39,15 +39,11 @@ const AddSongForm = ({ fetchData, genresList }) => {
             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
             values = { ...values, AudioFileUrl: downloadURL };
             const response = await createSongApi(values);
-  
-            if (response.name === "AxiosError") {
-              console.log(response);
-            } else {
-              if (response.data.status === "Success") {
-                displayResponse(response);
-                fetchData();
-              }
+
+            if (!(response.name === "AxiosError")) {
+              fetchData();
             }
+            displayResponse(response);
             resolve(downloadURL);
           } catch (error) {
             reject(error);

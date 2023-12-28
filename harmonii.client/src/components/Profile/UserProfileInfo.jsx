@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchUserProfile } from '../../api/fetchUserProfile';
+import { displayResponse } from '../../services/displayResponse';
 
 const UserProfileInfo = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -8,11 +9,10 @@ const UserProfileInfo = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetchUserProfile();
-      if (response.name === "AxiosError") {
-        console.log(response.response.status);
-      } else {
+      if (!(response.name === "AxiosError")) {
         setUserInfo(response.data.data);
       }
+      displayResponse(response);
       setLoading(false);
     };
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchAllSongs } from "../../api/fetchAllSongs";
 import SongListItem from "./SongListItem";
+import { displayResponse } from "../../services/displayResponse";
 
 const SongsList = () => {
   const [songsList, setSongsList] = useState([]);
@@ -8,11 +9,10 @@ const SongsList = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetchAllSongs();
-      if (response.name === "AxiosError") {
-        console.log(response.response.status);
-      } else {
-        setSongsList(() => response.data.data.$values)
+      if (!(response.name === "AxiosError")) {
+        setSongsList(() => response.data.data.$values);
       }
+      displayResponse(response);
     };
     
     fetchData();

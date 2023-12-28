@@ -14,14 +14,10 @@ const AddPlaylistForm = () => {
 
   const handleSubmit = async (values) => {
     const response = await createPlaylistApi(values);
-    if (response.name === "AxiosError") {
-      console.log(response);
-    } else {
-      if (response.data.status === "Success") {
-        displayResponse(response);
-        fetchPlaylists();
-      }
+    if (!(response.name === "AxiosError")) {
+      fetchPlaylists();
     }
+    displayResponse(response);
   }
 
   const fields = [

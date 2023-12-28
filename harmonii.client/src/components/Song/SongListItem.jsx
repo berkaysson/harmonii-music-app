@@ -18,18 +18,14 @@ const SongListItem = ({ song }) => {
       selectedPlaylistId,
       song.songId
     );
-    if (response.name === "AxiosError") {
-      console.log(response);
-      console.log(response.response.status);
-    } else {
-      if (response.data.status === "Success") {
-        displayResponse(response);
-      }
-    }
+    displayResponse(response);
   };
 
   return (
     <li id={song.songId}>
+      <span>
+        <img src={song?.coverImageUrl} alt="cover" />
+      </span>
       <span>
         <audio controls>
           <source src={song.audioFileUrl} />

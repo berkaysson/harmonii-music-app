@@ -12,15 +12,10 @@ const PlaylistDetails = ({ playlistData, fetchData }) => {
       playlistData.playlistId,
       songId
     );
-    if (response.name === "AxiosError") {
-      console.log(response);
-      console.log(response.response.status);
-    } else {
-      if (response.data.status === "Success") {
-        displayResponse(response);
-        fetchData();
-      }
+    if (!(response.name === "AxiosError")) {
+      fetchData();
     }
+    displayResponse(response);
   };
 
   return (

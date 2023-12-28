@@ -5,14 +5,10 @@ import { displayResponse } from "../../services/displayResponse";
 const DeleteSongButton = ({ songId, onDelete }) => {
   const handleDeleteSongButton = async () => {
     const response = await deleteSongApi(songId);
-    if (response.name === "AxiosError") {
-      console.log(response.response.status);
-    } else {
-      if (response.data.status === "Success") {
-        displayResponse(response);
-        onDelete();
-      }
+    if (!(response.name === "AxiosError")) {
+      onDelete();
     }
+    displayResponse(response);
   };
 
   return <button onClick={handleDeleteSongButton}>Delete Song</button>;

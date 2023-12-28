@@ -20,15 +20,10 @@ const ChangePasswordForm = () => {
     }
 
     const response = await changePasswordApi(changePasswordData);
-    if(response.name === "AxiosError"){
-      console.log(response.response.status);
+    if (!(response.name === "AxiosError")) {
+      logout();
     }
-    else{
-      if(response.data.status === "Success"){
-        logout();
-        displayResponse(response);
-      }
-    }
+    displayResponse(response);
   }
 
   const fields = [

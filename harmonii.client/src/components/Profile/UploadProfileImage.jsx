@@ -2,20 +2,17 @@ import { useState } from "react";
 import { displayResponse } from "../../services/displayResponse";
 import { updateUserImage } from "../../api/updateUserImage";
 
+// eslint-disable-next-line react/prop-types
 const UploadProfileImage = ({ fetchData }) => {
   const [imageUrl, setImageUrl] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await updateUserImage(imageUrl);
-    if (response.name === "AxiosError") {
-      console.log(response);
-    } else {
-      if (response.data.status === "Success") {
-        displayResponse(response);
-        fetchData();
-      }
+    if (!(response.name === "AxiosError")) {
+      fetchData();
     }
+    displayResponse(response);
   };
 
   const handleInputChange = (e) => {

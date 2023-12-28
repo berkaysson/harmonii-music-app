@@ -5,6 +5,7 @@ import ModeratorSongsList from "../Song/ModeratorSongsList";
 import ModeratorGenreList from "../Genre/ModeratorGenreList";
 import { fetchAllGenres } from "../../api/fetchAllGenres";
 import AddGenreForm from "../Genre/AddGenreForm";
+import { displayResponse } from "../../services/displayResponse";
 
 const ModeratorPanel = () => {
   const [songsList, setSongsList] = useState([]);
@@ -12,21 +13,19 @@ const ModeratorPanel = () => {
 
   const fetchSongs = async () => {
     const response = await fetchAllSongs();
-    if (response.name === "AxiosError") {
-      console.log(response.response.status);
-    } else {
+    if (!(response.name === "AxiosError")) {
       setSongsList(() => response.data.data.$values)
     }
+    displayResponse(response);
   };
 
   const fetchGenres = async () => {
     const response = await fetchAllGenres();
-    if (response.name === "AxiosError") {
-      console.log(response.response.status);
-    } else {
+    if (!(response.name === "AxiosError")) {
       setGenresList(() => response.data.data.$values);
       await fetchSongs();
     }
+    displayResponse(response);
   };
   
   useEffect(()=> {

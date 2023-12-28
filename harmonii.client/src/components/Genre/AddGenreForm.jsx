@@ -14,15 +14,11 @@ const AddGenreForm = ({ fetchData }) => {
     }
 
     const response = await createGenreApi(genreName);
-    if (response.name === "AxiosError") {
-      console.log(response);
-    } else {
-      if (response.data.status === "Success") {
-        displayResponse(response);
-        setGenreName("");
-        fetchData();
-      }
+    if (!(response.name === "AxiosError")) {
+      setGenreName("");
+      fetchData();
     }
+    displayResponse(response);
   };
 
   return (

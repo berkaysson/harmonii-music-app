@@ -1,6 +1,6 @@
+/* eslint-disable react/prop-types */
 import ModeratorSongsListItem from "./ModeratorSongsListItem";
 
-// eslint-disable-next-line react/prop-types
 const ModeratorSongsList = ({ songsList, fetchData, genresList }) => {
 
   return (

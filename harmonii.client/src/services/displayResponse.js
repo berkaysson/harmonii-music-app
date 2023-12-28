@@ -1,3 +1,7 @@
 export const displayResponse = (response) => {
-  console.log(response.data.statusMessage, response.data);
+  if(response.name === "AxiosError"){
+    console.log(response.response);
+  } else {
+    console.log(response.data);
+  }
 }

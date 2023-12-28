@@ -14,15 +14,10 @@ const UserPlaylistsList = () => {
 
   const handleDelete = async (playlistId) => {
     const response = await deletePlaylistApi(playlistId);
-    if (response.name === "AxiosError") {
-      console.log(response.response.status);
-    } else {
-      if (response.data.status === "Success") {
-        displayResponse(response);
-      }
+    if (!(response.name === "AxiosError")) {
+      fetchUserPlaylists();
     }
-
-    fetchUserPlaylists();
+    displayResponse(response);
   };
 
   return (

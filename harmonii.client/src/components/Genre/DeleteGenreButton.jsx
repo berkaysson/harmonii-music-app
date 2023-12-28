@@ -5,14 +5,10 @@ import { displayResponse } from "../../services/displayResponse";
 const DeleteGenreButton = ({ genreId, onDelete }) => {
   const handleDeleteGenreButton = async () => {
     const response = await deleteGenreApi(genreId);
-    if (response.name === "AxiosError") {
-      console.log(response.response.status);
-    } else {
-      if (response.data.status === "Success") {
-        displayResponse(response);
-        onDelete();
-      }
+    if (!(response.name === "AxiosError")) {
+      onDelete();
     }
+    displayResponse(response);
   };
 
   return <button onClick={handleDeleteGenreButton}>Delete Genre</button>;

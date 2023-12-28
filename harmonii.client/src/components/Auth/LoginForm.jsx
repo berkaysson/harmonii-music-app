@@ -19,16 +19,11 @@ const LoginForm = () => {
   const handleLogin = async (values) => {
     const { email, password } = values;
     const response = await loginApi(email, password);
-    if(response.name === "AxiosError"){
-      console.log(response.response.status);
+    if (!(response.name === "AxiosError")) {
+      login(response.data.data);
     }
-    else{
-      if(response.data.status === "Success"){
-        login(response.data.data);
-        displayResponse(response);
-      }
-      navigate("/");
-    }
+    displayResponse(response);
+    navigate("/");
   }
 
   const fields = [

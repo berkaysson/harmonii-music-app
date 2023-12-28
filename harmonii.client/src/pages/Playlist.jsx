@@ -10,15 +10,10 @@ const Playlist = () => {
 
   const fetchData = async () => {
     const response = await fetchPlaylist(id);
-    if(response.name === "AxiosError"){
-      console.log(response.response.status);
+    if (!(response.name === "AxiosError")) {
+      setPlaylistData(response.data.data);
     }
-    else{
-      if(response.data.status === "Success"){
-        setPlaylistData(response.data.data);
-        displayResponse(response);
-      }
-    }
+    displayResponse(response);
   }
 
   useEffect(() => {

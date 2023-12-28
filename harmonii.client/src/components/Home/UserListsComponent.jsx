@@ -12,51 +12,35 @@ const UserListComponent = () => {
   const handleGetUsers = async () => {
     setIsLoading(true);
     const response = await fetchAllUsers();
-    if (response.name === "AxiosError") {
-      console.log(response.response.status);
-    } else {
-      if (response.data.status === "Success") {
-        setUsers(response.data.data.$values);
-        displayResponse(response);
-      }
+    if (!(response.name === "AxiosError")) {
+      setUsers(response.data.data.$values);
     }
+    displayResponse(response);
     setIsLoading(false);
   };
 
   const handleConfirmButton = async (identityId) => {
     const response = await confirmUserApi(identityId);
-    if (response.name === "AxiosError") {
-      console.log(response.response.status);
-    } else {
-      if (response.data.status === "Success") {
-        await handleGetUsers();
-        displayResponse(response);
-      }
+    if (!(response.name === "AxiosError")) {
+      await handleGetUsers();
     }
+    displayResponse(response);
   };
 
   const handleAssignModeratorButton = async (identityId) => {
     const response = await assignModeratorApi(identityId);
-    if (response.name === "AxiosError") {
-      console.log(response.response.status);
-    } else {
-      if (response.data.status === "Success") {
-        await handleGetUsers();
-        displayResponse(response);
-      }
+    if (!(response.name === "AxiosError")) {
+      await handleGetUsers();
     }
+    displayResponse(response);
   };
 
   const handleDeleteUserButton = async (identityId) => {
     const response = await deleteUserApi(identityId);
-    if (response.name === "AxiosError") {
-      console.log(response.response.status);
-    } else {
-      if (response.data.status === "Success") {
-        await handleGetUsers();
-        displayResponse(response);
-      }
+    if (!(response.name === "AxiosError")) {
+      await handleGetUsers();
     }
+    displayResponse(response);
   };
 
   return (

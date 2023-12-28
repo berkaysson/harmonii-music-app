@@ -13,12 +13,10 @@ export const PlaylistProvider = ({ children }) => {
   const handleFetchAllPlaylists = async () => {
     try {
       const response = await fetchAllPlaylists();
-      if (response.name === "AxiosError") {
-        console.log(response.response.status);
-      } else {
+      if (!(response.name === "AxiosError")) {
         setPlaylists(() => response.data.data.$values);
-        displayResponse(response);
       }
+      displayResponse(response);
     } catch (error) {
       console.error("An error occurred:", error.message);
     }
@@ -27,11 +25,10 @@ export const PlaylistProvider = ({ children }) => {
   const handleFetchUsersPlaylists = async () => {
     try {
       const response = await fetchPlaylistsByUser();
-      if (response.name === "AxiosError") {
-        console.log(response.response.status);
-      } else {
-        setUserPlaylists(() => response.data.data.$values)
+      if (!(response.name === "AxiosError")) {
+        setUserPlaylists(() => response.data.data.$values);
       }
+      displayResponse(response);
     } catch (error) {
       console.error("An error occurred:", error.message);
     }

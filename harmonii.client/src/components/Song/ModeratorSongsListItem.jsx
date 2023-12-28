@@ -16,14 +16,7 @@ const ModeratorSongsListItem = ({ song, fetchData, genresList }) => {
       song.songId,
       selectedGenre
     );
-    if (response.name === "AxiosError") {
-      console.log(response);
-      console.log(response.response.status);
-    } else {
-      if (response.data.status === "Success") {
-        displayResponse(response);
-      }
-    }
+    displayResponse(response);
   };
 
   return (
