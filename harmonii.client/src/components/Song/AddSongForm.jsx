@@ -10,11 +10,11 @@ import { storage } from "../../services/firebase/firebase";
 const AddSongForm = ({ fetchData, genresList }) => {
   const [audioFile, setAudioFile] = useState(null);
   const [progressPercent, setProgressPercent] = useState(0);
+  const [coverImageUrl, setCoverImageUrl] = useState('');
 
   const initialValues = {
     SongName: "",
     Artist: "",
-    CoverImageUrl: "",
     GenreName: "",
   };
 
@@ -90,7 +90,6 @@ const AddSongForm = ({ fetchData, genresList }) => {
   const fields = [
     { id: "SongName", label: "Song Name", type: "text" },
     { id: "Artist", label: "Artist", type: "text" },
-    { id: "CoverImageUrl", label: "Cover Image URL", type: "text" },
     {
       id: "GenreName",
       label: "Genre Name",
@@ -108,6 +107,12 @@ const AddSongForm = ({ fetchData, genresList }) => {
         fields={fields}
         buttonText="Add Song"
       >
+        <div>
+          <label htmlFor="">Cover Image Url</label>
+          <input type="text" value={coverImageUrl} onChange={(event)=>setCoverImageUrl(event.target.value)} />
+          <img src={coverImageUrl} style={{width:"100px", height:"auto"}} />
+        </div>
+        
         <input type="file" onChange={handleAudioFileChange} />
         {progressPercent !== 0 && (
         <div className="outerbar">
