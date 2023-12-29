@@ -2,13 +2,14 @@ import RouterComponent from '../routers/Router';
 import Navigation from '../components/Navigation/Navigation';
 import styled from 'styled-components';
 import Footer from '../components/Shared/Footer';
+import AudioPlayer from '../components/Song/AudioPlayer';
 
 const AppLayout = () => {
   return (
     <StyledAppLayout>
       <Navigation />
       <RouterComponent />
-      <div>audio player</div>
+      <AudioPlayer />
       <Footer />
     </StyledAppLayout>
   );

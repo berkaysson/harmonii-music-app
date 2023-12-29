@@ -2,10 +2,12 @@ import { useState } from "react";
 import { usePlaylistContext } from "../../services/hooks/usePlaylist";
 import { addSongToPlaylist } from "../../api/addSongToPlaylist";
 import { displayResponse } from "../../services/displayResponse";
+import { useAudioPlayerContext } from "../../services/hooks/useAudioPlayer";
 
 /* eslint-disable react/prop-types */
 const SongListItem = ({ song }) => {
   const { userPlaylists } = usePlaylistContext();
+  const { setCurrentSong, isPlaying, currentSong, pauseAudio, playAudio } = useAudioPlayerContext();
   const [selectedPlaylistId, setSelectedPlaylistId] = useState("");
 
   const handlePlaylistChange = (event) => {
@@ -21,15 +23,23 @@ const SongListItem = ({ song }) => {
     displayResponse(response);
   };
 
+  const handlePlayButton = () => {
+    if(currentSong?.songId === song.songId){
+      if(isPlaying) pauseAudio();
+      else playAudio();
+    }
+    else{
+      setCurrentSong(song);
+    }
+  }
+
   return (
     <li id={song.songId}>
       <span>
         <img src={song?.coverImageUrl} alt="cover" />
       </span>
       <span>
-        <audio controls>
-          <source src={song.audioFileUrl} />
-        </audio>
+        <button onClick={handlePlayButton}>{isPlaying && currentSong?.songId === song.songId ? "Stop" : "Play"}</button>
       </span>
       <span>{song.songName}</span>-<span>{song.artistName}</span>-
       <span>{song.genreName}</span>-<span>{song.userName}</span>
