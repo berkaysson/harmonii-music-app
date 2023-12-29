@@ -1,21 +1,16 @@
 import { Link } from "react-router-dom";
 import { useUserContext } from "../../services/hooks/useUser";
 import LogoutButton from "../Auth/LogoutButton";
+import styled from "styled-components";
 
 const Navigation = () => {
-  const {userValid} = useUserContext();
+  const { userValid } = useUserContext();
 
   return (
-    <nav>
+    <StyledNavigation>
       <ul>
         <li>
           <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/register">Register</Link>
         </li>
         <li>
           <Link to="/profile">Profile</Link>
@@ -26,12 +21,26 @@ const Navigation = () => {
         <li>
           <Link to="/admin-panel">Admin Panel</Link>
         </li>
-        <li>
-          {userValid ? <LogoutButton/> : ""}
-        </li>
+        {userValid ? (
+          <LogoutButton />
+        ) : (
+          <>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+            <li>
+              <Link to="/register">Register</Link>
+            </li>
+          </>
+        )}
       </ul>
-    </nav>
+    </StyledNavigation>
   );
 };
 
 export default Navigation;
+
+const StyledNavigation = styled.nav`
+  grid-area: 1/1/3/2;
+  border: 1px solid red;
+`;
