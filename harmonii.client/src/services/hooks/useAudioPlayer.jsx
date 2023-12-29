@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { usePlaylistContext } from "./usePlaylist";
 
 const AudioPlayerContext = createContext();
 
 export const AudioPlayerProvider = ({ children }) => {
+  const { playlistSongs } = usePlaylistContext();
   const [currentSong, setCurrentSong] = useState(null);
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -23,6 +25,21 @@ export const AudioPlayerProvider = ({ children }) => {
     }
   };
 
+  const playNextSong = () => {
+    if (playlistSongs.length > 0) {
+      const currentIndex = playlistSongs.findIndex(song => song === currentSong);
+      const nextIndex = (currentIndex + 1) % playlistSongs.length;
+      setCurrentSong(playlistSongs[nextIndex]);
+    }
+  };
+
+  useEffect(() => {
+    if(playlistSongs.length > 0){
+      setCurrentSong(playlistSongs[0]);
+    }
+    
+  }, [playlistSongs]);
+
   const values = {
     currentSong,
     setCurrentSong,
@@ -30,6 +47,7 @@ export const AudioPlayerProvider = ({ children }) => {
     pauseAudio,
     audioRef,
     isPlaying,
+    playNextSong
   };
 
   return (

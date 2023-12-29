@@ -9,6 +9,7 @@ const PlaylistContext = createContext();
 export const PlaylistProvider = ({ children }) => {
   const [playlists, setPlaylists] = useState([]);
   const [userPlaylists, setUserPlaylists] = useState([]);
+  const [playlistSongs, setPlaylistSongs] = useState([]);
   
   const handleFetchAllPlaylists = async () => {
     try {
@@ -43,7 +44,8 @@ export const PlaylistProvider = ({ children }) => {
     playlists,
     userPlaylists,
     fetchPlaylists: handleFetchAllPlaylists,
-    fetchUserPlaylists: handleFetchUsersPlaylists
+    fetchUserPlaylists: handleFetchUsersPlaylists,
+    playlistSongs, setPlaylistSongs
   };
 
   return (

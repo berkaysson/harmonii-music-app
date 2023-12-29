@@ -2,7 +2,20 @@ import { useEffect } from "react";
 import { useAudioPlayerContext } from "../../services/hooks/useAudioPlayer";
 
 const AudioPlayer = () => {
-  const { currentSong, audioRef, playAudio } = useAudioPlayerContext();
+  const { currentSong, audioRef, playAudio, playNextSong  } = useAudioPlayerContext();
+
+  useEffect(() => {
+    const handleEnded = () => {
+      playNextSong();
+    };
+
+    if (currentSong && audioRef.current) {
+      audioRef.current.addEventListener("ended", handleEnded);
+      return () => {
+        audioRef.current.removeEventListener("ended", handleEnded);
+      };
+    }
+  }, [currentSong, audioRef, playNextSong]);
 
   useEffect(() => {
     if (currentSong) {
