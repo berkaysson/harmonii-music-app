@@ -47,7 +47,7 @@ export const AudioPlayerProvider = ({ children }) => {
     pauseAudio,
     audioRef,
     isPlaying,
-    playNextSong
+    playNextSong,
   };
 
   return (

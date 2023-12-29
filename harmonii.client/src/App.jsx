@@ -3,10 +3,11 @@ import AppLayout from "./layouts/AppLayout.jsx";
 import { UserContextProvider } from "./services/hooks/useUser.jsx";
 import { PlaylistProvider } from "./services/hooks/usePlaylist.jsx";
 import { AudioPlayerProvider } from "./services/hooks/useAudioPlayer.jsx";
+import styled from "styled-components";
 
 const App = () => {
   return (
-    <div>
+    <StyledApp>
       <UserContextProvider>
         <PlaylistProvider>
           <AudioPlayerProvider>
@@ -16,8 +17,13 @@ const App = () => {
           </AudioPlayerProvider>
         </PlaylistProvider>
       </UserContextProvider>
-    </div>
+    </StyledApp>
   );
 };
 
 export default App;
+
+const StyledApp = styled.div`
+  background-color: var(--dark-blue-color);
+  color: white;
+`;

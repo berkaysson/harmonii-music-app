@@ -20,6 +20,6 @@ export default AppLayout;
 const StyledAppLayout = styled.div`
   display: grid;
   grid-template-columns: 200px auto;
-  grid-template-rows: auto auto 50px;
+  grid-template-rows: auto 100px 50px;
   min-height: 100vh;
 `;

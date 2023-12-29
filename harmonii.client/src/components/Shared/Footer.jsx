@@ -9,6 +9,6 @@ const Footer = () => {
 export default Footer;
 
 const StyledFooter = styled.footer`
-  grid-area: 3/1/4/3;
+  grid-area: 3/2/4/3;
   border: 1px solid red;
 `;

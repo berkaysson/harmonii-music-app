@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+
+:root{
+  --pink-color: rgba(242, 101, 139, 1);
+  --dark-blue-color: rgba(0, 31, 38, 1);
+  --turq-color-1: rgba(2, 94, 114, 1);
+  --turq-color-2: rgba(2, 103, 114, 1);
+  --turq-color-3: rgba(3, 165, 135, 1);
+}
+
 *, *::before, *::after {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -48,6 +58,7 @@ body {
 	margin:0;
 	padding:0;
 	height:100%;
+  font-family: 'Raleway', sans-serif;
 }
 
 body{
@@ -66,4 +77,8 @@ li{
 
 #root{
   isolation: isolate;
+}
+
+button{
+  all: unset;
 }

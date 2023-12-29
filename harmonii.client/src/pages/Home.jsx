@@ -6,7 +6,6 @@ const Home = () => {
 
   return (
     <div>
-      Home
       <SongsList />
       <PlaylistsList />
       <UserPlaylistsList />
