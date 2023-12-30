@@ -21,11 +21,14 @@ const Navigation = () => {
                 logo
               </StyledLink>
             </li>
-            <li>
-              <i>
-              <p style={{fontSize: "12px"}}>Welcome {user.userName}</p>
-              </i>
-            </li>
+            {
+              user && 
+              <li>
+                <i>
+                <p style={{fontSize: "12px"}}>Welcome {user.userName}</p>
+                </i>
+              </li>
+            }
             <li>
               <StyledLink to="/"><span><RiHome5Line /></span> Home </StyledLink>
             </li>
