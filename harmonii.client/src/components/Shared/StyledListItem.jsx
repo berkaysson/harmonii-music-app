@@ -25,6 +25,7 @@ export const StyledListItem = styled.li`
 
   .list-play-btn{
     width: 50px;
+    font-size: 30px;
   }
 
   .list-song-info{
@@ -43,5 +44,18 @@ export const StyledListItem = styled.li`
     position: absolute;
     height: 100%;
     right: 1rem;
+
+    .dropdown{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: .7rem;
+
+      .dropdown-menu{
+        display:flex;
+        gap: .4rem;
+      }
+    }
   }
 `;

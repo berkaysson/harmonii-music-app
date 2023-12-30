@@ -3,6 +3,8 @@ import { displayResponse } from "../../services/displayResponse";
 import { useAudioPlayerContext } from "../../services/hooks/useAudioPlayer";
 import { StyledListItem } from "../Shared/StyledListItem";
 import AddToPlaylistDropdown from "../Playlist/AddToPlaylistDropdown";
+import { RiPlayCircleLine } from "react-icons/ri";
+import { RiPauseCircleLine } from "react-icons/ri";
 
 /* eslint-disable react/prop-types */
 const SongListItem = ({ song }) => {
@@ -30,12 +32,18 @@ const SongListItem = ({ song }) => {
       </span>
       <span className="list-play-btn">
         <button onClick={handlePlayButton}>
-          {isPlaying && currentSong?.songId === song.songId ? "Stop" : "Play"}
+          {isPlaying && currentSong?.songId === song.songId ? (
+            <RiPauseCircleLine />
+          ) : (
+            <RiPlayCircleLine />
+          )}
         </button>
       </span>
       <span className="list-song-info">
         <span>{song.songName}</span>
-        <span>{song.artistName}/{song.genreName}</span>
+        <span>
+          {song.artistName}/{song.genreName}
+        </span>
       </span>
       <span className="list-add-to-playlist">
         <AddToPlaylistDropdown onAddToPlaylist={handleAddToPlaylist} />

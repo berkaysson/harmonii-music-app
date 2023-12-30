@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { usePlaylistContext } from "../../services/hooks/usePlaylist";
+import { RiPlayListLine } from "react-icons/ri";
+import { RiArrowGoBackLine } from "react-icons/ri";
+import { RiAddCircleLine } from "react-icons/ri";
 
 const AddToPlaylistDropdown = ({ onAddToPlaylist }) => {
   const { userPlaylists } = usePlaylistContext();
@@ -14,18 +17,12 @@ const AddToPlaylistDropdown = ({ onAddToPlaylist }) => {
   const handleAddToPlaylist = async () => {
     console.log(selectedPlaylistId);
     await onAddToPlaylist(selectedPlaylistId);
+    setSelectedPlaylistId("");
     setIsDropdownOpen(false);
   };
 
   return (
     <div className="dropdown">
-      <button
-        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className="dropdown-toggle"
-        aria-expanded={isDropdownOpen}
-      >
-        {isDropdownOpen ? "Cancel" : "Add to Playlist"}
-      </button>
       {isDropdownOpen && (
         <div className="dropdown-menu">
           <select value={selectedPlaylistId} onChange={handlePlaylistChange}>
@@ -36,9 +33,19 @@ const AddToPlaylistDropdown = ({ onAddToPlaylist }) => {
               </option>
             ))}
           </select>
-          <button onClick={handleAddToPlaylist}>Add</button>
+          <button style={{ fontSize: "24px" }} onClick={handleAddToPlaylist}>
+            <RiAddCircleLine />
+          </button>
         </div>
       )}
+      <button
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        className="dropdown-toggle"
+        aria-expanded={isDropdownOpen}
+        style={{ fontSize: "24px" }}
+      >
+        {isDropdownOpen ? <RiArrowGoBackLine /> : <RiPlayListLine />}
+      </button>
     </div>
   );
 };
