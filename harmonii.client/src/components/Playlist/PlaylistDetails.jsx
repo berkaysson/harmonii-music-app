@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router";
+import { deletePlaylistApi } from "../../api/deletePlaylistApi";
 import { removeSongFromPlaylist } from "../../api/removeSongFromPlaylist";
 import { displayResponse } from "../../services/displayResponse";
 import { usePlaylistContext } from "../../services/hooks/usePlaylist";
@@ -8,6 +10,7 @@ import SongListItem from "../Song/SongListItem";
 const PlaylistDetails = ({ playlistData, fetchData }) => {
   const { user } = useUserContext();
   const { setPlaylistSongs } = usePlaylistContext();
+  const navigate = useNavigate();
 
   const handleRemoveFromPlaylist = async (songId) => {
     const response = await removeSongFromPlaylist(
@@ -24,6 +27,14 @@ const PlaylistDetails = ({ playlistData, fetchData }) => {
     setPlaylistSongs(playlistData.songs.$values);
   }
 
+  const handleDelete = async () => {
+    const response = await deletePlaylistApi(playlistData.playlistId);
+    if (!(response.name === "AxiosError")) {
+      navigate("/");
+    }
+    displayResponse(response);
+  };
+
   return (
     <div>
       {playlistData ? (
@@ -32,6 +43,7 @@ const PlaylistDetails = ({ playlistData, fetchData }) => {
           <h2>Playlist Name: {playlistData.playlistName}</h2>
           <h4>Creator: {playlistData.userName}</h4>
           <p>Playlist Description: {playlistData.playlistDescription}</p>
+          <button onClick={handleDelete}>Delete</button>
           <h3>Songs:</h3>
           <ul>
             {playlistData.songs.$values.map((song) => (
