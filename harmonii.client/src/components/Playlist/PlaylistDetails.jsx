@@ -43,7 +43,7 @@ const PlaylistDetails = ({ playlistData, fetchData }) => {
           <h2>Playlist Name: {playlistData.playlistName}</h2>
           <h4>Creator: {playlistData.userName}</h4>
           <p>Playlist Description: {playlistData.playlistDescription}</p>
-          <button onClick={handleDelete}>Delete</button>
+          {user.userName === playlistData.userName ? <button onClick={handleDelete}>Delete</button> : ""}
           <h3>Songs:</h3>
           <ul>
             {playlistData.songs.$values.map((song) => (
