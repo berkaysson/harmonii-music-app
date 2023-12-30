@@ -3,14 +3,14 @@ import { useAudioPlayerContext } from "../../services/hooks/useAudioPlayer";
 import styled from "styled-components";
 import H5AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import { CiPlay1 } from "react-icons/ci";
-import { CiStop1 } from "react-icons/ci";
-import { CiSquarePlus } from "react-icons/ci";
-import { CiSquareMinus } from "react-icons/ci";
-import { CiVolumeHigh } from "react-icons/ci";
-import { CiVolumeMute } from "react-icons/ci";
-import { CiSquareChevRight } from "react-icons/ci";
 import { usePlaylistContext } from "../../services/hooks/usePlaylist";
+import { RiPlayMiniLine } from "react-icons/ri";
+import { RiPauseFill } from "react-icons/ri";
+import { RiReplay5Line } from "react-icons/ri";
+import { RiForward5Line } from "react-icons/ri";
+import { RiVolumeUpLine } from "react-icons/ri";
+import { RiVolumeMuteLine } from "react-icons/ri";
+import { RiArrowRightLine } from "react-icons/ri";
 
 const AudioPlayer = () => {
   const {
@@ -52,7 +52,7 @@ const AudioPlayer = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSong]);
-  
+
   return (
     <StyledAudioPlayer>
       <div id="audio-player-cover">
@@ -63,12 +63,12 @@ const AudioPlayer = () => {
         ref={audioRef}
         customAdditionalControls={[]}
         customIcons={{
-          play: <CiPlay1 className="audio-player-icon" />,
-          pause: <CiStop1 className="audio-player-icon" />,
-          rewind: <CiSquareMinus className="audio-player-icon" />,
-          forward: <CiSquarePlus className="audio-player-icon" />,
-          volume: <CiVolumeHigh className="audio-player-icon" />,
-          volumeMute: <CiVolumeMute className="audio-player-icon" />,
+          play: <RiPlayMiniLine className="audio-player-icon" />,
+          pause: <RiPauseFill className="audio-player-icon" />,
+          rewind: <RiReplay5Line className="audio-player-icon" />,
+          forward: <RiForward5Line className="audio-player-icon" />,
+          volume: <RiVolumeUpLine className="audio-player-icon" />,
+          volumeMute: <RiVolumeMuteLine className="audio-player-icon" />,
         }}
         header={currentSong?.songName}
       />
@@ -76,7 +76,7 @@ const AudioPlayer = () => {
         onClick={playNextSong}
         disabled={!currentSong?.audioFileUrl || !playlistSongs}
       >
-        <CiSquareChevRight className="audio-player-icon" />
+        <RiArrowRightLine className="audio-player-icon" />
       </button>
     </StyledAudioPlayer>
   );
@@ -85,7 +85,6 @@ const AudioPlayer = () => {
 export default AudioPlayer;
 
 const StyledAudioPlayer = styled.div`
-  border: 1px solid red;
   display: flex;
   button {
     width: 100px;
@@ -109,6 +108,7 @@ const StyledAudioPlayer = styled.div`
 
   .rhap_container{
     background-color: var(--dark-blue) !important;
+    box-shadow: none;
   }
 
   .rhap_time{
