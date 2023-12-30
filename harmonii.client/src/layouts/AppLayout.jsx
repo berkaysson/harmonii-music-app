@@ -3,13 +3,16 @@ import Navigation from '../components/Navigation/Navigation';
 import styled from 'styled-components';
 import Footer from '../components/Shared/Footer';
 import AudioPlayer from '../components/Song/AudioPlayer';
+import { useUserContext } from '../services/hooks/useUser';
 
 const AppLayout = () => {
+  const { userValid } = useUserContext();
+
   return (
     <StyledAppLayout>
       <Navigation />
       <RouterComponent />
-      <AudioPlayer />
+      {userValid && <AudioPlayer />}
       <Footer />
     </StyledAppLayout>
   );
