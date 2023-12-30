@@ -8,9 +8,12 @@ import { RiUserAddLine } from "react-icons/ri";
 import { RiPlayListAddLine } from "react-icons/ri";
 import { RiLoginBoxLine } from "react-icons/ri";
 import { RiAdminLine } from "react-icons/ri";
+import { usePlaylistContext } from "../../services/hooks/usePlaylist";
 
 const Navigation = () => {
   const { userValid, userRole, user } = useUserContext();
+  const { userPlaylists } = usePlaylistContext();
+
   return (
     <StyledNavigation>
       <ul>
@@ -39,12 +42,25 @@ const Navigation = () => {
               <StyledLink to="/create-playlist"><span><RiPlayListAddLine /></span> Create Playlist</StyledLink>
             </li>
             {
-              userRole !== "Standard" &&
-              <li>
-                <StyledLink to="/admin-panel"><span><RiAdminLine /></span> Admin Panel</StyledLink>
-              </li>
-            }
-            <LogoutButton id="nav-logout-btn" />
+                userPlaylists.length > 0 ? 
+                <div className="nav-playlist-list">
+                  <h3><i>Your Playlists</i></h3>
+                  {userPlaylists.map((playlist) => (
+                    <li key={playlist.playlistId}>
+                      <StyledLink to={`/playlist/${playlist.playlistId}`}>{playlist.playlistName}</StyledLink>
+                    </li>
+                  ))}
+                </div> : ""
+              }
+            <div className="nav-bottom">
+              {
+                userRole !== "Standard" &&
+                <li>
+                  <StyledLink to="/admin-panel"><span><RiAdminLine /></span> Admin Panel</StyledLink>
+                </li>
+              }
+              <LogoutButton id="nav-logout-btn" />
+            </div>
           </>
         ) : (
           <>
@@ -71,12 +87,37 @@ const StyledNavigation = styled.nav`
   ul > li{
     padding-bottom: 1rem;
   }
+
+  .nav-bottom{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 8%;
+    gap: 1rem;
+  }
+
+  .nav-playlist-list{
+    margin-top: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+
+    li{
+      text-decoration: underline;
+
+      &:hover{
+        text-decoration: none;
+      }
+    }
+  }
 `;
 
 const StyledLink = styled(Link)`
   display: flex;
   align-items: flex-end;
   gap: 1rem;
+  overflow: hidden;
+  
   span{
     font-size: 24px;
   }
