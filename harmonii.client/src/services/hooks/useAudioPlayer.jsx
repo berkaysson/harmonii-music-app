@@ -12,15 +12,15 @@ export const AudioPlayerProvider = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const playAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
+    if (audioRef.current.audio.current) {
+      audioRef.current.audio.current.play();
       setIsPlaying(true);
     }
   };
 
   const pauseAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
+    if (audioRef.current.audio.current) {
+      audioRef.current.audio.current.pause();
       setIsPlaying(false);
     }
   };
