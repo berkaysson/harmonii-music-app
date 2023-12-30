@@ -17,6 +17,7 @@ const AudioPlayer = () => {
       return () => {
         audioRef.current.removeEventListener("ended", handleEnded);
         audioRef.current.removeEventListener("pause", pauseAudio);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         audioRef.current.addEventListener("play", playAudio);
       };
     }

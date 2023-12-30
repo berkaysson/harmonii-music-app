@@ -59,7 +59,7 @@ const StyledLink = styled(Link)`
   align-items: flex-end;
   gap: 1rem;
   span{
-    font-size: 30px;
+    font-size: 24px;
   }
 
   &:hover{
