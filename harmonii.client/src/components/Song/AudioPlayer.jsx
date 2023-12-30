@@ -10,6 +10,7 @@ import { CiSquareMinus } from "react-icons/ci";
 import { CiVolumeHigh } from "react-icons/ci";
 import { CiVolumeMute } from "react-icons/ci";
 import { CiSquareChevRight } from "react-icons/ci";
+import { usePlaylistContext } from "../../services/hooks/usePlaylist";
 
 const AudioPlayer = () => {
   const {
@@ -17,9 +18,10 @@ const AudioPlayer = () => {
     audioRef,
     playAudio,
     playNextSong,
-    playlistSongs,
     pauseAudio,
   } = useAudioPlayerContext();
+
+  const { playlistSongs } = usePlaylistContext();
 
   useEffect(() => {
     const handleEnded = () => {
@@ -50,12 +52,12 @@ const AudioPlayer = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSong]);
-
+  
   return (
     <StyledAudioPlayer>
-      <h2>
-        {currentSong?.songName} {currentSong?.artistName}
-      </h2>
+      <div id="audio-player-cover">
+        <img src={currentSong?.coverImageUrl} alt="coverImage" />
+      </div>
       <H5AudioPlayer
         src={currentSong?.audioFileUrl}
         ref={audioRef}
@@ -68,12 +70,13 @@ const AudioPlayer = () => {
           volume: <CiVolumeHigh className="audio-player-icon" />,
           volumeMute: <CiVolumeMute className="audio-player-icon" />,
         }}
+        header={currentSong?.songName}
       />
       <button
         onClick={playNextSong}
         disabled={!currentSong?.audioFileUrl || !playlistSongs}
       >
-        <CiSquareChevRight className="audio-player-icon" /> next
+        <CiSquareChevRight className="audio-player-icon" />
       </button>
     </StyledAudioPlayer>
   );
@@ -85,7 +88,18 @@ const StyledAudioPlayer = styled.div`
   border: 1px solid red;
   display: flex;
   button {
-    font-size: 32px;
+    width: 100px;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+
+    &:hover{
+      cursor: pointer;
+    }
+  }
+
+  #audio-player-cover{
+    width: 140px;
   }
 
   .audio-player-icon {
