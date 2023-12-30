@@ -19,6 +19,7 @@ const FormikForm = ({
     handleChange,
     handleSubmit,
     setFieldValue,
+    resetForm
   } = useFormik({
     initialValues,
     validationSchema,

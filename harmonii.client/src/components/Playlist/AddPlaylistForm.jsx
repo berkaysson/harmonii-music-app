@@ -5,17 +5,19 @@ import { usePlaylistContext } from "../../services/hooks/usePlaylist";
 import FormikForm from "../Shared/FormikForm";
 
 const AddPlaylistForm = () => {
-  const { fetchPlaylists } = usePlaylistContext();
+  const { fetchPlaylists, fetchUserPlaylists } = usePlaylistContext();
 
   const initialValues = {
     PlaylistName: "",
     PlaylistDescription: ""
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { resetForm }) => {
     const response = await createPlaylistApi(values);
     if (!(response.name === "AxiosError")) {
       fetchPlaylists();
+      fetchUserPlaylists();
+      resetForm();
     }
     displayResponse(response);
   }
