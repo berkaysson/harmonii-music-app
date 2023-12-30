@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchAllSongs } from "../../api/fetchAllSongs";
 import SongListItem from "./SongListItem";
 import { displayResponse } from "../../services/displayResponse";
-import styled from "styled-components";
+import { StyledList } from "../Shared/StyledList";
 
 const SongsList = () => {
   const [songsList, setSongsList] = useState([]);
@@ -20,7 +20,7 @@ const SongsList = () => {
   }, []);
 
   return <div>
-    All songs table
+    <h2>All songs</h2><br />
     <StyledList>
       {
         songsList.map((song) => <SongListItem key={song.songId} song={song} />)
@@ -30,10 +30,3 @@ const SongsList = () => {
 }
 
 export default SongsList;
-
-const StyledList = styled.ul`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: .2rem;
-`;

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { usePlaylistContext } from "../../services/hooks/usePlaylist";
-import { deletePlaylistApi } from "../../api/deletePlaylistApi";
-import { displayResponse } from "../../services/displayResponse";
+import styled from "styled-components";
+import { StyledList } from "../Shared/StyledList";
 
 const UserPlaylistsList = () => {
   const { userPlaylists, fetchUserPlaylists } = usePlaylistContext();
@@ -12,28 +12,45 @@ const UserPlaylistsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleDelete = async (playlistId) => {
-    const response = await deletePlaylistApi(playlistId);
-    if (!(response.name === "AxiosError")) {
-      fetchUserPlaylists();
-    }
-    displayResponse(response);
-  };
-
   return (
     <div>
-      Your Playlists
-      <ul>
+      <h2>Your Playlists</h2>
+      <br />
+
+      <StyledList>
         {userPlaylists.map((playlist) => (
-          <li key={playlist.playlistId}>
-            {playlist.playlistName}
-            <Link to={`/playlist/${playlist.playlistId}`}>Go</Link>
-            <button onClick={()=>handleDelete(playlist.playlistId)}>Delete</button>
-          </li>
+          <Link
+            key={playlist.playlistId}
+            to={`/playlist/${playlist.playlistId}`}
+          >
+            <StyledPlaylistListItem>
+              <span>Playlist Name: {playlist.playlistName}</span>
+              <span>Creator: {playlist.userName}</span>
+            </StyledPlaylistListItem>
+          </Link>
         ))}
-      </ul>
+      </StyledList>
     </div>
   );
 };
 
 export default UserPlaylistsList;
+
+const StyledPlaylistListItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-radius: 0.2rem;
+  background-color: var(--dark-blue-color);
+  position: relative;
+  padding: 0.5rem 1rem;
+
+  span {
+    margin-right: 1rem;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: var(--pink-color);
+  }
+`;
