@@ -35,11 +35,11 @@ const PlaylistDetails = ({ playlistData, fetchData }) => {
           <h3>Songs:</h3>
           <ul>
             {playlistData.songs.$values.map((song) => (
-              <div key={song.songId}>
+              <div key={song.songId} style={{display: "flex", gap: "10px"}}>
                 <SongListItem song={song} />
                 {user.userName === playlistData.userName ? (
                   <button onClick={() => handleRemoveFromPlaylist(song.songId)}>
-                    Remove from playlist
+                    Remove
                   </button>
                 ) : (
                   ""
