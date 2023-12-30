@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useUserContext } from "../../services/hooks/useUser";
-import { CiLogout } from "react-icons/ci";
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 const LogoutButton = () => {
   const { logout } = useUserContext();
@@ -12,7 +12,7 @@ const LogoutButton = () => {
   return (
     <div>
       <StyledLogoutButton type="button" onClick={handleLogout}>
-        <span><CiLogout /></span>
+        <span><RiLogoutBoxLine /></span>
         Logout
       </StyledLogoutButton>
     </div>
