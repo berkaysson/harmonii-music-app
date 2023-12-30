@@ -2,38 +2,54 @@ import { Link } from "react-router-dom";
 import { useUserContext } from "../../services/hooks/useUser";
 import LogoutButton from "../Auth/LogoutButton";
 import styled from "styled-components";
-import { CiHome } from "react-icons/ci";
-import { CiUser } from "react-icons/ci";
-import { CiLock } from "react-icons/ci";
-import { CiGrid2H } from "react-icons/ci";
+import { RiHome5Line } from "react-icons/ri";
+import { RiUser3Line } from "react-icons/ri";
+import { RiUserAddLine } from "react-icons/ri";
+import { RiPlayListAddLine } from "react-icons/ri";
+import { RiLoginBoxLine } from "react-icons/ri";
+import { RiAdminLine } from "react-icons/ri";
 
 const Navigation = () => {
-  const { userValid } = useUserContext();
-
+  const { userValid, userRole, user } = useUserContext();
   return (
     <StyledNavigation>
       <ul>
-        <li>
-          <StyledLink to="/"><span><CiHome /></span> Home </StyledLink>
-        </li>
-        <li>
-          <StyledLink to="/profile"><span><CiUser /></span> Profile</StyledLink>
-        </li>
-        <li>
-          <StyledLink to="/create-playlist"><span><CiGrid2H /></span> Create Playlist</StyledLink>
-        </li>
-        <li>
-          <StyledLink to="/admin-panel"><span><CiLock /></span> Admin Panel</StyledLink>
-        </li>
         {userValid ? (
-          <LogoutButton />
+          <>
+            <li>
+              <StyledLink to="/">
+                logo
+              </StyledLink>
+            </li>
+            <li>
+              <i>
+              <p style={{fontSize: "12px"}}>Welcome {user.userName}</p>
+              </i>
+            </li>
+            <li>
+              <StyledLink to="/"><span><RiHome5Line /></span> Home </StyledLink>
+            </li>
+            <li>
+              <StyledLink to="/profile"><span><RiUser3Line /></span> Profile</StyledLink>
+            </li>
+            <li>
+              <StyledLink to="/create-playlist"><span><RiPlayListAddLine /></span> Create Playlist</StyledLink>
+            </li>
+            {
+              userRole !== "Standard" &&
+              <li>
+                <StyledLink to="/admin-panel"><span><RiAdminLine /></span> Admin Panel</StyledLink>
+              </li>
+            }
+            <LogoutButton id="nav-logout-btn" />
+          </>
         ) : (
           <>
             <li>
-              <Link to="/login">Login</Link>
+              <StyledLink to="/login"><span><RiLoginBoxLine /></span> Login</StyledLink>
             </li>
             <li>
-              <Link to="/register">Register</Link>
+              <StyledLink to="/register"><span><RiUserAddLine /></span> Register</StyledLink>
             </li>
           </>
         )}
