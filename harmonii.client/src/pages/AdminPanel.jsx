@@ -3,6 +3,7 @@ import { useUserContext } from "../services/hooks/useUser";
 import { useNavigate } from "react-router";
 import UserListComponent from "../components/Home/UserListsComponent";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 const AdminPanel = () => {
   const {userRole} = useUserContext();
@@ -15,7 +16,13 @@ const AdminPanel = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <StyledAdminPage>
+  return <StyledAdminPage
+    className="main__container"
+    initial={{ transform: "scale(0)" }}
+    animate={{ transform: "scale(1)" }}
+    exit={{ x: "100%", opacity: 0 }}
+    transition={{ duration: .2 }}
+  >
     {
       userRole === "Admin" ? 
       <div id="admin-auth">
@@ -28,7 +35,7 @@ const AdminPanel = () => {
 
 export default AdminPanel;
 
-const StyledAdminPage = styled.div`
+const StyledAdminPage = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 2rem;
