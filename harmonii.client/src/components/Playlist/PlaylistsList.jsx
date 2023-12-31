@@ -41,10 +41,11 @@ const StyledPlaylistListItem = styled.li`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  border-radius: 0.2rem;
+  border-radius: 0.5rem;
   background-color: var(--dark-blue-color);
   position: relative;
   padding: 0.5rem 1rem;
+  border: 1px solid var(--pink-color);
 
   span {
     margin-right: 1rem;

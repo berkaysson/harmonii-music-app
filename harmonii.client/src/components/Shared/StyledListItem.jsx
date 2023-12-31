@@ -58,4 +58,8 @@ export const StyledListItem = styled.li`
       }
     }
   }
+
+  button:hover{
+    color: var(--pink-color);
+  }
 `;

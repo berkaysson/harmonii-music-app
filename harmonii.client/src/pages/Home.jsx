@@ -7,8 +7,8 @@ const Home = () => {
 
   return (
     <StyledHomePage>
-      <SongsList />
       <UserPlaylistsList />
+      <SongsList />
       <PlaylistsList />
     </StyledHomePage>
   );
@@ -19,5 +19,5 @@ export default Home;
 const StyledHomePage = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1rem;
 `;

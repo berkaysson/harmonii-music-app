@@ -105,6 +105,10 @@ const StyledPlaylistInfo = styled.div`
     width: 52px;
     padding: 5px;
     font-size: 40px;
+
+    &:hover{
+      color: var(--pink-color);
+    }
   }
 
   .playlist-details-delete-btn{
