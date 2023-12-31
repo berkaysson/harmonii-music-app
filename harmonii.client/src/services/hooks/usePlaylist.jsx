@@ -10,7 +10,8 @@ export const PlaylistProvider = ({ children }) => {
   const [playlists, setPlaylists] = useState([]);
   const [userPlaylists, setUserPlaylists] = useState([]);
   const [playlistSongs, setPlaylistSongs] = useState([]);
-  
+  const [currentPlaylist, setCurrentPlaylist] = useState(null);
+
   const handleFetchAllPlaylists = async () => {
     try {
       const response = await fetchAllPlaylists();
@@ -35,7 +36,12 @@ export const PlaylistProvider = ({ children }) => {
     }
   };
 
-  useEffect(()=>{
+  const handlePlaylistSelect = (playlist) => {
+    setPlaylistSongs(playlist.songs.$values);
+    setCurrentPlaylist(playlist.playlistId);
+  };
+
+  useEffect(() => {
     handleFetchAllPlaylists();
     handleFetchUsersPlaylists();
   }, []);
@@ -45,7 +51,10 @@ export const PlaylistProvider = ({ children }) => {
     userPlaylists,
     fetchPlaylists: handleFetchAllPlaylists,
     fetchUserPlaylists: handleFetchUsersPlaylists,
-    playlistSongs, setPlaylistSongs
+    playlistSongs,
+    setPlaylistSongs,
+    handlePlaylistSelect,
+    currentPlaylist,
   };
 
   return (
