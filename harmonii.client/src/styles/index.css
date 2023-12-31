@@ -62,6 +62,7 @@ body {
 }
 
 body{
+  font-size: 22px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   background-repeat: no-repeat;
