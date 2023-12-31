@@ -39,6 +39,5 @@ const App = () => {
 export default App;
 
 const StyledApp = styled.div`
-  background-color: var(--dark-blue-color);
-  color: white;
+  height: 100%;
 `;

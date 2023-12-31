@@ -89,9 +89,12 @@ const Navigation = () => {
 export default Navigation;
 
 const StyledNavigation = styled.nav`
-  grid-area: 1/1/4/2;
-  background-color: var(--turq-color-1);
-  padding: 1.5rem;
+  padding: 2rem;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  z-index: 99;
+  width: 220px;
 
   ul > li{
     padding-bottom: 1rem;
@@ -101,7 +104,7 @@ const StyledNavigation = styled.nav`
     display: flex;
     flex-direction: column;
     position: absolute;
-    bottom: 8%;
+    bottom: 160px;
     gap: 1rem;
   }
 
@@ -126,6 +129,7 @@ const StyledLink = styled(Link)`
   align-items: flex-end;
   gap: 1rem;
   overflow: hidden;
+  transition: 0.2s color ease;
   
   span{
     font-size: 24px;
@@ -152,6 +156,7 @@ const LogoLink = styled(Link)`
   padding: 8px;
   font-weight: bold;
   background-color: var(--pink-color);
+  transition: 0.2s background-color ease;
 
   &:hover{
     background-color: white;

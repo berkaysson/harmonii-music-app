@@ -75,6 +75,7 @@ const AudioPlayer = () => {
       <button
         onClick={playNextSong}
         disabled={!currentSong?.audioFileUrl || !playlistSongs}
+        id="audio-player-next-btn"
       >
         <RiArrowRightLine className="audio-player-icon" />
       </button>
@@ -86,14 +87,32 @@ export default AudioPlayer;
 
 const StyledAudioPlayer = styled.div`
   display: flex;
+  position: fixed;
+  bottom: 0;
+  z-index: 999;
+  width: 100%;
+  padding-top: 1rem;
+  height: 140px;
+  background-color: var(--dark-blue-color);
+
   button {
     width: 100px;
     display: flex;
     align-items:center;
     justify-content: center;
+    border-radius: .5rem;
 
     &:hover{
       cursor: pointer;
+      background-color: var(--pink-color);
+    }
+  }
+
+  #audio-player-next-btn{
+    border-radius: 0;
+    &:disabled{
+      cursor: not-allowed;
+      opacity: 0.7;
     }
   }
 

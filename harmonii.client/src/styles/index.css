@@ -64,6 +64,11 @@ body {
 body{
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-image: linear-gradient(to top, rgba(0, 31, 38, 1) 
+  0%, rgba(2, 94, 114, 1) 100%);
+  color: white;
 }
 
 a{
@@ -77,11 +82,13 @@ li{
 
 #root{
   isolation: isolate;
+  height: 100%;
 }
 
 button{
   all: unset;
   width: fit-content;
+  transition: all .2s ease;
 }
 
 button:hover{
@@ -111,6 +118,7 @@ input,
 select {
   padding: 8px;
   border-radius: .5rem;
+  border: 2px solid var(--turq-color-2);
 }
 
 textarea {
@@ -131,11 +139,11 @@ label{
 h2{
   font-size: 32px;
   padding: 0rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 h3{
   font-size: 24px;
   padding: .5rem;
-  margin-bottom: 1rem;
+  margin-bottom: .5rem;
 }
