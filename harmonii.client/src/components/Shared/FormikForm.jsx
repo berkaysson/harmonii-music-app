@@ -34,7 +34,7 @@ const FormikForm = ({
     <StyledForm onSubmit={handleSubmit} autoComplete="off">
       {fields.map((field) => (
         <div key={field.id}>
-          <label htmlFor={field.id}>{field.label}</label>
+          <label htmlFor={field.id}>{field.label}
           {field.type === 'select' ? ( // Check for select input type
             <select
               id={field.id}
@@ -66,10 +66,11 @@ const FormikForm = ({
           {errors[field.id] && touched[field.id] && (
             <span className='error-span'>{errors[field.id]}</span>
           )}
+          </label>
         </div>
       ))}
       {children}
-      <button disabled={isSubmitting} type="submit">
+      <button disabled={isSubmitting} type="submit" className='btn'>
         {buttonText}
       </button>
     </StyledForm>

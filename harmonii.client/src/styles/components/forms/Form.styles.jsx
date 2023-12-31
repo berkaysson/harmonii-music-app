@@ -16,23 +16,4 @@ export const StyledForm = styled.form`
   .error-span{
     color: #dd7070;
   }
-
-  button {
-    padding: 10px 15px;
-    color: white;
-    border: 1px solid var(--turq-color-3);
-    border-radius: .5rem;
-    cursor: pointer;
-    font-size: 16px;
-    background-color: var(--turq-color-2);
-
-    &:hover {
-      background-color: var(--dark-blue-color);
-    }
-
-    &:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-  }
 `;
