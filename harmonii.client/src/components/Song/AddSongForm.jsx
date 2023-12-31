@@ -6,6 +6,7 @@ import FormikForm from "../Shared/FormikForm";
 import { useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../services/firebase/firebase";
+import styled from "styled-components";
 
 const AddSongForm = ({ fetchData, genresList }) => {
   const [audioFile, setAudioFile] = useState(null);
@@ -63,7 +64,6 @@ const AddSongForm = ({ fetchData, genresList }) => {
     }
   };
   
-
   const checkAudioFile = (file) => {
     if (!file || !file.type.startsWith("audio/")){
       alert("Please select an audio file (MP3, WAV, etc.)");
@@ -95,7 +95,8 @@ const AddSongForm = ({ fetchData, genresList }) => {
   ];
 
   return (
-    <div>
+    <StyledAddSongForm>
+      <h3>Add Song</h3>
       <FormikForm
         initialValues={initialValues}
         validationSchema={songSchema}
@@ -104,12 +105,12 @@ const AddSongForm = ({ fetchData, genresList }) => {
         buttonText="Add Song"
       >
         <div>
-          <label htmlFor="">Cover Image Url</label>
-          <input type="text" value={coverImageUrl} onChange={(event)=>setCoverImageUrl(event.target.value)} />
+          <label htmlFor="">Cover Image Url
+          <input type="text" value={coverImageUrl} onChange={(event)=>setCoverImageUrl(event.target.value)} /></label>
           <img src={coverImageUrl} style={{width:"100px", height:"auto"}} />
         </div>
-        
-        <input type="file" onChange={handleAudioFileChange} />
+        <label> Upload a Song File
+        <input type="file" onChange={handleAudioFileChange} /></label>
         {progressPercent !== 0 && (
         <div className="outerbar">
           <div className="innerbar" style={{ width: `${progressPercent}%` }}>
@@ -118,8 +119,12 @@ const AddSongForm = ({ fetchData, genresList }) => {
         </div>
       )}
       </FormikForm>
-    </div>
+    </StyledAddSongForm>
   );
 };
 
 export default AddSongForm;
+
+const StyledAddSongForm = styled.div`
+  
+`;
