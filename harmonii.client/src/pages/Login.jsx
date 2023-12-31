@@ -24,6 +24,7 @@ const Login = () => {
     exit={{ x: "100%", opacity: 0 }}
     transition={{ duration: .2 }}
     >
+      <h2>Login</h2>
       <LoginForm />
     </motion.div>
   );
