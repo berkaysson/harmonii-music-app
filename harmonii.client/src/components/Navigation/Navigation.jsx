@@ -19,14 +19,14 @@ const Navigation = () => {
   return (
     <StyledNavigation>
       <ul>
+        <li>
+          <LogoLink to="/">
+            <img alt="logo" src={Logo} />
+            <span>harmon<span style={{textDecoration: "underline"}}>ii</span></span>
+          </LogoLink>
+        </li>
         {userValid ? (
           <>
-            <li>
-              <LogoLink to="/">
-                <img alt="logo" src={Logo} />
-                <span>harmon<span style={{textDecoration: "underline"}}>ii</span></span>
-              </LogoLink>
-            </li>
             {
               user && 
               <li>
