@@ -5,11 +5,15 @@ import { displayResponse } from "../../services/displayResponse";
 import { usePlaylistContext } from "../../services/hooks/usePlaylist";
 import { useUserContext } from "../../services/hooks/useUser";
 import SongListItem from "../Song/SongListItem";
+import { RiIndeterminateCircleLine } from "react-icons/ri";
+import styled from "styled-components";
+import { RiPlayList2Line } from "react-icons/ri";
+import { RiDeleteBin2Line } from "react-icons/ri";
 
 /* eslint-disable react/prop-types */
 const PlaylistDetails = ({ playlistData, fetchData }) => {
   const { user } = useUserContext();
-  const { setPlaylistSongs } = usePlaylistContext();
+  const { handlePlaylistSelect } = usePlaylistContext();
   const navigate = useNavigate();
 
   const handleRemoveFromPlaylist = async (songId) => {
@@ -24,8 +28,8 @@ const PlaylistDetails = ({ playlistData, fetchData }) => {
   };
 
   const handlePlaylistPlay = () => {
-    setPlaylistSongs(playlistData.songs.$values);
-  }
+    handlePlaylistSelect(playlistData);
+  };
 
   const handleDelete = async () => {
     const response = await deletePlaylistApi(playlistData.playlistId);
@@ -39,19 +43,30 @@ const PlaylistDetails = ({ playlistData, fetchData }) => {
     <div>
       {playlistData ? (
         <>
-          <button onClick={handlePlaylistPlay}>Play</button>
-          <h2>Playlist Name: {playlistData.playlistName}</h2>
-          <h4>Creator: {playlistData.userName}</h4>
-          <p>Playlist Description: {playlistData.playlistDescription}</p>
-          {user.userName === playlistData.userName ? <button onClick={handleDelete}>Delete</button> : ""}
+          <StyledPlaylistInfo>
+            <button className="playlist-details-icon-btn" onClick={handlePlaylistPlay}>
+              <RiPlayList2Line /></button>
+            <div>
+              <h2>Playlist Name: {playlistData.playlistName}</h2>
+              <h4>Creator: {playlistData.userName}</h4>
+              <p>Playlist Description: {playlistData.playlistDescription}</p>
+            </div>
+            {user.userName === playlistData.userName ? (
+              <button className="playlist-details-icon-btn" onClick={handleDelete}><RiDeleteBin2Line /></button>
+            ) : (
+              ""
+            )}
+          </StyledPlaylistInfo>
+          <br />
           <h3>Songs:</h3>
-          <ul>
+          <br />
+          <ul style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {playlistData.songs.$values.map((song) => (
-              <div key={song.songId} style={{display: "flex", gap: "10px"}}>
+              <div key={song.songId} style={{ display: "flex", gap: "10px" }}>
                 <SongListItem song={song} />
                 {user.userName === playlistData.userName ? (
                   <button onClick={() => handleRemoveFromPlaylist(song.songId)}>
-                    Remove
+                    <RiIndeterminateCircleLine style={{ fontSize: "32px" }} />
                   </button>
                 ) : (
                   ""
@@ -68,3 +83,24 @@ const PlaylistDetails = ({ playlistData, fetchData }) => {
 };
 
 export default PlaylistDetails;
+
+const StyledPlaylistInfo = styled.div`
+  border: 1px solid var(--dark-blue-color);
+  border-radius: .5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 2rem;
+
+  .playlist-details-icon-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--dark-blue-color);
+    border-radius: 50%;
+    height: 52px;
+    width: 52px;
+    padding: 5px;
+    font-size: 40px;
+  }
+`;
