@@ -9,6 +9,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import AdminPanel from "../pages/AdminPanel";
 import Playlist from "../pages/Playlist";
 import styled from "styled-components";
+import ModeratorPanel from "../pages/ModeratorPanel";
 
 const RouterComponent = () => {
   const location = useLocation();
@@ -33,6 +34,9 @@ const RouterComponent = () => {
         </Route>
         <Route path="/admin-panel" element={<ProtectedRoute />}>
           <Route path="/admin-panel" element={<AdminPanel />} />
+        </Route>
+        <Route path="/moderator-panel" element={<ProtectedRoute />}>
+          <Route path="/moderator-panel" element={<ModeratorPanel />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

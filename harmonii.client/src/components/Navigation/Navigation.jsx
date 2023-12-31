@@ -9,6 +9,7 @@ import { RiPlayListAddLine } from "react-icons/ri";
 import { RiLoginBoxLine } from "react-icons/ri";
 import { RiAdminLine } from "react-icons/ri";
 import { usePlaylistContext } from "../../services/hooks/usePlaylist";
+import { RiEdit2Line } from "react-icons/ri";
 import Logo from "../../assets/harmonii_logo.png";
 
 const Navigation = () => {
@@ -56,9 +57,15 @@ const Navigation = () => {
               }
             <div className="nav-bottom">
               {
-                userRole !== "Standard" &&
+                userRole === "Admin" &&
                 <li>
                   <StyledLink to="/admin-panel"><span><RiAdminLine /></span> Admin Panel</StyledLink>
+                </li>
+              }
+              {
+                userRole !== "Standard" &&
+                <li>
+                  <StyledLink to="/moderator-panel"><span><RiEdit2Line /></span> Moderator Panel</StyledLink>
                 </li>
               }
               <LogoutButton id="nav-logout-btn" />

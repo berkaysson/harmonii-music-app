@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useUserContext } from "../services/hooks/useUser";
 import { useNavigate } from "react-router";
 import UserListComponent from "../components/Home/UserListsComponent";
-import ModeratorPanel from "../components/Admin&Moderator/ModeratorPanel";
 import styled from "styled-components";
 
 const AdminPanel = () => {
@@ -10,26 +9,19 @@ const AdminPanel = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(userRole == "Standard"){
+    if(userRole == "Standard" || userRole == "Moderator"){
       navigate("/");
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <StyledAdminPage>
-    <div>
-      <ModeratorPanel />
-    </div>
-    
     {
       userRole === "Admin" ? 
-      <>
-      <hr />
       <div id="admin-auth">
-        
-        Admin Panel
+        <h2>Admin Panel</h2>
         <UserListComponent />
-      </div></> : ""
+      </div> : ""
     }
   </StyledAdminPage>
 }
