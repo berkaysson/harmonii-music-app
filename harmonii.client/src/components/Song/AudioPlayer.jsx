@@ -29,17 +29,17 @@ const AudioPlayer = () => {
     };
 
     if (currentSong && audioRef.current.audio.current) {
-      audioRef.current.audio.current.addEventListener("ended", handleEnded);
-      audioRef.current.audio.current.addEventListener("pause", pauseAudio);
-      audioRef.current.audio.current.addEventListener("play", playAudio);
+      audioRef?.current.audio.current.addEventListener("ended", handleEnded);
+      audioRef?.current.audio.current.addEventListener("pause", pauseAudio);
+      audioRef?.current.audio.current.addEventListener("play", playAudio);
       return () => {
-        audioRef.current.audio.current.removeEventListener(
+        audioRef?.current.audio.current.removeEventListener(
           "ended",
           handleEnded
         );
-        audioRef.current.audio.current.removeEventListener("pause", pauseAudio);
+        audioRef?.current.audio.current.removeEventListener("pause", pauseAudio);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        audioRef.current.audio.current.addEventListener("play", playAudio);
+        audioRef?.current.audio.current.addEventListener("play", playAudio);
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
