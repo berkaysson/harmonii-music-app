@@ -6,6 +6,7 @@ import ModeratorGenreList from "../Genre/ModeratorGenreList";
 import { fetchAllGenres } from "../../api/fetchAllGenres";
 import AddGenreForm from "../Genre/AddGenreForm";
 import { displayResponse } from "../../services/displayResponse";
+import styled from "styled-components";
 
 const ModeratorPanel = () => {
   const [songsList, setSongsList] = useState([]);
@@ -35,14 +36,32 @@ const ModeratorPanel = () => {
   }, []);
 
   return (
-    <div>
-      Moderator Panel
+    <StyledModeratorPanel>
+      <h2>
+        Moderator Panel
+      </h2>
+     
       <AddSongForm fetchData={fetchSongs} genresList={genresList} />
       <ModeratorSongsList fetchData={fetchSongs} songsList={songsList} genresList={genresList} />
+      <br />
       <AddGenreForm fetchData={fetchGenres} />
       <ModeratorGenreList fetchData={fetchGenres} genresList={genresList} />
-    </div>
+    </StyledModeratorPanel>
   );
 };
 
 export default ModeratorPanel;
+
+const StyledModeratorPanel = styled.div`
+  h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+
+  & > *{
+    margin-bottom: 2rem;
+    background-color: var(--dark-blue-color);
+    padding: .5rem 2rem;
+    border-radius: .5rem;
+  }
+`;

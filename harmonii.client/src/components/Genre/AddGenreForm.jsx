@@ -23,7 +23,8 @@ const AddGenreForm = ({ fetchData }) => {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <label>Genre Name: </label>
+      <h3>Create a new Genre</h3>
+      <label>Genre Name: 
       <input
         type="text"
         value={genreName}
@@ -32,7 +33,8 @@ const AddGenreForm = ({ fetchData }) => {
         maxLength={32}
         required
       />
-      <button type="submit">Add Genre</button>
+      </label>
+      <button disabled={!genreName || genreName.length < 3} className="btn" type="submit">Add Genre</button>
     </form>
   );
 };
