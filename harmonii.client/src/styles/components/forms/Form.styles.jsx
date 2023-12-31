@@ -24,7 +24,6 @@ export const StyledForm = styled.form`
     border-radius: .5rem;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease;
     background-color: var(--turq-color-2);
 
     &:hover {
