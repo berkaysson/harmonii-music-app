@@ -54,7 +54,7 @@ const StyledRoutesWrapper = styled.main`
   margin: 1rem;
   padding: 1rem;
   border-radius: 0.5rem;
-  margin-left: 240px;
+  margin-left: 270px;
   padding-bottom: 140px;
   height: 100%;
 `;

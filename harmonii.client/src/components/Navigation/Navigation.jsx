@@ -173,7 +173,7 @@ const StyledNavigation = styled.nav`
   top: 0;
   height: 100%;
   z-index: 99;
-  width: 220px;
+  width: 270px;
 
   ul > li {
     padding-bottom: 1rem;
