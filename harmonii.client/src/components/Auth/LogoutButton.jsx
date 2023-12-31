@@ -11,7 +11,7 @@ const LogoutButton = () => {
 
   return (
     <div>
-      <StyledLogoutButton type="button" onClick={handleLogout}>
+      <StyledLogoutButton type="button" onClick={handleLogout} className="btn">
         <span><RiLogoutBoxLine /></span>
         Logout
       </StyledLogoutButton>

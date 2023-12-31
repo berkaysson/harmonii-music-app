@@ -1,5 +1,6 @@
 import { deleteSongApi } from "../../api/deleteSongApi";
 import { displayResponse } from "../../services/displayResponse";
+import { RiDeleteBin2Line } from "react-icons/ri";
 
 // eslint-disable-next-line react/prop-types
 const DeleteSongButton = ({ songId, onDelete }) => {
@@ -11,7 +12,7 @@ const DeleteSongButton = ({ songId, onDelete }) => {
     displayResponse(response);
   };
 
-  return <button onClick={handleDeleteSongButton}>Delete Song</button>;
+  return <button className="btn" style={{fontSize: "27px"}} onClick={handleDeleteSongButton}><RiDeleteBin2Line /></button>;
 };
 
 export default DeleteSongButton;
