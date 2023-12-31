@@ -23,7 +23,7 @@ const App = () => {
         <PlaylistProvider>
           <AudioPlayerProvider>
             {isLoading ? (
-              <div>Loading...</div>
+              <div style={{height: "100%"}}>Loading...</div>
             ) : (
               <BrowserRouter>
                 <AppLayout />
