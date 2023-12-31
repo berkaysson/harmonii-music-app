@@ -82,3 +82,26 @@ li{
 button{
   all: unset;
 }
+
+button:hover{
+  cursor: pointer;
+}
+
+input,
+select {
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: .5rem;
+}
+
+textarea {
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: .5rem;
+  resize: vertical;
+}
+
+label {
+  margin: 10px;
+  font-weight: bold;
+}

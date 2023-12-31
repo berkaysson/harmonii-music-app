@@ -64,7 +64,7 @@ const FormikForm = ({
             />
           )}
           {errors[field.id] && touched[field.id] && (
-            <span>{errors[field.id]}</span>
+            <span className='error-span'>{errors[field.id]}</span>
           )}
         </div>
       ))}
