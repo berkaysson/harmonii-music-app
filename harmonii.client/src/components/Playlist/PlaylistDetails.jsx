@@ -44,15 +44,15 @@ const PlaylistDetails = ({ playlistData, fetchData }) => {
       {playlistData ? (
         <>
           <StyledPlaylistInfo>
-            <button className="playlist-details-icon-btn" onClick={handlePlaylistPlay}>
+            <button className="playlist-details-icon-btn btn" onClick={handlePlaylistPlay}>
               <RiPlayList2Line /></button>
             <div>
-              <h2>Playlist Name: {playlistData.playlistName}</h2>
+              <h2 style={{padding: "0"}}>Playlist Name: {playlistData.playlistName}</h2>
               <h4>Creator: {playlistData.userName}</h4>
-              <p>Playlist Description: {playlistData.playlistDescription}</p>
+              <p style={{maxWidth: "500px"}}>Playlist Description: {playlistData.playlistDescription}</p>
             </div>
             {user.userName === playlistData.userName ? (
-              <button className="playlist-details-icon-btn" onClick={handleDelete}><RiDeleteBin2Line /></button>
+              <button className="playlist-details-icon-btn playlist-details-delete-btn btn" onClick={handleDelete}><RiDeleteBin2Line /></button>
             ) : (
               ""
             )}
@@ -89,18 +89,26 @@ const StyledPlaylistInfo = styled.div`
   border-radius: .5rem;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  padding: 2rem;
+  justify-content: flex-start;
+  gap: 4rem;
+  padding: 1rem;
+  background-color: var(--dark-blue-color);
+  position: relative;
 
   .playlist-details-icon-btn{
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--dark-blue-color);
+    border: 1px solid var(--turq-color-1);
     border-radius: 50%;
     height: 52px;
     width: 52px;
     padding: 5px;
     font-size: 40px;
+  }
+
+  .playlist-details-delete-btn{
+    position: absolute;
+    right: 1rem;
   }
 `;

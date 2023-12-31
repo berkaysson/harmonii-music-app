@@ -9,7 +9,7 @@ const AddPlaylistForm = () => {
 
   const initialValues = {
     PlaylistName: "",
-    PlaylistDescription: ""
+    PlaylistDescription: "",
   };
 
   const handleSubmit = async (values, { resetForm }) => {
@@ -20,22 +20,25 @@ const AddPlaylistForm = () => {
       resetForm();
     }
     displayResponse(response);
-  }
+  };
 
   const fields = [
-    { id: 'PlaylistName', label: 'Playlist Name', type: 'text' },
-    { id: 'PlaylistDescription', label: 'Playlist Description', type: 'text' },
+    { id: "PlaylistName", label: "Playlist Name", type: "text" },
+    { id: "PlaylistDescription", label: "Playlist Description", type: "text" },
   ];
-  
+
   return (
-    <FormikForm
-      initialValues={initialValues}
-      validationSchema={playlistSchema}
-      fields={fields}
-      onSubmit={handleSubmit}
-      buttonText="Create Playlist"
-    />
-  ); 
-}
+    <div>
+      <h2>Create New Playlist</h2>
+      <FormikForm
+        initialValues={initialValues}
+        validationSchema={playlistSchema}
+        fields={fields}
+        onSubmit={handleSubmit}
+        buttonText="Create Playlist"
+      />
+    </div>
+  );
+};
 
 export default AddPlaylistForm;
