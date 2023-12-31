@@ -9,6 +9,7 @@ import { RiPlayListAddLine } from "react-icons/ri";
 import { RiLoginBoxLine } from "react-icons/ri";
 import { RiAdminLine } from "react-icons/ri";
 import { usePlaylistContext } from "../../services/hooks/usePlaylist";
+import Logo from "../../assets/harmonii_logo.png";
 
 const Navigation = () => {
   const { userValid, userRole, user } = useUserContext();
@@ -20,9 +21,10 @@ const Navigation = () => {
         {userValid ? (
           <>
             <li>
-              <StyledLink to="/">
-                logo
-              </StyledLink>
+              <LogoLink to="/">
+                <img alt="logo" src={Logo} />
+                <span>harmon<span style={{textDecoration: "underline"}}>ii</span></span>
+              </LogoLink>
             </li>
             {
               user && 
@@ -124,5 +126,27 @@ const StyledLink = styled(Link)`
 
   &:hover{
     color: var(--pink-color);
+  }
+`;
+
+const LogoLink = styled(Link)`
+  img{
+    height: 50px;
+    width: 50px;
+  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--dark-blue-color);
+  border-radius: 100rem;
+  padding: 8px;
+  font-weight: bold;
+  background-color: var(--pink-color);
+
+  &:hover{
+    background-color: white;
   }
 `;
