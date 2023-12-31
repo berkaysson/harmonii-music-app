@@ -4,16 +4,31 @@ import { UserContextProvider } from "./services/hooks/useUser.jsx";
 import { PlaylistProvider } from "./services/hooks/usePlaylist.jsx";
 import { AudioPlayerProvider } from "./services/hooks/useAudioPlayer.jsx";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 700);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <StyledApp>
       <UserContextProvider>
         <PlaylistProvider>
           <AudioPlayerProvider>
-            <BrowserRouter>
-              <AppLayout />
-            </BrowserRouter>
+            {isLoading ? (
+              <div>Loading...</div>
+            ) : (
+              <BrowserRouter>
+                <AppLayout />
+              </BrowserRouter>
+            )}
           </AudioPlayerProvider>
         </PlaylistProvider>
       </UserContextProvider>
