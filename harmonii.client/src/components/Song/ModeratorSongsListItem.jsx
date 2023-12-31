@@ -15,6 +15,7 @@ const ModeratorSongsListItem = ({ song, fetchData, genresList }) => {
   const handleUpdateGenre = async () => {
     const response = await updateSongGenre(song.songId, selectedGenre);
     displayResponse(response);
+    setSelectedGenre("");
   };
 
   return (

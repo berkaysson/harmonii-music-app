@@ -19,7 +19,7 @@ const AddSongForm = ({ fetchData, genresList }) => {
     GenreName: "",
   };
 
-  const handleUpload = (values) => {
+  const handleUpload = (values, { resetForm }) => {
     return new Promise((resolve, reject) => {
       const storageRef = ref(storage, `songs/${audioFile.name}`);
       const uploadTask = uploadBytesResumable(storageRef, audioFile);
@@ -43,6 +43,7 @@ const AddSongForm = ({ fetchData, genresList }) => {
 
             if (!(response.name === "AxiosError")) {
               fetchData();
+              resetForm();
             }
             displayResponse(response);
             resolve(downloadURL);
