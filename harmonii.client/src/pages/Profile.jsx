@@ -1,13 +1,20 @@
 import UserProfileInfo from "../components/Profile/UserProfileInfo";
 import ChangePasswordForm from "../components/Profile/ChangePasswordForm";
+import styled from "styled-components";
 
 const Profile = () => {
   return (
-    <div>
+    <StyledProfile>
       <UserProfileInfo />
       <ChangePasswordForm />
-    </div>
+    </StyledProfile>
   );
 };
 
 export default Profile;
+
+const StyledProfile = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+`;
