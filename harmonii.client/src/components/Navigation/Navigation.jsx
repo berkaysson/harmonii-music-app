@@ -89,9 +89,9 @@ const Navigation = () => {
               </li>
               {userPlaylists.length > 0 ? (
                 <div className="nav-playlist-list">
-                  <h3>
+                  <div>
                     <i>Your Playlists</i>
-                  </h3>
+                  </div>
                   {userPlaylists.map((playlist) => (
                     <li key={playlist.playlistId}>
                       <StyledLink
@@ -193,6 +193,7 @@ const StyledNavigation = styled.nav`
     left: ${({ isNavActive }) => (isNavActive ? 0 : "-72%")};
     width: 70%;
     backdrop-filter: blur(50px);
+    z-index: 999999;
   }
 
   ul > li {
@@ -205,6 +206,10 @@ const StyledNavigation = styled.nav`
     position: absolute;
     bottom: 160px;
     gap: 1rem;
+
+    @media(max-width: 1300px){
+      bottom: 16px;
+    }
   }
 
   .nav-playlist-list {
