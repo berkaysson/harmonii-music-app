@@ -11,6 +11,7 @@ import styled from "styled-components";
 const UserListComponent = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleGetUsers = async () => {
     setIsLoading(true);
@@ -34,6 +35,10 @@ const UserListComponent = () => {
     const response = await assignModeratorApi(identityId);
     if (!(response.name === "AxiosError")) {
       await handleGetUsers();
+      setErrorMessage("");
+    }
+    else if(response.response.status === 400){
+      setErrorMessage(response.response.data.statusMessage);
     }
     displayResponse(response);
   };
@@ -54,6 +59,7 @@ const UserListComponent = () => {
       <div>
         <h3>User List</h3>
         <StyledList>
+        <span className="error-span">{errorMessage}</span>
           {users.map((user) => (
             <StyledUserListItem key={user.id}>
               <span>Identity Id: {user.id}</span>

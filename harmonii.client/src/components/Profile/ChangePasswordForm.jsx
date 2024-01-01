@@ -4,10 +4,12 @@ import { changePasswordSchema } from "../../services/auth/schema.yup";
 import { displayResponse } from "../../services/displayResponse";
 import { useUserContext } from "../../services/hooks/useUser";
 import FormikForm from "../Shared/FormikForm";
+import { useState } from "react";
 
 const ChangePasswordForm = () => {
   const { logout } = useUserContext();
-
+  const [errorMessage, setErrorMessage] = useState("");
+  
   const initialValues = {
     OldPassword: "",
     NewPassword: "",
@@ -22,8 +24,12 @@ const ChangePasswordForm = () => {
 
     const response = await changePasswordApi(changePasswordData);
     if (!(response.name === "AxiosError")) {
+      setErrorMessage("");
       logout();
     }
+    else if(response.response.status === 400){
+      setErrorMessage(response.response.data.statusMessage);
+    }    
     displayResponse(response);
   };
 
@@ -43,6 +49,7 @@ const ChangePasswordForm = () => {
         fields={fields}
         buttonText="Change Password"
       />
+      <span className="error-span">{errorMessage}</span>
     </StyledChangePasswordForm>
   );
 };

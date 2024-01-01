@@ -12,6 +12,7 @@ const AddSongForm = ({ fetchData, genresList }) => {
   const [audioFile, setAudioFile] = useState(null);
   const [progressPercent, setProgressPercent] = useState(0);
   const [coverImageUrl, setCoverImageUrl] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const initialValues = {
     SongName: "",
@@ -44,6 +45,10 @@ const AddSongForm = ({ fetchData, genresList }) => {
             if (!(response.name === "AxiosError")) {
               fetchData();
               resetForm();
+              setErrorMessage("");
+            }
+            else if(response.response.status === 400){
+              setErrorMessage(response.response.data.statusMessage);
             }
             displayResponse(response);
             resolve(downloadURL);
@@ -120,6 +125,7 @@ const AddSongForm = ({ fetchData, genresList }) => {
         </div>
       )}
       </FormikForm>
+      <span className="error-span">{errorMessage}</span>
     </StyledAddSongForm>
   );
 };
