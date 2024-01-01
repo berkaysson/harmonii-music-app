@@ -47,7 +47,7 @@ namespace harmonii.Server.Data
                 .WithMany(e => e.Songs);
 
             SeedRoles(builder);
-            SeedGenres(builder);
+            //SeedGenres(builder);
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }

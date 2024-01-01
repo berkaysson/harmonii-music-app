@@ -35,8 +35,8 @@ builder.Services.AddAuthentication(options =>
     options.RequireHttpsMetadata = false;
     options.TokenValidationParameters = new TokenValidationParameters()
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
         ValidAudience = configuration["JWT:ValidAudience"],
         ValidIssuer = configuration["JWT:ValidIssuer"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Token"]))
@@ -54,7 +54,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
         System.Text.Json.Serialization.ReferenceHandler.Preserve;
 });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<AuthenticationHelper>()
     .AddScoped<UserProfileHelper>()
     .AddScoped<AdminPanelHelper>()
@@ -62,29 +62,29 @@ builder.Services.AddScoped<AuthenticationHelper>()
     .AddScoped<PlaylistHelper>()
     .AddScoped<GenreHelper>();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("cors-policy", builder =>
-    {
-        builder.AllowAnyOrigin()
-        .AllowAnyMethod().AllowAnyHeader();
-    });
-});
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("cors-policy", builder =>
+//    {
+//        builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+//    });
+//});
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
 
-app.UseCors("cors-policy");
-app.UseHttpsRedirection();
+//app.UseCors("cors-policy");
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseAuthentication();
 app.UseAuthorization();
