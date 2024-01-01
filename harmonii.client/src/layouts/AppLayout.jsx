@@ -34,9 +34,9 @@ const StyledAppLayout = styled.div`
     z-index: 999;
     background-color: var(--turq-color-3);
     color: var(--dark-blue-color);
-    font-size: 38px;
-    padding: 0.4rem;
-    border: 3px solid var(--pink-color);
+    font-size: 32px;
+    padding: 0.5rem;
+    border: 2px solid var(--pink-color);
     border-radius: 10rem;
 
     &:hover {
