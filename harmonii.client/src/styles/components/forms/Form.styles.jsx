@@ -16,4 +16,8 @@ export const StyledForm = styled.form`
   .error-span{
     color: #dd7070;
   }
+
+  button:disabled{
+    opacity: 0.7;
+  }
 `;
