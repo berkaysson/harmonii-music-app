@@ -20,13 +20,17 @@ const ModeratorSongsListItem = ({ song, fetchData, genresList }) => {
 
   return (
     <StyledModeratorSongsListItem key={song.songId}>
-      <span>Song Id: {song.songId}</span>
-      <span style={{width: "50%"}}>
-        {song.songName}\{song.artistName} - Uploaded by: {song.userName}
-      </span>
-      <span>
-        <DeleteSongButton songId={song.songId} onDelete={fetchData} />
-      </span>
+      <div>
+        <span>Song Id: {song.songId}</span>
+        <span>
+          {song.songName}\{song.artistName}
+        </span>
+        <span>Uploaded by: {song.userName}</span>
+        <span className="moderator-songs-list-delete-btn">
+          <DeleteSongButton songId={song.songId} onDelete={fetchData} />
+        </span>
+      </div>
+
       <span className="update-genre-dropdown">
         <select value={selectedGenre} onChange={handleGenreChange}>
           <option value="">Select Genre</option>
@@ -36,7 +40,11 @@ const ModeratorSongsListItem = ({ song, fetchData, genresList }) => {
             </option>
           ))}
         </select>
-        <button className="btn" disabled={!selectedGenre} onClick={handleUpdateGenre}>
+        <button
+          className="btn"
+          disabled={!selectedGenre}
+          onClick={handleUpdateGenre}
+        >
           Update Genre
         </button>
       </span>
@@ -48,28 +56,30 @@ export default ModeratorSongsListItem;
 
 const StyledModeratorSongsListItem = styled.div`
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
   border-radius: 0.2rem;
   border: 1px solid var(--turq-color-2);
   background-color: var(--dark-blue-color);
   position: relative;
-  padding: .2rem;
-  margin-bottom: .4rem;
+  padding: 0.5rem;
+  margin-bottom: 0.4rem;
+  gap: 0.6rem;
 
   span {
-    margin-left: 0.5rem;
     padding: 0 0.5rem;
-    min-width: 50px;
     display: flex;
-    align-items: center;
   }
 
-  .update-genre-dropdown{
+  .update-genre-dropdown {
     display: flex;
     gap: 1rem;
+  }
+
+  .moderator-songs-list-delete-btn{
     position: absolute;
     right: 1rem;
+    top: 1rem;
   }
 `;

@@ -111,6 +111,11 @@ const StyledPlaylistInfo = styled.div`
     }
   }
 
+  @media(max-width: 700px){
+    gap: 1rem;
+    flex-direction: column;
+  }
+
   .playlist-details-delete-btn{
     position: absolute;
     right: 1rem;

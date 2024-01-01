@@ -114,4 +114,14 @@ const StyledUserListItem = styled.li`
     position: absolute;
     right: 0;
   }
+
+  @media(max-width: 1300px){
+    align-items: flex-start;
+    flex-direction: column;
+    padding: .6rem;
+
+    span:last-child{
+      position: relative;
+    }
+  }
 `;

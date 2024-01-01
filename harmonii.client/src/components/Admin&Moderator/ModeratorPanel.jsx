@@ -53,15 +53,18 @@ const ModeratorPanel = () => {
 export default ModeratorPanel;
 
 const StyledModeratorPanel = styled.div`
-  h2 {
-    font-size: 30px;
-    margin-bottom: 20px;
-  }
+  display: flex;
+  flex-direction: column;
 
   & > *{
     margin-bottom: 2rem;
     background-color: var(--dark-blue-color);
     padding: .5rem 2rem;
     border-radius: .5rem;
+    
+    @media(max-width: 700px){
+      padding: .5rem;
+      margin-bottom: 1rem;
+    }
   }
 `;

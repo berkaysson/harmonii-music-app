@@ -89,11 +89,19 @@ const StyledAudioPlayer = styled.div`
   display: flex;
   position: fixed;
   bottom: 0;
+  left: 0;
   z-index: 999;
   width: 100%;
   padding-top: 1rem;
   height: 140px;
   background-color: var(--dark-blue-color);
+  flex: 1;
+  font-size: 14px;
+
+  @media(max-width: 700px){
+    height: 110px;
+    padding-top: 0;
+  }
 
   button {
     width: 100px;
@@ -114,20 +122,38 @@ const StyledAudioPlayer = styled.div`
       cursor: not-allowed;
       opacity: 0.7;
     }
+    @media(max-width: 700px){
+      font-size: 24px;
+      transform: translateY(50%);
+      height: 32px;
+      width: 50px;
+    }
   }
 
   #audio-player-cover{
     width: 140px;
+
+    @media(max-width: 700px){
+      width: 0;
+    }
   }
 
   .audio-player-icon {
     font-size: 32px;
     color: white;
+    @media(max-width: 700px){
+      margin: 0;
+      padding: 0;
+    }
   }
 
   .rhap_container{
     background-color: var(--dark-blue) !important;
     box-shadow: none;
+    flex: 1;
+    @media(max-width: 700px){
+      width: 80%;
+    }
   }
 
   .rhap_time{
@@ -138,16 +164,17 @@ const StyledAudioPlayer = styled.div`
     background-color: var(--pink-color);
   }
 
+  .rhap_volume-container{
+    @media(max-width: 500px){
+      transform: translateX(-30%) scale(0.9);
+    }
+  }
+  
   .rhap_volume-indicator{
     background-color: var(--pink-color);
   }
 
   .rhap_progress-filled{
     background-color: var(--turq-color-3);
-  }
-
-  .rhap_volume-button{
-    margin-right: 1rem;
-    height: 32px;
   }
 `;

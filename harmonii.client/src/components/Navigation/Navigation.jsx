@@ -11,157 +11,170 @@ import { RiAdminLine } from "react-icons/ri";
 import { usePlaylistContext } from "../../services/hooks/usePlaylist";
 import { RiEdit2Line } from "react-icons/ri";
 import Logo from "../../assets/harmonii_logo.png";
+import { useState } from "react";
+import { RiMenuUnfoldLine } from "react-icons/ri";
+import { RiMenuFoldLine } from "react-icons/ri";
 
 const Navigation = () => {
   const { userValid, userRole, user } = useUserContext();
   const { userPlaylists } = usePlaylistContext();
+  const [isNavActive, setIsNavActive] = useState(false);
+
+  const handleNavControl = () => {
+    setIsNavActive(!isNavActive);
+  };
 
   return (
-    <StyledNavigation>
-      <ul>
-        <li>
-          <LogoLink to="/">
-            <img alt="logo" src={Logo} />
-            <span>
-              harmon<span style={{ textDecoration: "underline" }}>ii</span>
-            </span>
-          </LogoLink>
-        </li>
-        {userValid ? (
-          <>
-            {user && (
+    <>
+      <button id="nav-controller" onClick={handleNavControl}>
+        {isNavActive ? <RiMenuFoldLine /> : <RiMenuUnfoldLine />}
+      </button>
+      <StyledNavigation isNavActive={isNavActive}>
+        <ul>
+          <li>
+            <LogoLink to="/">
+              <img alt="logo" src={Logo} />
+              <span>
+                harmon<span style={{ textDecoration: "underline" }}>ii</span>
+              </span>
+            </LogoLink>
+          </li>
+          {userValid ? (
+            <>
+              {user && (
+                <li>
+                  <i>
+                    <p style={{ fontSize: "12px" }}>Welcome {user.userName}</p>
+                  </i>
+                </li>
+              )}
               <li>
-                <i>
-                  <p style={{ fontSize: "12px" }}>Welcome {user.userName}</p>
-                </i>
+                <StyledLink
+                  className={({ isActive, isPending }) =>
+                    isPending ? "pending" : isActive ? "active" : ""
+                  }
+                  to="/"
+                >
+                  <span>
+                    <RiHome5Line />
+                  </span>{" "}
+                  Home{" "}
+                </StyledLink>
               </li>
-            )}
-            <li>
-              <StyledLink
-                className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : ""
-                }
-                to="/"
-              >
-                <span>
-                  <RiHome5Line />
-                </span>{" "}
-                Home{" "}
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink
-                className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : ""
-                }
-                to="/profile"
-              >
-                <span>
-                  <RiUser3Line />
-                </span>{" "}
-                Profile
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink
-                className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : ""
-                }
-                to="/create-playlist"
-              >
-                <span>
-                  <RiPlayListAddLine />
-                </span>{" "}
-                Create Playlist
-              </StyledLink>
-            </li>
-            {userPlaylists.length > 0 ? (
-              <div className="nav-playlist-list">
-                <h3>
-                  <i>Your Playlists</i>
-                </h3>
-                {userPlaylists.map((playlist) => (
-                  <li key={playlist.playlistId}>
+              <li>
+                <StyledLink
+                  className={({ isActive, isPending }) =>
+                    isPending ? "pending" : isActive ? "active" : ""
+                  }
+                  to="/profile"
+                >
+                  <span>
+                    <RiUser3Line />
+                  </span>{" "}
+                  Profile
+                </StyledLink>
+              </li>
+              <li>
+                <StyledLink
+                  className={({ isActive, isPending }) =>
+                    isPending ? "pending" : isActive ? "active" : ""
+                  }
+                  to="/create-playlist"
+                >
+                  <span>
+                    <RiPlayListAddLine />
+                  </span>{" "}
+                  Create Playlist
+                </StyledLink>
+              </li>
+              {userPlaylists.length > 0 ? (
+                <div className="nav-playlist-list">
+                  <h3>
+                    <i>Your Playlists</i>
+                  </h3>
+                  {userPlaylists.map((playlist) => (
+                    <li key={playlist.playlistId}>
+                      <StyledLink
+                        className={({ isActive, isPending }) =>
+                          isPending ? "pending" : isActive ? "active" : ""
+                        }
+                        to={`/playlist/${playlist.playlistId}`}
+                      >
+                        {playlist.playlistName}
+                      </StyledLink>
+                    </li>
+                  ))}
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="nav-bottom">
+                {userRole === "Admin" && (
+                  <li>
                     <StyledLink
                       className={({ isActive, isPending }) =>
                         isPending ? "pending" : isActive ? "active" : ""
                       }
-                      to={`/playlist/${playlist.playlistId}`}
+                      to="/admin-panel"
                     >
-                      {playlist.playlistName}
+                      <span>
+                        <RiAdminLine />
+                      </span>{" "}
+                      Admin Panel
                     </StyledLink>
                   </li>
-                ))}
+                )}
+                {userRole !== "Standard" && (
+                  <li>
+                    <StyledLink
+                      className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                      }
+                      to="/moderator-panel"
+                    >
+                      <span>
+                        <RiEdit2Line />
+                      </span>{" "}
+                      Moderator Panel
+                    </StyledLink>
+                  </li>
+                )}
+                <LogoutButton id="nav-logout-btn" />
               </div>
-            ) : (
-              ""
-            )}
-            <div className="nav-bottom">
-              {userRole === "Admin" && (
-                <li>
-                  <StyledLink
-                    className={({ isActive, isPending }) =>
-                      isPending ? "pending" : isActive ? "active" : ""
-                    }
-                    to="/admin-panel"
-                  >
-                    <span>
-                      <RiAdminLine />
-                    </span>{" "}
-                    Admin Panel
-                  </StyledLink>
-                </li>
-              )}
-              {userRole !== "Standard" && (
-                <li>
-                  <StyledLink
-                    className={({ isActive, isPending }) =>
-                      isPending ? "pending" : isActive ? "active" : ""
-                    }
-                    to="/moderator-panel"
-                  >
-                    <span>
-                      <RiEdit2Line />
-                    </span>{" "}
-                    Moderator Panel
-                  </StyledLink>
-                </li>
-              )}
-              <LogoutButton id="nav-logout-btn" />
-            </div>
-          </>
-        ) : (
-          <>
-            <li>
-              <StyledLink
-                className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : ""
-                }
-                to="/login"
-              >
-                <span>
-                  <RiLoginBoxLine />
-                </span>{" "}
-                Login
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink
-                className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : ""
-                }
-                to="/register"
-              >
-                <span>
-                  <RiUserAddLine />
-                </span>{" "}
-                Register
-              </StyledLink>
-            </li>
-          </>
-        )}
-      </ul>
-    </StyledNavigation>
+            </>
+          ) : (
+            <>
+              <li>
+                <StyledLink
+                  className={({ isActive, isPending }) =>
+                    isPending ? "pending" : isActive ? "active" : ""
+                  }
+                  to="/login"
+                >
+                  <span>
+                    <RiLoginBoxLine />
+                  </span>{" "}
+                  Login
+                </StyledLink>
+              </li>
+              <li>
+                <StyledLink
+                  className={({ isActive, isPending }) =>
+                    isPending ? "pending" : isActive ? "active" : ""
+                  }
+                  to="/register"
+                >
+                  <span>
+                    <RiUserAddLine />
+                  </span>{" "}
+                  Register
+                </StyledLink>
+              </li>
+            </>
+          )}
+        </ul>
+      </StyledNavigation>{" "}
+    </>
   );
 };
 
@@ -174,6 +187,13 @@ const StyledNavigation = styled.nav`
   height: 100%;
   z-index: 99;
   width: 270px;
+  transition: left 0.2s ease;
+
+  @media (max-width: 1300px) {
+    left: ${({ isNavActive }) => (isNavActive ? 0 : "-72%")};
+    width: 70%;
+    backdrop-filter: blur(50px);
+  }
 
   ul > li {
     padding-bottom: 1rem;
@@ -209,9 +229,9 @@ const StyledLink = styled(NavLink)`
   gap: 1rem;
   overflow: hidden;
   transition: 0.2s color ease;
-  padding: .5rem .3rem;
-  border-radius: .2rem;
-  transition: background-color .2s ease;
+  padding: 0.5rem 0.3rem;
+  border-radius: 0.2rem;
+  transition: background-color 0.2s ease;
 
   &.active {
     background-color: var(--dark-blue-color);

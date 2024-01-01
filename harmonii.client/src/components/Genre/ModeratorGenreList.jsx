@@ -35,8 +35,9 @@ export default ModeratorGenreList;
 
 const StyledModeratorGenreListItem = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   border-radius: 0.2rem;
   border: 1px solid var(--turq-color-2);
@@ -44,10 +45,8 @@ const StyledModeratorGenreListItem = styled.div`
   position: relative;
   padding: 1rem;
   margin-bottom: .4rem;
-  gap: 2rem;
 
   span {
-    margin-left: 0.5rem;
     padding: 0 0.5rem;
     min-width: 50px;
     display: flex;

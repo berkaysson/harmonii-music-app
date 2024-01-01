@@ -24,4 +24,30 @@ const StyledAppLayout = styled.div`
   grid-template-rows: auto 120px;
   height: 100%;
   position: relative;
+
+  @media(max-width: 700px){
+    font-size: 16px;
+  }
+
+  #nav-controller {
+    display: none;
+    z-index: 999;
+    background-color: var(--turq-color-3);
+    color: var(--dark-blue-color);
+    font-size: 38px;
+    padding: 0.4rem;
+    border: 3px solid var(--pink-color);
+    border-radius: 10rem;
+
+    &:hover {
+      background-color: var(--turq-color-2);
+    }
+
+    @media (max-width: 1300px) {
+      display: inline-block;
+      position: fixed;
+      right: .2rem;
+      top: .2rem;
+    }
+  }
 `;

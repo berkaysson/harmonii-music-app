@@ -111,7 +111,7 @@ const AddSongForm = ({ fetchData, genresList }) => {
           <img src={coverImageUrl} style={{width:"100px", height:"auto"}} />
         </div>
         <label> Upload a Song File
-        <input type="file" onChange={handleAudioFileChange} /></label>
+        <input style={{width: "80%"}} type="file" onChange={handleAudioFileChange} /></label>
         {progressPercent !== 0 && (
         <div className="outerbar">
           <div className="innerbar" style={{ width: `${progressPercent}%` }}>

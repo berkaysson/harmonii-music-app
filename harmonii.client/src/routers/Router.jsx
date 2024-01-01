@@ -57,4 +57,8 @@ const StyledRoutesWrapper = styled.main`
   margin-left: 270px;
   padding-bottom: 140px;
   height: 100%;
+
+  @media(max-width: 1300px){
+    margin-left: 0;
+  }
 `;
