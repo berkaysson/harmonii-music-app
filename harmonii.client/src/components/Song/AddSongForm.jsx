@@ -6,7 +6,6 @@ import FormikForm from "../Shared/FormikForm";
 import { useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../services/firebase/firebase";
-import styled from "styled-components";
 
 const AddSongForm = ({ fetchData, genresList }) => {
   const [audioFile, setAudioFile] = useState(null);
@@ -39,7 +38,7 @@ const AddSongForm = ({ fetchData, genresList }) => {
         async () => {
           try {
             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            values = { ...values, AudioFileUrl: downloadURL };
+            values = { ...values, CoverImageUrl: coverImageUrl, AudioFileUrl: downloadURL };
             const response = await createSongApi(values);
 
             if (!(response.name === "AxiosError")) {
@@ -101,7 +100,7 @@ const AddSongForm = ({ fetchData, genresList }) => {
   ];
 
   return (
-    <StyledAddSongForm>
+    <div>
       <h3>Add Song</h3>
       <FormikForm
         initialValues={initialValues}
@@ -126,12 +125,8 @@ const AddSongForm = ({ fetchData, genresList }) => {
       )}
       </FormikForm>
       <span className="error-span">{errorMessage}</span>
-    </StyledAddSongForm>
+    </div>
   );
 };
 
 export default AddSongForm;
-
-const StyledAddSongForm = styled.div`
-  
-`;
