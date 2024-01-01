@@ -8,7 +8,7 @@ import { RiUserAddLine } from "react-icons/ri";
 import { RiPlayListAddLine } from "react-icons/ri";
 import { RiLoginBoxLine } from "react-icons/ri";
 import { RiAdminLine } from "react-icons/ri";
-import { usePlaylistContext } from "../../services/hooks/usePlaylist";
+// import { usePlaylistContext } from "../../services/hooks/usePlaylist";
 import { RiEdit2Line } from "react-icons/ri";
 import Logo from "../../assets/harmonii_logo.png";
 import { useState } from "react";
@@ -17,7 +17,7 @@ import { RiMenuFoldLine } from "react-icons/ri";
 
 const Navigation = () => {
   const { userValid, userRole, user } = useUserContext();
-  const { userPlaylists } = usePlaylistContext();
+  // const { userPlaylists } = usePlaylistContext();
   const [isNavActive, setIsNavActive] = useState(false);
 
   const handleNavControl = () => {
@@ -87,7 +87,7 @@ const Navigation = () => {
                   Create Playlist
                 </StyledLink>
               </li>
-              {userPlaylists.length > 0 ? (
+              {/* {userPlaylists.length > 0 ? (
                 <div className="nav-playlist-list">
                   <div>
                     <i>Your Playlists</i>
@@ -107,7 +107,7 @@ const Navigation = () => {
                 </div>
               ) : (
                 ""
-              )}
+              )} */}
               <div className="nav-bottom">
                 {userRole === "Admin" && (
                   <li>
