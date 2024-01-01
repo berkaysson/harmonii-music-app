@@ -19,6 +19,7 @@ export const UserContextProvider = ({ children }) => {
     const response = await logoutApi();
     if (!(response.name === "AxiosError")) {
       setUser(null);
+      window.location.reload();
     }
     displayResponse(response);
   };
