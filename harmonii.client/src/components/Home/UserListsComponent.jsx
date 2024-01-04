@@ -7,11 +7,13 @@ import { deleteUserApi } from "../../api/deleteUserApi";
 import { StyledList } from "../Shared/StyledList";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import styled from "styled-components";
+import { useUserContext } from "../../services/hooks/useUser";
 
 const UserListComponent = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const { user } = useUserContext();
 
   const handleGetUsers = async () => {
     setIsLoading(true);
@@ -43,12 +45,16 @@ const UserListComponent = () => {
     displayResponse(response);
   };
 
-  const handleDeleteUserButton = async (identityId) => {
-    const response = await deleteUserApi(identityId);
-    if (!(response.name === "AxiosError")) {
-      await handleGetUsers();
+  const handleDeleteUserButton = async (identityId, email) => {
+    console.log(identityId, email, user.email);
+    if(!(user.email === email)){
+      const response = await deleteUserApi(identityId);
+      if (!(response.name === "AxiosError")) {
+        await handleGetUsers();
+      }
+      displayResponse(response);
     }
-    displayResponse(response);
+    setErrorMessage("You can't delete this user");
   };
 
   return (
@@ -84,7 +90,7 @@ const UserListComponent = () => {
                   </span>
                 )}
 
-                <button style={{fontSize: "24px"}} className="btn" onClick={() => handleDeleteUserButton(user.id)}>
+                <button style={{fontSize: "24px"}} className="btn" onClick={() => handleDeleteUserButton(user.id, user.email)}>
                   <RiDeleteBin2Line />
                 </button>
               </span>
