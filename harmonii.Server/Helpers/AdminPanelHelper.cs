@@ -61,6 +61,9 @@ namespace harmonii.Server.Helpers
             var user = await _userManager.FindByIdAsync(identityId.ToString());
             if (user == null) return ApiResponse
                     .CreateErrorResponse([], "User not found");
+            var userRoles = await _userManager.GetRolesAsync(user);
+            if (userRoles.Contains("Moderator")) return ApiResponse
+                    .CreateErrorResponse([], "Moderator Users can not be deleted");
             var result = await _userManager.DeleteAsync(user);
             return result.Succeeded ? 
                 ApiResponse.CreateSuccessResponse("User deleted successfully")
