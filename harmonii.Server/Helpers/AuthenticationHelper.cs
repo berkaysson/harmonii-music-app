@@ -58,8 +58,8 @@ namespace harmonii.Server.Helpers
 
             if (user == null) return ApiResponse
                     .CreateErrorResponse([], "Invalid credentials");
-            if (!user.EmailConfirmed) return ApiResponse
-                    .CreateErrorResponse([], "Email is not confirmed");
+            //if (!user.EmailConfirmed) return ApiResponse
+            //        .CreateErrorResponse([], "Email is not confirmed");
             var result = await _signInManager.PasswordSignInAsync(user, loginUser.Password,
                 isPersistent: false, lockoutOnFailure: false);
             if (result.Succeeded)
