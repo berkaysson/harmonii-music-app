@@ -54,21 +54,13 @@ builder.Services.AddControllers().AddJsonOptions(options =>
         System.Text.Json.Serialization.ReferenceHandler.Preserve;
 });
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<AuthenticationHelper>()
     .AddScoped<UserProfileHelper>()
     .AddScoped<AdminPanelHelper>()
     .AddScoped<SongsHelper>()
     .AddScoped<PlaylistHelper>()
     .AddScoped<GenreHelper>();
-
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("cors-policy", builder =>
-//    {
-//        builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
-//    });
-//});
 
 var app = builder.Build();
 
@@ -77,13 +69,6 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
-//app.UseCors("cors-policy");
 app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseAuthentication();
