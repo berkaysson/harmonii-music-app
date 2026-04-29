@@ -1,0 +1,11 @@
+# harmonii.Server/.dockerignore
+bin
+obj
+appsettings.Development.json
+*.user
+*.userosscache
+*.suo
+*.cache
+*.log
+.vs
+.vscode

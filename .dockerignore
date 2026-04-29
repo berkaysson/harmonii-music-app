@@ -1,0 +1,24 @@
+# .dockerignore (proje kök dizinine)
+.git
+.gitignore
+README.md
+.vs
+.vscode
+*.swp
+*.swo
+*~
+
+# Node.js (client için)
+harmonii.client/node_modules
+harmonii.client/dist
+harmonii.client/.vite
+
+# .NET build artifacts
+harmonii.Server/bin
+harmonii.Server/obj
+harmonii.Services/bin
+harmonii.Services/obj
+
+# User secrets
+harmonii.Server/appsettings.Development.json
+harmonii.Server/secrets.json
