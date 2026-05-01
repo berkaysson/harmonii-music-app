@@ -53,7 +53,9 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler =
         System.Text.Json.Serialization.ReferenceHandler.Preserve;
 });
+
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<AuthenticationHelper>()
     .AddScoped<UserProfileHelper>()
@@ -63,6 +65,12 @@ builder.Services.AddScoped<AuthenticationHelper>()
     .AddScoped<GenreHelper>();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 app.UseDefaultFiles();
@@ -77,5 +85,21 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        // Veritabanı hazır olana kadar beklemek veya direkt uygulamak için:
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Veritabanı migrasyonu sırasında bir hata oluştu.");
+    }
+}
 
 app.Run();
