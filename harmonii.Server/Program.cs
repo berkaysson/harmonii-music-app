@@ -1,11 +1,16 @@
+using System.Text;
 using harmonii.Server.Data;
 using harmonii.Server.Helpers;
 using harmonii.Server.Models.Identity;
+using harmonii.Server.Models.Storage;
+using harmonii.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Minio;
+using Minio.DataModel.Args;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,7 +60,34 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(opt =>
+{
+    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Harmonii API", Version = "v1" });
+    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Lütfen token değerini giriniz",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+
+    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
 
 builder.Services.AddScoped<AuthenticationHelper>()
     .AddScoped<UserProfileHelper>()
@@ -63,6 +95,20 @@ builder.Services.AddScoped<AuthenticationHelper>()
     .AddScoped<SongsHelper>()
     .AddScoped<PlaylistHelper>()
     .AddScoped<GenreHelper>();
+
+// Minio Client Kaydı
+builder.Services.AddSingleton<IMinioClient>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    return new MinioClient()
+        .WithEndpoint(config["Minio:Endpoint"])
+        .WithCredentials(config["Minio:AccessKey"], config["Minio:SecretKey"])
+        .WithSSL(false)
+        .Build();
+});
+
+// Storage Servis Kaydı
+builder.Services.AddScoped<IStorageService, MinioStorageService>();
 
 var app = builder.Build();
 
@@ -94,11 +140,21 @@ using (var scope = app.Services.CreateScope())
         var context = services.GetRequiredService<ApplicationDbContext>();
         // Veritabanı hazır olana kadar beklemek veya direkt uygulamak için:
         context.Database.Migrate();
+
+        // Minio bucket check logic
+        var minioClient = services.GetRequiredService<IMinioClient>();
+        var bucketName = app.Configuration["Minio:BucketName"] ?? "harmonii-bucket";
+        var beArgs = new BucketExistsArgs().WithBucket(bucketName);
+        if (!await minioClient.BucketExistsAsync(beArgs))
+        {
+            var mbArgs = new MakeBucketArgs().WithBucket(bucketName);
+            await minioClient.MakeBucketAsync(mbArgs);
+        }
     }
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Veritabanı migrasyonu sırasında bir hata oluştu.");
+        logger.LogError(ex, "Veritabanı migrasyonu veya Minio bucket kontrolü sırasında bir hata oluştu.");
     }
 }
 

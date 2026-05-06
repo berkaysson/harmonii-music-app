@@ -26,8 +26,14 @@ services:
       - JWT__ValidAudience=${JWT_VALID_AUDIENCE}
       - JWT__ValidIssuer=${JWT_VALID_ISSUER}
       - JWT__Token=${JWT_TOKEN}
+      - Minio__Endpoint=minio:9000
+      - Minio__AccessKey=${MINIO_ROOT_USER}
+      - Minio__SecretKey=${MINIO_ROOT_PASSWORD}
+      - Minio__BucketName=harmonii-bucket
     depends_on:
       db:
+        condition: service_healthy
+      minio:
         condition: service_healthy
     networks:
       - harmonii-network
@@ -41,7 +47,22 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_API_CORS_ALLOW_ORIGIN: "*"
     command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - harmonii-network
+
+  adminer:
+    image: adminer
+    container_name: harmonii-adminer
+    restart: always
+    ports:
+      - "8081:8080"
     networks:
       - harmonii-network
 

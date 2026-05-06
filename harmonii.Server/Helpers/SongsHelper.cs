@@ -1,4 +1,4 @@
-﻿using harmonii.Server.Data;
+using harmonii.Server.Data;
 using harmonii.Server.Models.Entities;
 using harmonii.Server.Models.Identity;
 using harmonii.Services.Dtos.Authentication;
@@ -34,7 +34,7 @@ namespace harmonii.Server.Helpers
                 SongName = song.SongName,
                 Artist = song.Artist,
                 CoverImageUrl = song.CoverImageUrl,
-                AudioFileUrl = song.AudioFileUrl,
+                AudioFileKey = song.AudioFileKey,
                 Genre = genre,
                 UserProfile = user.UserProfile
             };
@@ -70,7 +70,7 @@ namespace harmonii.Server.Helpers
 
         public async Task<bool> SongExists(string songName, string artist)
         {
-            if(songName == null || artist == null) return false;
+            if (songName == null || artist == null) return false;
             var normalizedSongName = songName.ToUpper();
             var normalizedArtist = artist.ToUpper();
             return await _dbContext.Songs.AnyAsync(s =>
@@ -84,7 +84,7 @@ namespace harmonii.Server.Helpers
             SongName = song.SongName,
             ArtistName = song.Artist,
             CoverImageUrl = song.CoverImageUrl,
-            AudioFileUrl = song.AudioFileUrl,
+            AudioFileKey = song.AudioFileKey,
             GenreId = song.GenreId,
             GenreName = song.Genre.GenreName,
             UserProfileId = song.UserProfileId,

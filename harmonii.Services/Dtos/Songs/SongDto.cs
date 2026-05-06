@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace harmonii.Services.Dtos.Songs
 {
@@ -14,7 +14,7 @@ namespace harmonii.Services.Dtos.Songs
         public string CoverImageUrl { get; set; }
 
         //[Url(ErrorMessage = "Audio file URL is not valid")]
-        public string AudioFileUrl { get; set; }
+        public string AudioFileKey { get; set; }
 
         [Required(ErrorMessage = "Genre name is required")]
         public string GenreName { get; set; }

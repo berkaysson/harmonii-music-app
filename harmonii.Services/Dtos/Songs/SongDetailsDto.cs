@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace harmonii.Services.Dtos.Songs
 {
@@ -14,7 +14,7 @@ namespace harmonii.Services.Dtos.Songs
         public string ArtistName { get; set; }
 
         public string CoverImageUrl { get; set; }
-        public string AudioFileUrl { get; set; }
+        public string AudioFileKey { get; set; }
 
         // create two distinct field to store genre and user information 
         [Required(ErrorMessage = "Genre ID is required")]

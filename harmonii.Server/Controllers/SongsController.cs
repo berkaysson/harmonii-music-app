@@ -1,4 +1,4 @@
-﻿using harmonii.Server.Data;
+using harmonii.Server.Data;
 using harmonii.Server.Helpers;
 using harmonii.Server.Models.Identity;
 using harmonii.Services.Dtos.Authentication;
@@ -84,7 +84,7 @@ namespace harmonii.Server.Controllers
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> UpdateSongGenre(int songId, string newGenreName)
         {
-            if(!ModelState.IsValid || newGenreName == null) return BadRequest(
+            if (!ModelState.IsValid || newGenreName == null) return BadRequest(
                 ApiResponse.CreateErrorResponse([], "Invalid data"));
             var result = await _songsHelper.UpdateSongGenreHelper(songId, newGenreName);
             return result.Status == "Success" ? Ok(result)

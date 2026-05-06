@@ -6,7 +6,9 @@
         public string? SongName { get; set; }
         public string? Artist { get; set; }
         public string? CoverImageUrl { get; set; }
-        public string? AudioFileUrl { get; set; }
+
+        // Storage Key
+        public string? AudioFileKey { get; set; }
 
         // Relationship with UserProfile, many to one
         public int UserProfileId { get; set; }
