@@ -8,12 +8,19 @@ namespace harmonii.Server.Services;
 public class MinioStorageService : IStorageService
 {
     private readonly IMinioClient _minioClient;
+    private readonly IMinioClient _signingClient;
     private readonly string _bucketName;
 
     public MinioStorageService(IMinioClient minioClient, IConfiguration configuration)
     {
         _minioClient = minioClient;
         _bucketName = configuration["Minio:BucketName"] ?? "harmonii-bucket";
+
+        _signingClient = new MinioClient()
+            .WithEndpoint(configuration["Minio:ExternalEndpoint"])
+            .WithCredentials(configuration["Minio:AccessKey"], configuration["Minio:SecretKey"])
+            .WithSSL(false)
+            .Build();
     }
 
     public async System.Threading.Tasks.Task<harmonii.Server.Models.Abstractions.StoragePresignedUrlResponse> GetUploadUrlAsync(string fileName, string contentType, long expirationMinutes = 15)
@@ -34,7 +41,8 @@ public class MinioStorageService : IStorageService
             .WithExpiry((int)TimeSpan.FromMinutes(expirationMinutes).TotalSeconds)
             .WithHeaders(headers);
 
-        string url = await _minioClient.PresignedPutObjectAsync(args);
+        // İmzalamayı _signingClient üzerinden yapıyoruz
+        string url = await _signingClient.PresignedPutObjectAsync(args);
 
         return new harmonii.Server.Models.Abstractions.StoragePresignedUrlResponse
         {
@@ -43,4 +51,15 @@ public class MinioStorageService : IStorageService
             Expiry = DateTime.UtcNow.AddMinutes(expirationMinutes)
         };
     }
-}
+
+    public async Task<string> GetDownloadUrlAsync(string fileKey, long expirationMinutes = 60)
+    {
+        var args = new PresignedGetObjectArgs()
+            .WithBucket(_bucketName)
+            .WithObject(fileKey)
+            .WithExpiry((int)TimeSpan.FromMinutes(expirationMinutes).TotalSeconds);
+
+        // İmzalamayı _signingClient üzerinden yapıyoruz
+        return await _signingClient.PresignedGetObjectAsync(args);
+    }
+}

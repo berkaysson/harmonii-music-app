@@ -5,16 +5,19 @@ using harmonii.Services.Dtos.Authentication;
 using harmonii.Services.Dtos.Songs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using harmonii.Server.Models.Storage;
 
 namespace harmonii.Server.Helpers
 {
     public class SongsHelper(UserManager<UserIdentity> userManager
             , ApplicationDbContext dbContext
-            , UserProfileHelper userProfileHelper)
+            , UserProfileHelper userProfileHelper
+            , IStorageService storageService)
     {
         private readonly ApplicationDbContext _dbContext = dbContext;
         private readonly UserManager<UserIdentity> _userManager = userManager;
         private readonly UserProfileHelper _userProfileHelper = userProfileHelper;
+        private readonly IStorageService _storageService = storageService;
 
         public async Task<ApiResponse> AddSongHelper(SongDto song, string userName)
         {
@@ -48,9 +51,9 @@ namespace harmonii.Server.Helpers
             var songsCreatedByUser = await _dbContext.Songs
                 .Where(song => song.UserProfileId == userProfileId)
                 .ToListAsync();
-            var songDetailsList = songsCreatedByUser
-                .Select(song => CreateSongDetailsDtoFromSong(song))
-                .ToList();
+            var songDetailsTasks = songsCreatedByUser
+                .Select(song => CreateSongDetailsDtoFromSong(song));
+            var songDetailsList = (await Task.WhenAll(songDetailsTasks)).ToList();
             return songDetailsList;
         }
 
@@ -78,17 +81,25 @@ namespace harmonii.Server.Helpers
                 s.Artist.ToUpper() == normalizedArtist);
         }
 
-        public SongDetailsDto CreateSongDetailsDtoFromSong(Song song) => new()
+        public async Task<SongDetailsDto> CreateSongDetailsDtoFromSong(Song song)
         {
-            SongId = song.SongId,
-            SongName = song.SongName,
-            ArtistName = song.Artist,
-            CoverImageUrl = song.CoverImageUrl,
-            AudioFileKey = song.AudioFileKey,
-            GenreId = song.GenreId,
-            GenreName = song.Genre.GenreName,
-            UserProfileId = song.UserProfileId,
-            UserName = song.UserProfile.UserName
-        };
+            var audioFileUrl = song.AudioFileKey != null
+                ? await _storageService.GetDownloadUrlAsync(song.AudioFileKey)
+                : null;
+
+            return new SongDetailsDto
+            {
+                SongId = song.SongId,
+                SongName = song.SongName,
+                ArtistName = song.Artist,
+                CoverImageUrl = song.CoverImageUrl,
+                AudioFileKey = song.AudioFileKey,
+                AudioFileUrl = audioFileUrl,
+                GenreId = song.GenreId,
+                GenreName = song.Genre.GenreName,
+                UserProfileId = song.UserProfileId,
+                UserName = song.UserProfile.UserName
+            };
+        }
     }
 }

@@ -101,7 +101,7 @@ builder.Services.AddSingleton<IMinioClient>(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
     return new MinioClient()
-        .WithEndpoint(config["Minio:Endpoint"])
+        .WithEndpoint(config["Minio:InternalEndpoint"])
         .WithCredentials(config["Minio:AccessKey"], config["Minio:SecretKey"])
         .WithSSL(false)
         .Build();

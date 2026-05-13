@@ -28,9 +28,9 @@ namespace harmonii.Server.Controllers
             var songs = await _dbContext.Songs
                 .Include(s => s.Genre).Include(s => s.UserProfile)
                 .ToListAsync();
-            var songDetailsList = songs.Select(song =>
-            _songsHelper.CreateSongDetailsDtoFromSong(song))
-                .ToList();
+            var songDetailsTasks = songs.Select(song =>
+                _songsHelper.CreateSongDetailsDtoFromSong(song));
+            var songDetailsList = await Task.WhenAll(songDetailsTasks);
             return Ok(ApiResponse.
                 CreateSuccessResponse("All songs retrieved successfully", songDetailsList));
         }
@@ -44,7 +44,7 @@ namespace harmonii.Server.Controllers
                 .FirstOrDefaultAsync(s => s.SongId == songId);
             if (song == null)
                 return NotFound(ApiResponse.CreateErrorResponse([], "Song not found"));
-            var songDetails = _songsHelper.CreateSongDetailsDtoFromSong(song);
+            var songDetails = await _songsHelper.CreateSongDetailsDtoFromSong(song);
             return Ok(ApiResponse
                 .CreateSuccessResponse("Song is retrieved successfully", songDetails));
         }

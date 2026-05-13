@@ -1,4 +1,4 @@
-﻿
+
 using harmonii.Server.Data;
 using harmonii.Server.Models.Entities;
 using harmonii.Services.Dtos.Authentication;
@@ -18,7 +18,7 @@ namespace harmonii.Server.Helpers
                 .Include(g => g.Songs)
                 .ThenInclude(g => g.UserProfile)
                 .FirstAsync(g => g.GenreId == genreId);
-            var genreDetails = CreateGenreDetailsDtoFromGenre(genre);
+            var genreDetails = await CreateGenreDetailsDtoFromGenre(genre);
             return genreDetails;
         }
 
@@ -49,13 +49,17 @@ namespace harmonii.Server.Helpers
                 CreateSuccessResponse("Genre deleted successfully");
         }
 
-        public GenreDetailsDto CreateGenreDetailsDtoFromGenre(Genre genre) => new()
+        public async Task<GenreDetailsDto> CreateGenreDetailsDtoFromGenre(Genre genre)
         {
-            GenreId = genre.GenreId,
-            GenreName = genre.GenreName,
-            Songs = genre.Songs.Select(song => _songsHelper
-            .CreateSongDetailsDtoFromSong(song))
-            .ToList()
-        };
+            var songDetailsTasks = genre.Songs.Select(_songsHelper.CreateSongDetailsDtoFromSong);
+            var songs = (await Task.WhenAll(songDetailsTasks)).ToList();
+
+            return new GenreDetailsDto
+            {
+                GenreId = genre.GenreId,
+                GenreName = genre.GenreName,
+                Songs = songs
+            };
+        }
     }
 }

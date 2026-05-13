@@ -1,4 +1,4 @@
-﻿using harmonii.Server.Data;
+using harmonii.Server.Data;
 using harmonii.Server.Models.Entities;
 using harmonii.Services.Dtos.Authentication;
 using harmonii.Services.Dtos.Playlists;
@@ -35,9 +35,9 @@ namespace harmonii.Server.Helpers
             var playlistsCreatedByUser = await _dbContext.Playlists
                 .Where(playlist => playlist.UserProfileId == userProfileId)
                 .ToListAsync();
-            var playlistDetails = playlistsCreatedByUser
-                .Select(CreatePlaylistDetailsDtoFromPlaylist)
-                .ToList();
+            var playlistDetailsTasks = playlistsCreatedByUser
+                .Select(CreatePlaylistDetailsDtoFromPlaylist);
+            var playlistDetails = (await Task.WhenAll(playlistDetailsTasks)).ToList();
             return playlistDetails;
         }
 
@@ -90,7 +90,7 @@ namespace harmonii.Server.Helpers
                 .ThenInclude(s => s.UserProfile)
                 .Include(p => p.UserProfile)
                 .FirstAsync(p => p.PlaylistId == playlistId);
-            var playlistDetails = CreatePlaylistDetailsDtoFromPlaylist(playlist);
+            var playlistDetails = await CreatePlaylistDetailsDtoFromPlaylist(playlist);
             return playlistDetails;
         }
 
@@ -131,16 +131,20 @@ namespace harmonii.Server.Helpers
                 .CreateSuccessResponse("Playlist deleted successfully");
         }
 
-        public PlaylistDetailsDto CreatePlaylistDetailsDtoFromPlaylist(Playlist playlist) => new()
+        public async Task<PlaylistDetailsDto> CreatePlaylistDetailsDtoFromPlaylist(Playlist playlist)
         {
-            PlaylistId = playlist.PlaylistId,
-            PlaylistName = playlist.PlaylistName,
-            PlaylistDescription = playlist.PlaylistDescription,
-            UserProfileId = playlist.UserProfileId,
-            UserName = playlist.UserProfile.UserName,
-            Songs = playlist.Songs.Select(_songsHelper
-            .CreateSongDetailsDtoFromSong)
-            .ToList()
-        };
+            var songDetailsTasks = playlist.Songs.Select(_songsHelper.CreateSongDetailsDtoFromSong);
+            var songs = (await Task.WhenAll(songDetailsTasks)).ToList();
+
+            return new PlaylistDetailsDto
+            {
+                PlaylistId = playlist.PlaylistId,
+                PlaylistName = playlist.PlaylistName,
+                PlaylistDescription = playlist.PlaylistDescription,
+                UserProfileId = playlist.UserProfileId,
+                UserName = playlist.UserProfile.UserName,
+                Songs = songs
+            };
+        }
     }
 }

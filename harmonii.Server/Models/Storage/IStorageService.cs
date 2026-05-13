@@ -5,4 +5,5 @@ namespace harmonii.Server.Models.Storage;
 public interface IStorageService
 {
     Task<StoragePresignedUrlResponse> GetUploadUrlAsync(string fileName, string contentType, long expirationMinutes = 15);
+    Task<string> GetDownloadUrlAsync(string fileKey, long expirationMinutes = 60);
 }
