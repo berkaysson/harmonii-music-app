@@ -5,6 +5,8 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+    volumes:
+      - mssql-data:/var/opt/mssql
     healthcheck:
       test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${MSSQL_SA_PASSWORD}' -Q 'SELECT 1' -C"]
       interval: 10s
@@ -49,6 +51,8 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
       MINIO_API_CORS_ALLOW_ORIGIN: "*"
     command: server /data --console-address ":9001"
+    volumes:
+      - minio-data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 10s
@@ -68,6 +72,7 @@ services:
 
 volumes:
   mssql-data:
+  minio-data:
 
 networks:
   harmonii-network:
