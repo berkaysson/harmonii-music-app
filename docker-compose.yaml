@@ -74,6 +74,22 @@ services:
     networks:
       - harmonii-network
 
+  frontend:
+    build:
+      context: ./harmonii.client # Frontend proje klasörün
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:8080/api
+    container_name: harmonii-frontend
+    ports:
+      - "3000:80" # Tarayıcıdan localhost:3000 ile erişeceksin
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - api
+    networks:
+      - harmonii-network
+
 volumes:
   mssql-data:
   minio-data:
