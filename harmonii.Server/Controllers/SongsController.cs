@@ -51,7 +51,7 @@ namespace harmonii.Server.Controllers
 
         // Add song
         [HttpPost]
-        [Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator,Admin")]
         public async Task<IActionResult> AddSong([FromBody] SongDto song)
         {
             if (!ModelState.IsValid || song == null) return BadRequest(
@@ -66,7 +66,7 @@ namespace harmonii.Server.Controllers
 
         // Delete song
         [HttpDelete("{songId}")]
-        [Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator,Admin")]
         public async Task<IActionResult> DeleteSong(int songId)
         {
             var song = await _dbContext.Songs.FindAsync(songId);
@@ -81,7 +81,7 @@ namespace harmonii.Server.Controllers
 
         // Update song genre
         [HttpPut("{songId}/{newGenreName}")]
-        [Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator,Admin")]
         public async Task<IActionResult> UpdateSongGenre(int songId, string newGenreName)
         {
             if (!ModelState.IsValid || newGenreName == null) return BadRequest(

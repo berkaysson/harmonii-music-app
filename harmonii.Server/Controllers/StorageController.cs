@@ -20,5 +20,15 @@ namespace harmonii.Server.Controllers
             var response = await _storageService.GetUploadUrlAsync(fileName, contentType);
             return Ok(response);
         }
+
+        [HttpGet("download-url")]
+        public async Task<IActionResult> GetDownloadUrl([FromQuery] string fileKey)
+        {
+            if (string.IsNullOrEmpty(fileKey))
+                return BadRequest("File key is required.");
+
+            var url = await _storageService.GetDownloadUrlAsync(fileKey);
+            return Ok(new { downloadUrl = url });
+        }
     }
 }

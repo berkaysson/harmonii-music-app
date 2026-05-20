@@ -1,4 +1,4 @@
-﻿using harmonii.Server.Data;
+using harmonii.Server.Data;
 using harmonii.Server.Helpers;
 using harmonii.Services.Dtos.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -40,7 +40,7 @@ namespace harmonii.Server.Controllers
 
         // Create genre
         [HttpPost("{genreName}")]
-        [Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator,Admin")]
         public async Task<IActionResult> CreateGenre(string genreName)
         {
             var result = await _genreHelper.CreateGenreHelper(genreName);
@@ -50,7 +50,7 @@ namespace harmonii.Server.Controllers
 
         // Delete genre
         [HttpDelete("{genreId}")]
-        [Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator,Admin")]
         public async Task<IActionResult> DeleteGenre(int genreId)
         {
             var result = await _genreHelper.DeleteGenreHelper(genreId);

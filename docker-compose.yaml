@@ -30,7 +30,8 @@ services:
       - JWT__ValidAudience=${JWT_VALID_AUDIENCE}
       - JWT__ValidIssuer=${JWT_VALID_ISSUER}
       - JWT__Token=${JWT_TOKEN}
-      - Minio__Endpoint=minio:9000
+      - Minio__InternalEndpoint=minio:9000
+      - Minio__ExternalEndpoint=localhost:9000
       - Minio__AccessKey=${MINIO_ROOT_USER}
       - Minio__SecretKey=${MINIO_ROOT_PASSWORD}
       - Minio__BucketName=harmonii-bucket

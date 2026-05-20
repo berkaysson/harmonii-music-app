@@ -24,13 +24,15 @@ const AddSongForm = ({ fetchData, genresList }) => {
         alert("Please select an audio file first.");
         return;
       }
-      setProgressPercent(10); // Yükleme başlatılıyor
+      setProgressPercent(5); // starting
 
-      // 1. Dosyayı StorageService üzerinden yükle ve key'i al
-      const fileKey = await storageService.uploadFile(audioFile, 'songs');
-      setProgressPercent(50); // Yükleme tamamlandı, API isteğine geçiliyor
+      // 1. Upload file to MinIO via presigned URL — progress tracked 0–80%
+      const fileKey = await storageService.uploadFile(audioFile, 'songs', (pct) => {
+        setProgressPercent(pct);
+      });
+      setProgressPercent(90); // upload done, API call starting
 
-      // 2. Form verilerine CoverImageUrl ve yeni AudioFileKey'i ekle
+      // 2. Persist song metadata via the backend API
       values = { ...values, CoverImageUrl: coverImageUrl, AudioFileKey: fileKey };
       
       const response = await createSongApi(values);
