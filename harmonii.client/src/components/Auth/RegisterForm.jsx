@@ -1,4 +1,4 @@
-import { registerApi } from "../../api/registerApi";
+import { registerApi } from "../../api/auth/registerApi";
 import { useNavigate } from "react-router";
 import { displayResponse } from "../../services/displayResponse";
 import { registerSchema } from "../../services/auth/schema.yup";

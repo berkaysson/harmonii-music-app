@@ -1,4 +1,4 @@
-import { addSongToPlaylist } from "../../api/addSongToPlaylist";
+import { addSongToPlaylist } from "../../api/playlists/addSongToPlaylist";
 import { displayResponse } from "../../services/displayResponse";
 import { useAudioPlayerContext } from "../../services/hooks/useAudioPlayer";
 import { StyledListItem } from "../Shared/StyledListItem";

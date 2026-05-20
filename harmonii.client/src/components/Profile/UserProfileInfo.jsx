@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchUserProfile } from '../../api/fetchUserProfile';
+import { fetchUserProfile } from '../../api/users/fetchUserProfile';
 import { displayResponse } from '../../services/displayResponse';
 import styled from 'styled-components';
 

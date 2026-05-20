@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { displayResponse } from "../services/displayResponse";
-import { fetchPlaylist } from "../api/fetchPlaylist";
+import { fetchPlaylist } from "../api/playlists/fetchPlaylist";
 import PlaylistDetails from "../components/Playlist/PlaylistDetails";
 import { motion } from "framer-motion";
 

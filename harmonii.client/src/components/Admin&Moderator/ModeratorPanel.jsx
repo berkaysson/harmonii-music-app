@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import AddSongForm from "../Song/AddSongForm";
-import { fetchAllSongs } from "../../api/fetchAllSongs";
+import { fetchAllSongs } from "../../api/songs/fetchAllSongs";
 import ModeratorSongsList from "../Song/ModeratorSongsList";
 import ModeratorGenreList from "../Genre/ModeratorGenreList";
-import { fetchAllGenres } from "../../api/fetchAllGenres";
+import { fetchAllGenres } from "../../api/genres/fetchAllGenres";
 import AddGenreForm from "../Genre/AddGenreForm";
 import { displayResponse } from "../../services/displayResponse";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ const ModeratorPanel = () => {
   const fetchSongs = async () => {
     const response = await fetchAllSongs();
     if (!(response.name === "AxiosError")) {
-      setSongsList(() => response.data.data.$values)
+      setSongsList(() => response.data.data.$values || response.data.data || [])
     }
     displayResponse(response);
   };
@@ -23,7 +23,7 @@ const ModeratorPanel = () => {
   const fetchGenres = async () => {
     const response = await fetchAllGenres();
     if (!(response.name === "AxiosError")) {
-      setGenresList(() => response.data.data.$values);
+      setGenresList(() => response.data.data.$values || response.data.data || []);
       await fetchSongs();
     }
     displayResponse(response);

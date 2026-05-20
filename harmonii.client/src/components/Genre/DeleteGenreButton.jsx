@@ -1,4 +1,4 @@
-import { deleteGenreApi } from "../../api/deleteGenreApi";
+import { deleteGenreApi } from "../../api/genres/deleteGenreApi";
 import { displayResponse } from "../../services/displayResponse";
 import { RiDeleteBin2Line } from "react-icons/ri";
 

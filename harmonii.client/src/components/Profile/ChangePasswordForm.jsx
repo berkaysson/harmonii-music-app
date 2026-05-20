@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { changePasswordApi } from "../../api/changePasswordApi";
+import { changePasswordApi } from "../../api/auth/changePasswordApi";
 import { changePasswordSchema } from "../../services/auth/schema.yup";
 import { displayResponse } from "../../services/displayResponse";
 import { useUserContext } from "../../services/hooks/useUser";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import checkTokenNotValid from "../auth/checkTokenNotValid";
 import { displayResponse } from "../displayResponse";
-import { logoutApi } from "../../api/logoutApi";
+import { logoutApi } from "../../api/auth/logoutApi";
 
 const UserContext = createContext();
 

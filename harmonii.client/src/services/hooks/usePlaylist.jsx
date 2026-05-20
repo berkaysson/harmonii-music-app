@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { fetchAllPlaylists } from "../../api/fetchAllPlaylists";
-import { fetchPlaylistsByUser } from "../../api/fetchPlaylistsByUser";
+import { fetchAllPlaylists } from "../../api/playlists/fetchAllPlaylists";
+import { fetchPlaylistsByUser } from "../../api/users/fetchPlaylistsByUser";
 import { displayResponse } from "../displayResponse";
+import { useUserContext } from "./useUser";
 
 const PlaylistContext = createContext();
 
@@ -11,12 +12,13 @@ export const PlaylistProvider = ({ children }) => {
   const [userPlaylists, setUserPlaylists] = useState([]);
   const [playlistSongs, setPlaylistSongs] = useState([]);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
+  const { userValid } = useUserContext();
 
   const handleFetchAllPlaylists = async () => {
     try {
       const response = await fetchAllPlaylists();
       if (!(response.name === "AxiosError")) {
-        setPlaylists(() => response.data.data.$values);
+        setPlaylists(() => response.data.data.$values || response.data.data || []);
       }
       displayResponse(response);
     } catch (error) {
@@ -28,7 +30,7 @@ export const PlaylistProvider = ({ children }) => {
     try {
       const response = await fetchPlaylistsByUser();
       if (!(response.name === "AxiosError")) {
-        setUserPlaylists(() => response.data.data.$values);
+        setUserPlaylists(() => response.data.data.$values || response.data.data || []);
       }
       displayResponse(response);
     } catch (error) {
@@ -37,14 +39,16 @@ export const PlaylistProvider = ({ children }) => {
   };
 
   const handlePlaylistSelect = (playlist) => {
-    setPlaylistSongs(playlist.songs.$values);
-    setCurrentPlaylist(playlist.playlistId);
+    setPlaylistSongs(playlist?.songs?.$values || playlist?.songs || []);
+    setCurrentPlaylist(playlist?.playlistId);
   };
 
   useEffect(() => {
-    handleFetchAllPlaylists();
-    handleFetchUsersPlaylists();
-  }, []);
+    if (userValid) {
+      handleFetchAllPlaylists();
+      handleFetchUsersPlaylists();
+    }
+  }, [userValid]);
 
   const values = {
     playlists,

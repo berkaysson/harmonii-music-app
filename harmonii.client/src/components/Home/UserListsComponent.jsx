@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { displayResponse } from "../../services/displayResponse";
-import { fetchAllUsers } from "../../api/fetchAllUsers";
-import { confirmUserApi } from "../../api/confirmUserApi";
-import { assignModeratorApi } from "../../api/assignModeratorApi";
-import { deleteUserApi } from "../../api/deleteUserApi";
+import { fetchAllUsers } from "../../api/admin/fetchAllUsers";
+import { confirmUserApi } from "../../api/admin/confirmUserApi";
+import { assignModeratorApi } from "../../api/admin/assignModeratorApi";
+import { deleteUserApi } from "../../api/admin/deleteUserApi";
 import { StyledList } from "../Shared/StyledList";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import styled from "styled-components";
@@ -19,7 +19,7 @@ const UserListComponent = () => {
     setIsLoading(true);
     const response = await fetchAllUsers();
     if (!(response.name === "AxiosError")) {
-      setUsers(response.data.data.$values);
+      setUsers(response.data.data.$values || response.data.data || []);
     }
     displayResponse(response);
     setIsLoading(false);

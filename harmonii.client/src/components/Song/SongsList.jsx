@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchAllSongs } from "../../api/fetchAllSongs";
+import { fetchAllSongs } from "../../api/songs/fetchAllSongs";
 import SongListItem from "./SongListItem";
 import { displayResponse } from "../../services/displayResponse";
 import { StyledList } from "../Shared/StyledList";
@@ -11,7 +11,7 @@ const SongsList = () => {
     const fetchData = async () => {
       const response = await fetchAllSongs();
       if (!(response.name === "AxiosError")) {
-        setSongsList(() => response.data.data.$values);
+        setSongsList(() => response.data.data.$values || response.data.data || []);
       }
       displayResponse(response);
     };

@@ -1,4 +1,4 @@
-import { createPlaylistApi } from "../../api/createPlaylistApi";
+import { createPlaylistApi } from "../../api/playlists/createPlaylistApi";
 import { playlistSchema } from "../../services/auth/schema.yup";
 import { displayResponse } from "../../services/displayResponse";
 import { usePlaylistContext } from "../../services/hooks/usePlaylist";

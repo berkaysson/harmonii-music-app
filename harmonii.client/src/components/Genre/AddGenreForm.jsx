@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createGenreApi } from "../../api/createGenreApi";
+import { createGenreApi } from "../../api/genres/createGenreApi";
 import { displayResponse } from "../../services/displayResponse";
 
 // eslint-disable-next-line react/prop-types

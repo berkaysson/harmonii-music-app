@@ -1,6 +1,6 @@
 import { useUserContext } from "../../services/hooks/useUser";
 import { displayResponse } from "../../services/displayResponse";
-import { loginApi } from "../../api/loginApi";
+import { loginApi } from "../../api/auth/loginApi";
 import { useNavigate } from "react-router";
 import FormikForm from "../Shared/FormikForm";
 import { loginSchema } from "../../services/auth/schema.yup";

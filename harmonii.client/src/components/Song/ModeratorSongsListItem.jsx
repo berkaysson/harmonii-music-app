@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import DeleteSongButton from "./DeleteSongButton";
-import { updateSongGenre } from "../../api/updateSongGenre";
+import { updateSongGenre } from "../../api/songs/updateSongGenre";
 import { displayResponse } from "../../services/displayResponse";
 import styled from "styled-components";
 

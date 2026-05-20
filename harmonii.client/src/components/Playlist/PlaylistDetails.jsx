@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
-import { deletePlaylistApi } from "../../api/deletePlaylistApi";
-import { removeSongFromPlaylist } from "../../api/removeSongFromPlaylist";
+import { deletePlaylistApi } from "../../api/playlists/deletePlaylistApi";
+import { removeSongFromPlaylist } from "../../api/playlists/removeSongFromPlaylist";
 import { displayResponse } from "../../services/displayResponse";
 import { usePlaylistContext } from "../../services/hooks/usePlaylist";
 import { useUserContext } from "../../services/hooks/useUser";
@@ -61,7 +61,7 @@ const PlaylistDetails = ({ playlistData, fetchData }) => {
           <h3>Songs:</h3>
           <br />
           <ul style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            {playlistData.songs.$values.map((song) => (
+            {(playlistData?.songs?.$values || playlistData?.songs || []).map((song) => (
               <div key={song.songId} style={{ display: "flex", gap: "10px" }}>
                 <SongListItem song={song} />
                 {user.userName === playlistData.userName ? (

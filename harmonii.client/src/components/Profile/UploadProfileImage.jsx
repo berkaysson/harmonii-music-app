@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { displayResponse } from "../../services/displayResponse";
-import { updateUserImage } from "../../api/updateUserImage";
+import { updateUserImage } from "../../api/users/updateUserImage";
 
 // eslint-disable-next-line react/prop-types
 const UploadProfileImage = ({ fetchData }) => {

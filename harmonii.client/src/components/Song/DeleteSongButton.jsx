@@ -1,4 +1,4 @@
-import { deleteSongApi } from "../../api/deleteSongApi";
+import { deleteSongApi } from "../../api/songs/deleteSongApi";
 import { displayResponse } from "../../services/displayResponse";
 import { RiDeleteBin2Line } from "react-icons/ri";
 
