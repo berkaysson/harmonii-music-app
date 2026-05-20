@@ -1,4 +1,4 @@
-import instance from "../services/api/instance";
+import instance from "../../services/api/instance";
 
 export const fetchPlaylistsByUser = async () => {
   try {

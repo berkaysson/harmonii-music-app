@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: "https://harmoniiserverapi.azure-api.net/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -16,6 +16,18 @@ instance.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+instance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    }
     return Promise.reject(error);
   }
 );

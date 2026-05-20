@@ -4,8 +4,7 @@ import { songSchema } from "../../services/auth/schema.yup";
 import { displayResponse } from "../../services/displayResponse";
 import FormikForm from "../Shared/FormikForm";
 import { useState } from "react";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { storage } from "../../services/firebase/firebase";
+import { storageService } from "../../services/storage/storageService";
 
 const AddSongForm = ({ fetchData, genresList }) => {
   const [audioFile, setAudioFile] = useState(null);
@@ -19,44 +18,41 @@ const AddSongForm = ({ fetchData, genresList }) => {
     GenreName: "",
   };
 
-  const handleUpload = (values, { resetForm }) => {
-    return new Promise((resolve, reject) => {
-      const storageRef = ref(storage, `songs/${audioFile.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, audioFile);
-  
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          setProgressPercent(progress);
-        },
-        (error) => {
-          reject(error);
-        },
-        async () => {
-          try {
-            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            values = { ...values, CoverImageUrl: coverImageUrl, AudioFileUrl: downloadURL };
-            const response = await createSongApi(values);
+  const handleUpload = async (values, { resetForm }) => {
+    try {
+      if (!audioFile) {
+        alert("Please select an audio file first.");
+        return;
+      }
+      setProgressPercent(10); // Yükleme başlatılıyor
 
-            if (!(response.name === "AxiosError")) {
-              fetchData();
-              resetForm();
-              setErrorMessage("");
-            }
-            else if(response.response.status === 400){
-              setErrorMessage(response.response.data.statusMessage);
-            }
-            displayResponse(response);
-            resolve(downloadURL);
-          } catch (error) {
-            reject(error);
-          }
-        }
-      );
-    });
+      // 1. Dosyayı StorageService üzerinden yükle ve key'i al
+      const fileKey = await storageService.uploadFile(audioFile, 'songs');
+      setProgressPercent(50); // Yükleme tamamlandı, API isteğine geçiliyor
+
+      // 2. Form verilerine CoverImageUrl ve yeni AudioFileKey'i ekle
+      values = { ...values, CoverImageUrl: coverImageUrl, AudioFileKey: fileKey };
+      
+      const response = await createSongApi(values);
+
+      if (!(response.name === "AxiosError")) {
+        fetchData();
+        resetForm();
+        setAudioFile(null);
+        setCoverImageUrl('');
+        setErrorMessage("");
+        setProgressPercent(100);
+      }
+      else if(response.response && response.response.status === 400){
+        setErrorMessage(response.response.data.statusMessage);
+        setProgressPercent(0);
+      }
+      displayResponse(response);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Yükleme sırasında bir hata oluştu.");
+      setProgressPercent(0);
+    }
   };
 
   const handleAudioFileChange = (event) => {

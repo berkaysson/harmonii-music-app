@@ -1,4 +1,4 @@
-import instance from "../services/api/instance";
+import instance from "../../services/api/instance";
 
 export const updateSongGenre = async (songId, genreName) => {
   try {
